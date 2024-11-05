@@ -1,0 +1,20 @@
+project:
+  type: website
+  pre-render: setup.R
+
+website:
+  title: "zfBrainAsymmetry"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - session.qmd
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    toc: true
+
+editor: visual
+

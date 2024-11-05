@@ -1,0 +1,44 @@
+---
+title: "Session"
+---
+
+## Initialise R environment
+
+I run this at the start of every session as a base. Additional packages are imported in as needed.
+
+```{r}
+##### Set libPaths and memory/parallel cores usage #####
+.libPaths(c("/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3",
+            "/home/chongmorrison/R/4.4.1-Bioc3.19"))
+.libPaths() # check .libPaths
+
+options(Ncpus = 12) # adjust no. of cores for base R
+getOption("Ncpus", 1L)
+
+library(future)
+options(future.globals.maxSize = 2000 * 1024^2) # adjust limit of allowable object size = 2G
+# *could* enable parallelisation i.e. workers > 1, for Seurat etc. 
+# but breaks Python processes currently...
+future::plan("multisession", workers = 1) # or change back to "sequential"
+future::plan()
+
+library(BiocParallel) # for Bioconductor packages
+
+##### Import analysis packages #####
+# Bug: Python environment may need to be activated before loading Seurat
+library(reticulate)
+conda_list() # check available conda environments
+use_condaenv("singlecell-scHPF", required=TRUE) # has leidenalg etc. installed
+library(Seurat)
+library(tidyverse)
+library(dittoSeq)
+library(SingleCellExperiment)
+
+set.seed(584) # for reproducibility of random sampling
+```
+
+## Session Info
+
+```{r}
+sessionInfo()
+```
