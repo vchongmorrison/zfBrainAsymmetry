@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>zfBrainAsymmetry - Introduction</title>
+<title>zfBrainAsymmetry - The sox1a ‘phenotype’</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -81,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -119,17 +153,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#forebrain-asymmetry-and-the-parapineal-organ" id="toc-forebrain-asymmetry-and-the-parapineal-organ" class="nav-link active" data-scroll-target="#forebrain-asymmetry-and-the-parapineal-organ">Forebrain asymmetry and the parapineal organ</a>
-  <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a>
-  <ul class="collapse">
-  <li><a href="#the-parapineal-organ" id="toc-the-parapineal-organ" class="nav-link" data-scroll-target="#the-parapineal-organ">The parapineal organ</a></li>
-  <li><a href="#the-sox1a-gene" id="toc-the-sox1a-gene" class="nav-link" data-scroll-target="#the-sox1a-gene">The <em>sox1a</em> gene</a></li>
-  <li><a href="#current-work" id="toc-current-work" class="nav-link" data-scroll-target="#current-work">Current work</a></li>
-  </ul></li>
-  <li><a href="#key-references" id="toc-key-references" class="nav-link" data-scroll-target="#key-references">Key references</a></li>
-  <li><a href="#external-links" id="toc-external-links" class="nav-link" data-scroll-target="#external-links">External links</a></li>
-  </ul></li>
+  <li><a href="#extract-pineal-cells-from-mutants" id="toc-extract-pineal-cells-from-mutants" class="nav-link active" data-scroll-target="#extract-pineal-cells-from-mutants">Extract pineal cells from mutants</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
   </ul>
 </nav>
     </div>
@@ -138,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title">The sox1a ‘phenotype’</h1>
 </div>
 
 
@@ -153,52 +178,55 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="forebrain-asymmetry-and-the-parapineal-organ" class="level1">
-<h1>Forebrain asymmetry and the parapineal organ</h1>
-<p><strong>Lead Author and Researcher</strong><br> V Chong-Morrison (Senior Postdoctoral Scientist) <br></p>
-<p><strong>Principal Investigators</strong> <br></p>
-<p>Professor S Wilson (University College London) <br> Professor T Sauka-Spengler (University of Oxford/Stowers Institute) <br></p>
-<p><strong>This website is a live documentation of the data underlying the following study.</strong></p>
-<hr>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>Left/right differences in the brain have fascinated thinkers for generations. Zebrafish genetic tools harnessed within the epithalamus of the forebrain has led to the habenula’s emergence as a powerful paradigm to understand brain lateralisation. During development in the embryo, the habenula forms bilaterally as a pair of left and right nuclei, along with a medial pineal gland, and left-sided parapineal nucleus that emerges from the pineal.</p>
-<section id="the-parapineal-organ" class="level3">
-<h3 class="anchored" data-anchor-id="the-parapineal-organ">The parapineal organ</h3>
-<p>A substantial body of research in zebrafish unequivocally identified the parapineal organ (also known as the “parietal eye” in other organisms) as a crucial determinant of habenular left/right asymmetry. Through an unidentified mechanism, the parapineal organ signals to newly-born habenular neurons to adopt “left-sided” characteristics. This elusive signal is potent and precise within a defined developmental time window - approximately 28 to 32 hours post-fertilisation. Removing the parapineal signal during this time leads to a complete loss of left identity, resulting in a “double right” 4-days-old habenula.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="asymmetry-dev.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">The parapineal organ of a zebrafish embryo signals to neurons in the habenula region (dotted circles) circa 32 hours post fertilisation to acquire left/right asymmetric nuclei by 4 days old.</figcaption>
-</figure>
+<section id="extract-pineal-cells-from-mutants" class="level2">
+<h2 class="anchored" data-anchor-id="extract-pineal-cells-from-mutants">Extract pineal cells from mutants</h2>
+<p>[in progress]</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.4"
+[2] "/usr/local/lib/R/site-library"                        
+[3] "/usr/lib/R/site-library"                              
+[4] "/usr/lib/R/library"                                   </code></pre>
+</div>
 </div>
 </section>
-<section id="the-sox1a-gene" class="level3">
-<h3 class="anchored" data-anchor-id="the-sox1a-gene">The <em>sox1a</em> gene</h3>
-<p>Zebrafish <em>sox1a</em> mutants have “double right” habenula <strong><em>despite the parapineal developing normally in appearance</em></strong>. This finding was important as it uncoupled the parapineal’s signalling role from its anatomical structure. Unlike ablating or removing the parapineal altogether, which also leads to “double right” habenula, <em>sox1a</em> mutants can be utilised as a vehicle to retrieve signalling-deficient parapineal organs. These would uncover the important signal(s) crucial for habenula neurons to acquire left-sided character.</p>
-</section>
-<section id="current-work" class="level3">
-<h3 class="anchored" data-anchor-id="current-work">Current work</h3>
-<p>Identifying the parapineal signal(s) has previously eluded the field due to non-trivial technical challenges. At fewer than 20 cells per zebrafish embryo, isolating a pure population of parapineal cells of sufficient quality to characterise their genetic content was monumentally difficult. By combining single cell sequencing technologies with prior expertise in characterising small cell populations from zebrafish embryos, I overcame these challenges to illuminate a cohort of biological factors responsible for parapineal function in the context of epithalamic asymmetry.</p>
-<hr>
-</section>
-</section>
-<section id="key-references" class="level2">
-<h2 class="anchored" data-anchor-id="key-references">Key references</h2>
-<ol type="1">
-<li>I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. <em>Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry</em>. eLife (2019), e47376, 8, <a href="https://doi.org/10.7554/eLife.47376" class="uri">https://doi.org/10.7554/eLife.47376</a></li>
-<li>V. Duboc, P. Dufourcq, P. Blader, and M. Roussigné. <em>Asymmetry of the Brain: Development and Implications</em>. Annual Review of Genetics (2015), 647-672, 49(1), <a href="https://doi.org/10.1146/annurev-genet-112414-055322" class="uri">https://doi.org/10.1146/annurev-genet-112414-055322</a></li>
-</ol>
-</section>
-<section id="external-links" class="level2">
-<h2 class="anchored" data-anchor-id="external-links">External links</h2>
-<ul>
-<li><a href="http://zebrafishucl.org/wilson-lab#wilson-lab/about-us">Wilson Lab, University College London</a></li>
-<li><a href="https://www.imm.ox.ac.uk/research/research-groups/sauka-spengler-group-gene-regulatory-networks-in-development-and-disease">Sauka-Spengler Lab, University of Oxford</a></li>
-</ul>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.4.1 (2024-06-14)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+ [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Europe/London
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+loaded via a namespace (and not attached):
+ [1] compiler_4.4.1    fastmap_1.2.0     cli_3.6.3         tools_4.4.1      
+ [5] htmltools_0.5.8.1 yaml_2.3.10       rmarkdown_2.29    knitr_1.48       
+ [9] jsonlite_1.8.9    xfun_0.49         digest_0.6.37     rlang_1.1.4      
+[13] evaluate_1.0.1   </code></pre>
+</div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

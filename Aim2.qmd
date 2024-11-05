@@ -1,0 +1,17 @@
+---
+title: "The sox1a 'phenotype'"
+---
+
+## Extract pineal cells from mutants
+
+\[in progress\]
+
+```{r}
+.libPaths()
+```
+
+## Session Info
+
+```{r}
+sessionInfo()
+```

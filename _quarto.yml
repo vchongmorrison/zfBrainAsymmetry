@@ -8,8 +8,12 @@ website:
   navbar:
     left:
       - href: index.qmd
-        text: Home
+        text: "Home"
       - session.qmd
+      - text: "Aims"
+        menu:
+          - Aim1.qmd
+          - Aim2.qmd 
 
 format:
   html:
