@@ -4,13 +4,11 @@ title: "Introduction"
 
 # Forebrain asymmetry and the parapineal organ
 
-**Lead Author and Researcher**<br>
-V Chong-Morrison (Senior Postdoctoral Scientist) <br> 
+**Lead Author and Researcher**<br> V Chong-Morrison (Senior Postdoctoral Scientist) <br>
 
 **Principal Investigators** <br>
 
-Professor S Wilson (University College London) <br>
-Professor T Sauka-Spengler (University of Oxford/Stowers Institute) <br>
+Professor S Wilson (University College London) <br> Professor T Sauka-Spengler (University of Oxford/Stowers Institute) <br>
 
 **This website is a live documentation of the data underlying the following study.**
 
@@ -32,7 +30,7 @@ Zebrafish *sox1a* mutants have "double right" habenula *despite the parapineal f
 
 Identification of the parapineal signal has previously eluded the field due to non-trivial technical challenges. With fewer than 20 cells per zebrafish embryo, isolating a pure population of parapineal cells of sufficient quality to interrogate their genetic content was monumentally difficult. By combining modern single cell sequencing technologies with prior expertise in characterising small cell populations from zebrafish embryos, I overcame these challenges to illuminate a cohort of biological factors responsible for parapineal function in the context of epithalamic asymmetry.
 
-\ 
+ 
 
 ## Key references
 
@@ -41,5 +39,5 @@ Identification of the parapineal signal has previously eluded the field due to n
 
 ## External links
 
-- [Wilson Lab, University College London](http://zebrafishucl.org/wilson-lab#wilson-lab/about-us)
-- [Sauka-Spengler Lab, University of Oxford](https://www.imm.ox.ac.uk/research/research-groups/sauka-spengler-group-gene-regulatory-networks-in-development-and-disease)
+-   [Wilson Lab, University College London](http://zebrafishucl.org/wilson-lab#wilson-lab/about-us)
+-   [Sauka-Spengler Lab, University of Oxford](https://www.imm.ox.ac.uk/research/research-groups/sauka-spengler-group-gene-regulatory-networks-in-development-and-disease)

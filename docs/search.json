@@ -7,34 +7,6 @@
     "text": "Lead Author and Researcher V Chong-Morrison (Senior Postdoctoral Scientist) \nPrincipal Investigators \nProfessor S Wilson (University College London)  Professor T Sauka-Spengler (University of Oxford/Stowers Institute) \nThis website is a live documentation of the data underlying the following study.\n\n\nLeft/right differences in the brain have fascinated thinkers for generations. Zebrafish genetic tools harnessed within the epithalamus of the forebrain has led to the habenula’s emergence as a powerful paradigm to understand brain lateralisation. During development, the habenula forms bilaterally as a pair of left and right nuclei, along with a medial pineal gland and left-sided parapineal nucleus that emerges from the pineal.\n\n\nA substantial body of research in zebrafish unequivocally identified the parapineal organ (also known as the “parietal eye” in other organisms) as a crucial determinant of habenular left/right asymmetry. Through an unidentified mechanism, the parapineal organ signals to newly-born habenular neurons to adopt “left-sided” characteristics. This elusive signal is potent and precise within a defined developmental time window, from approximately 28 to 32 hours post-fertilisation. Abrogation of the parapineal signal during this event leads to a complete loss of left identity, resulting in a “double right” 4-days-old habenula.\n\n\n\nThe parapineal organ of a zebrafish embryo signals to neurons in the habenula region (dotted circles) circa 32 hours post fertilisation to acquire left/right asymmetric nuclei by 4 days old.\n\n\n\n\n\nZebrafish sox1a mutants have “double right” habenula despite the parapineal forming normally. This finding was important as it uncoupled the parapineal’s signalling function from its anatomical development. Therefore, sox1a mutants can be utilised as a tool to reveal the parapineal signal which is crucial to understanding how habenula neurons acquire left-sided character.\n\n\n\nIdentification of the parapineal signal has previously eluded the field due to non-trivial technical challenges. With fewer than 20 cells per zebrafish embryo, isolating a pure population of parapineal cells of sufficient quality to interrogate their genetic content was monumentally difficult. By combining modern single cell sequencing technologies with prior expertise in characterising small cell populations from zebrafish embryos, I overcame these challenges to illuminate a cohort of biological factors responsible for parapineal function in the context of epithalamic asymmetry.\n \n\n\n\n\n\nI. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry. eLife (2019), e47376, 8, https://doi.org/10.7554/eLife.47376\nV. Duboc, P. Dufourcq, P. Blader, and M. Roussigné. Asymmetry of the Brain: Development and Implications. Annual Review of Genetics (2015), 647-672, 49(1), https://doi.org/10.1146/annurev-genet-112414-055322\n\n\n\n\n\nWilson Lab, University College London\nSauka-Spengler Lab, University of Oxford"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "index.html#the-parapineal-organ",
-    "href": "index.html#the-parapineal-organ",
-    "title": "The parapineal organ and development of forebrain asymmetry",
-    "section": "The parapineal organ",
-    "text": "The parapineal organ\nA substantial body of research in zebrafish unequivocally identified the parapineal organ (also known as the “parietal eye” in other organisms) as a crucial determinant of habenular left/right asymmetry. Through an unidentified mechanism, the parapineal organ signals to newly-born habenular neurons to adopt “left-sided” characteristics. This elusive signal is potent and precise within a defined developmental time window, from 28 to 32 hours post-fertilisation. Abrogation of the parapineal signal during this event leads to a complete loss of left identity, resulting in a “double right” 4-days-old habenula.\n![The parapineal organ of a zebrafish embryo signals to neurons in the habenula region (dotted circles) circa 32 hours post fertilisation to acquire left/right asymmetric nuclei by 4 days old.](asymmetry-dev.png)"
-  },
-  {
-    "objectID": "index.html#the-sox1a-gene",
-    "href": "index.html#the-sox1a-gene",
-    "title": "The parapineal organ and development of forebrain asymmetry",
-    "section": "The sox1a gene",
-    "text": "The sox1a gene\nZebrafish sox1a mutants displayed right-isomerised habenular phenotype despite the parapineal forming normally, indicating that its development and putative signalling function is uncoupled. Timed parapineal ablations indicated that this signal is most potent during the first wave of habenular neurogenesis on the left. Therefore, revealing the parapineal signal is crucial to understanding how habenula neurons acquire left-sided character."
-  },
-  {
-    "objectID": "index.html#current-work",
-    "href": "index.html#current-work",
-    "title": "The parapineal organ and development of forebrain asymmetry",
-    "section": "Current work",
-    "text": "Current work\nIdentification of the parapineal signal has previously eluded the field due to non-trivial technical challenges. With fewer than 20 cells per zebrafish embryo, isolating a pure population of parapineal cells of sufficient quality to interrogate their genetic content was monumentally difficult. By combining modern single cell sequencing technologies with my prior expertise in characterising small cell populations from zebrafish embryos, I overcame these challenges to illuminate a cohort of biological factors responsible for parapineal function in imparting epithalamic asymmetry."
-  },
-  {
     "objectID": "index.html#background",
     "href": "index.html#background",
     "title": "Introduction",
