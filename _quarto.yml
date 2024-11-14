@@ -1,6 +1,9 @@
 project:
   type: website
-  pre-render: setup.R
+  # pre-render: setup.R
+  render:
+    - "*.qmd"
+    - "!Aim1_part1.qmd"
   output-dir: docs
 
 website:
@@ -12,8 +15,10 @@ website:
       - session.qmd
       - text: "Aims"
         menu:
-          - Aim1.qmd
-          - Aim2.qmd 
+          - Aim1_part1.qmd
+          - Aim2.qmd
+  page-navigation: true
+  page-footer: "Copyright 2024, Vanessa Chong-Morrison" 
 
 format:
   html:
@@ -23,3 +28,4 @@ format:
 
 editor: visual
 
+bibliography: grateful-refs.bib

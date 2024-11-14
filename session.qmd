@@ -4,9 +4,11 @@ title: "Session"
 
 ## Initialise R environment
 
-I run this at the start of every session as a base. Additional packages are imported in as needed.
+I run this at the start of every session as a base.
 
-```{r}
+n.b. Additional packages are imported in as needed.
+
+``` r
 ##### Set libPaths and memory/parallel cores usage #####
 .libPaths(c("/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3",
             "/home/chongmorrison/R/4.4.1-Bioc3.19"))
@@ -17,25 +19,61 @@ getOption("Ncpus", 1L)
 
 library(future)
 options(future.globals.maxSize = 2000 * 1024^2) # adjust limit of allowable object size = 2G
-# *could* enable parallelisation i.e. workers > 1, for Seurat etc. 
-# but breaks Python processes currently...
-future::plan("multisession", workers = 1) # or change back to "sequential"
+# *could* enable parallelisation i.e. workers > 1, for Seurat etc. but breaks Python processes currently...
+future::plan("multisession", workers = 1) # or use "sequential" mode
 future::plan()
 
-library(BiocParallel) # for Bioconductor packages
+library(BiocParallel) # for parallelising Bioconductor packages
 
 ##### Import analysis packages #####
-# Bug: Python environment may need to be activated before loading Seurat
+# Potential bug: Python environment needs to be activated before loading Seurat
 library(reticulate)
 conda_list() # check available conda environments
 use_condaenv("singlecell-scHPF", required=TRUE) # has leidenalg etc. installed
+# R packages
 library(Seurat)
 library(tidyverse)
 library(dittoSeq)
 library(SingleCellExperiment)
+library(grateful)
 
-set.seed(584) # for reproducibility of random sampling
+# set seed for reproducibility of random sampling
+set.seed(584)
 ```
+
+## Ensembl annotations
+
+Useful to have gene annotations in CSV format at hand, which can be called into the analysis anytime.
+
+``` r
+library(AnnotationHub)
+library(ensembldb)
+# Connect to AnnotationHub
+ah <- AnnotationHub()
+# Access the Ensembl database for organism
+ahDb <- query(ah, 
+              pattern = c("Danio rerio", "EnsDb"), 
+              ignore.case = TRUE)
+# Acquire the latest annotation files
+id <- ahDb %>%
+  mcols() %>%
+  rownames() %>%
+  tail(n = 1)
+# Download the appropriate Ensembldb database
+edb <- ah[[id]]
+# Extract gene-level information from database
+annotations <- genes(edb, 
+                     return.type = "data.frame")
+# Select annotations of interest
+annotations <- annotations %>%
+  dplyr::select(gene_id, gene_name, seq_name, gene_biotype, description)
+# Save for later use
+write.csv(annotations, file="./ensembl_annotations.csv")
+```
+
+## References
+
+-   Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, & Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <https://doi.org/10.5281/zenodo.5826256>.
 
 ## Session Info
 

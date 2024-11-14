@@ -1,0 +1,497 @@
+---
+title: "The parapineal 'cell type' - Part 1"
+---
+
+## Identification of epiphysis cells
+
+### **Premise**
+
+Using single cell RNA-seq (scRNA-seq), can pineal and parapineal cells be identified from a mixed population regardless of *sox1a* genotype?
+
+### Experimental design
+
+Approximately 230 heads from \~30-32 hpf larvae were collected. Larvae were of mixed *sox1a* genotype (hets, homs and wild types) obtained by incrossing *sox1a* hets.
+
+Heads were dissociated into single cell suspension for FACS-based enrichment of GFP++/mCherry- cells. GFP labels the epiphysis and other 'contaminant' cell types, while mCherry labels 'contaminant' cell types only. The mCherry transgene was pre-determined in prior imaging experiments to not label the parapineal organ.
+
+Approximately 10k sorted events were recorded and collected for scRNA-seq using 10X Genomics 3' v3.1 GEX chemistry. The library was sequenced to at least 500 million reads, thus yielding a depth of \~100k reads per cell.
+
+![Schematic of experiment design.](./figures/foxd3flh-facs.png){fig-align="center"}
+
+### Initialise R environment
+
+[Session](session.qmd)
+
+```{r include=FALSE}
+##### Set libPaths and memory/parallel cores usage #####
+.libPaths(c("/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3",
+            "/home/chongmorrison/R/4.4.1-Bioc3.19"))
+.libPaths() # check .libPaths
+
+options(Ncpus = 12) # adjust no. of cores for base R
+getOption("Ncpus", 1L)
+
+library(future)
+options(future.globals.maxSize = 2000 * 1024^2) # adjust limit of allowable object size = 2G
+# *could* enable parallelisation i.e. workers > 1, for Seurat etc. but breaks Python processes currently...
+future::plan("multisession", workers = 1) # or use "sequential" mode
+future::plan()
+
+library(BiocParallel) # for parallelising Bioconductor packages
+
+##### Import analysis packages #####
+# Potential bug: Python environment needs to be activated before loading Seurat
+library(reticulate)
+conda_list() # check available conda environments
+use_condaenv("singlecell-scHPF", required=TRUE) # has leidenalg etc. installed
+# R packages
+library(Seurat)
+library(tidyverse)
+library(dittoSeq)
+library(SingleCellExperiment)
+library(grateful)
+
+# set seed for reproducibility of random sampling
+set.seed(584)
+```
+
+### Pre-processing of reads
+
+To empirically determine the robustness of called clusters downstream, reads were pre-processed using two different mapper/gene annotation combinations:
+
+-   10X Genomics CellRanger v7.1.0 + Lawson Lab annotation (Lawson et al., 2020)
+
+    -   This pipeline maps unique reads only:
+
+        ``` bash
+        # Preprocessing - Cell Ranger 7.1.0 (unique reads only)
+        cellranger count --id=foxd3flhGFP \
+        --transcriptome=/home/ucbtvmr/Scratch/cellranger/mkref/GRCz11_lawson/GRCz11_v4.3.2_GFP_mCherry \
+        --fastqs=/home/ucbtvmr/Scratch/4_scRNAseq/fastq \
+        --sample=VCM2-AK30645-AK6234 \
+        --no-bam
+        ```
+
+-   STARsolo v2.7.10b + Ensembl release 107 annotation
+
+    -   This pipeline includes multi-mapping reads assigned using EM algorithm:
+
+        ``` bash
+        # Preprocessing - STARsolo v2.7.10b (with EM multi-mapped reads)
+        STAR --genomeDir /home/ucbtvmr/ensembl_releases/ensembl107/Danio_rerio.genome.GFP.mCherry/star_2.7.9a \
+        --readFilesIn /home/ucbtvmr/Scratch/4_scRNAseq/fastq/VCM2-AK30645-AK6234*in progress**_S1_L002_R2_001.fastq.gz \
+        /home/ucbtvmr/Scratch/4_scRNAseq/fastq/VCM2-AK30645-AK6234_S1_L002_R1_001.fastq.gz \
+        --readFilesCommand zcat \
+        --soloFeatures GeneFull \
+        --soloMultiMappers EM \
+        --clipAdapterType CellRanger4 --outFilterScoreMin 30 \
+        --soloCBwhitelist 3M-february-2018.txt \
+        --soloType CB_UMI_Simple \
+        --soloCBlen 16 \
+        --soloUMIstart 17 \
+        --soloUMIlen 12 \
+        --soloBarcodeReadLength 0 \
+        --soloCellFilter EmptyDrops_CR \
+        --limitOutSJcollapsed 5000000 \
+        --runThreadN 8
+
+        cd /home/ucbtvmr/Scratch/4_scRNAseq/preprocessing/star_2.7.10b/ensembl107/Solo.out/GeneFull
+        mkdir raw_EM
+        cd raw_EM
+        # move multimapped-containing matrix to /raw_EM
+        mv ../raw/UniqueAndMult-EM.mtx .
+        cp ../raw/features.tsv .
+        cp ../raw/barcodes.tsv .
+        # rename multimapped-containing matrix to 'matrix.mtx' for --soloCellFiltering
+        mv UniqueAndMult-EM.mtx matrix.mtx
+
+        # Change working directory to the one containing Aligned.out.sam
+        cd /home/ucbtvmr/Scratch/4_scRNAseq/preprocessing/star_2.7.10b/ensembl107
+        # Call cells
+        STAR --runMode soloCellFiltering ./Solo.out/GeneFull/raw_EM ./Solo.out/GeneFull/filtered_EM/filtered_EM --soloCellFilter EmptyDrops_CR
+        ```
+
+## scRNA-seq analysis in `Seurat`
+
+### Load cell x gene matrices
+
+```{r}
+path1 <- "/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/preprocessing/foxd3flhGFP/cellranger7.1.0_Lawson/filtered_feature_bc_matrix"
+path2 <- "/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/preprocessing/foxd3flhGFP/starsolo2.7.10b_ens107/filtered_EM"
+```
+
+**Create `Seurat` objects and check nos. of cells and genes**
+
+```{r}
+cr_law <- CreateSeuratObject(Read10X(path1), project="CellRanger-Lawson")
+ss_e107 <- CreateSeuratObject(ReadSTARsolo(path2), project="STARsolo-ens107")
+```
+
+```{r}
+# 4770 cells x 36353 genes
+ncol(cr_law)
+nrow(cr_law)
+# 4536 cells x 32522 genes
+ncol(ss_e107)
+nrow(ss_e107)
+```
+
+### Filter genes
+
+```{r}
+# Extract counts
+counts <- LayerData(cr_law, layer = "counts")
+# Output a logical matrix specifying for each gene on whether or not there are more than zero counts per cell
+nonzero <- counts > 0
+# Sums all TRUE values and returns TRUE if more than 5 TRUE values per gene
+keep_genes <- Matrix::rowSums(nonzero) >= 5
+# Only keeping those genes expressed in more than 5 cells
+filtered_counts <- counts[keep_genes, ]
+# Assign to Seurat object (make new SeuratObject)
+cr_law <- CreateSeuratObject(filtered_counts, meta.data = cr_law@meta.data)
+# 4770 cells x 24969 genes
+ncol(cr_law)
+nrow(cr_law)
+
+counts <- LayerData(ss_e107, layer = "counts")
+nonzero <- counts > 0
+keep_genes <- Matrix::rowSums(nonzero) >= 5
+filtered_counts <- counts[keep_genes, ]
+ss_e107 <- CreateSeuratObject(filtered_counts, meta.data = ss_e107@meta.data)
+# 4536 cells x 23946 genes
+ncol(ss_e107) 
+nrow(ss_e107)
+```
+
+### Compute additional metrics - percent.mito, ribo, complexity
+
+```{r}
+cr_law$percent.mt <- PercentageFeatureSet(cr_law, pattern = "^mt-")
+cr_law$log10GenesPerUMI <- log10(cr_law$nFeature_RNA) / log10(cr_law$nCount_RNA)
+cr_law$percent.ribo <- PercentageFeatureSet(cr_law, pattern ="^rps") + 
+  PercentageFeatureSet(cr_law, pattern ="^rpl")
+
+ss_e107$percent.mt <- PercentageFeatureSet(ss_e107, pattern = "^mt-")
+ss_e107$log10GenesPerUMI <- log10(ss_e107$nFeature_RNA) / log10(ss_e107$nCount_RNA)
+ss_e107$percent.ribo <- PercentageFeatureSet(ss_e107, pattern ="^rps") + 
+  PercentageFeatureSet(ss_e107, pattern ="^rpl")
+```
+
+### Compute cell cycle scores
+
+#### Obtain cell cycle genes
+
+```{r}
+cell_cycle_genes <- read.csv(text = RCurl::getURL("https://raw.githubusercontent.com/hbc/tinyatlas/master/cell_cycle/Danio_rerio.csv"))
+# call in Ensembl annotations
+annotations <- read.csv('./ensembl_annotations.csv', header=TRUE, row.names=1)
+# make a dataframe of cell cycle markers
+cell_cycle_markers <- dplyr::left_join(cell_cycle_genes, annotations, by = c("geneID" = "gene_id"))
+
+s_genes <- cell_cycle_markers %>%
+  dplyr::filter(phase == "S") %>%
+  pull("gene_name")
+
+g2m_genes <- cell_cycle_markers %>%
+  dplyr::filter(phase == "G2/M") %>%
+  pull("gene_name")
+
+# Remove non-zebrafish "CENPF" and "CKS2" from g2m_genes
+g2m_genes <- g2m_genes[!g2m_genes == c("CENPF","CKS2")]
+```
+
+#### Cell cycle scoring
+
+```{r}
+# Normalise counts for cell cycle scoring
+cr_law <- NormalizeData(cr_law)
+ss_e107 <- NormalizeData(ss_e107)
+
+# Cell cycle scoring
+cr_law <- CellCycleScoring(cr_law, g2m.features = g2m_genes, s.features = s_genes)
+ss_e107 <- CellCycleScoring(ss_e107, g2m.features = g2m_genes, s.features = s_genes)
+
+# Add difference between G2M and S phase scores
+cr_law$CC.Difference <- cr_law$S.Score - cr_law$G2M.Score
+ss_e107$CC.Difference <- ss_e107$S.Score - ss_e107$G2M.Score
+```
+
+### Cell filtering?
+
+In a lot of cases, studies, example workflows etc. 'poor' quality cells are filtered out based on arbitrary metrics e.g. number of transcripts/genes suggestive of multiplets, high percentage mitochondrial transcripts suggestive of dying cells.
+
+I judge these to be sound reasoning points...if you truly know the cellular composition of the dataset. Unlike gene-level filtering where you only make an *a priori* definition of an 'expressed' gene i.e. in at least X number of cells, cell filtering based on biological conditions dictated by the metrics mentioned above is more nuanced and (I believe) could introduce unnecessary bias and/or risk losing 'good' cells.
+
+Therefore, for this novel dataset, I take a quasi-unbiased approach :
+
+-   Check that \*most\* cells are largely healthy i.e. percent.mt \< 5
+
+    ```{r}
+    dittoPlot(cr_law, "percent.mt", group.by = "Phase",
+              vlnplot.lineweight = 0.2, jitter.size = 0.3,
+              main = "PercentageFeatureSet(^mt-), cr_law")
+    ```
+
+    ```{r}
+    dittoPlot(ss_e107, "percent.mt", group.by = "Phase",
+              vlnplot.lineweight = 0.2, jitter.size = 0.3,
+              main = "PercentageFeatureSet(^mt-), ss_e107")
+    ```
+
+-   Perform dimensional reduction i.e. clustering on all cells, then
+
+    -   Check that potential multiplets are not forming spurious clusters, and are distributed across all called clusters
+
+    -   Also check that other 'uninteresting' metrics are not forming spurious clusters
+
+## Dimensional reduction/clustering
+
+### SCTransform ('normalise, find variable genes, regress unwanted variation')
+
+I previously explored the data to check if there was significant variation between the cell types driven by ribosomal/mitochondrial content. **Supplementary Section 1 (in progress).**
+
+There was clear variation being driven by cell cycle phase. This was expected given a neuronal-enriched population at this developmental stage.
+
+Altogether these inform the `SCTransform` parameters, where `CC.Difference` is used instead of `Phase` to maintain the separation between progenitors and non-cycling cells :
+
+```{r}
+DefaultAssay(cr_law) <- "RNA"
+cr_law <- SCTransform(cr_law,
+                     vars.to.regress = c("percent.ribo", "percent.mt", "CC.Difference"),
+                     vst.flavor="v2")
+
+DefaultAssay(ss_e107) <- "RNA"
+ss_e107 <- SCTransform(ss_e107,
+                       vars.to.regress = c("percent.ribo", "percent.mt", "CC.Difference"),
+                       vst.flavor="v2")
+```
+
+### 'Unsupervised' Clustering
+
+As clustering is more an art than exact science, I empirically determined the main parameters - `algorithm`, `npcs`, `k.param`, and `resolution` - and compared the result between the two pre-processing workflows/`Seurat` objects.
+
+**'Picking' the number of Principal Component dimensions `npcs`**
+
+```{r}
+cr_law <- RunPCA(cr_law, npcs = 60)
+ElbowPlot(cr_law, ndims=60, reduction="pca")
+
+ss_e107 <- RunPCA(ss_e107, npcs = 60)
+ElbowPlot(ss_e107, ndims=60, reduction="pca")
+```
+
+Based on the elbow plots above I went with `npcs = 40`. `k.param` is kept at the default `20`, and the Leiden `algorithm = 4` is selected.
+
+```{r warning=FALSE}
+cr_law <- RunPCA(cr_law, npcs = 40) %>%
+  FindNeighbors(dims = 1:40) %>%
+  FindClusters(algorithm = 4, resolution = c(1.0), method="igraph") %>%
+  RunUMAP(dims = 1:40, n.neighbors = 20) # to match default k.param=20
+
+ss_e107 <- RunPCA(ss_e107, npcs = 40) %>%
+  FindNeighbors(dims = 1:40) %>%
+  FindClusters(algorithm = 4, resolution = c(1.0), method="igraph") %>%
+  RunUMAP(dims = 1:40, n.neighbors = 20) # to match default k.param=20
+```
+
+**Save `Seurat` objects to load later without re-running all the above:**
+
+```{r}
+# Set DefaultAssay (and slot) and save objects for visualisation
+DefaultAssay(cr_law) <- "RNA"
+cr_law <- NormalizeData(cr_law)
+DefaultAssay(ss_e107) <- "RNA"
+ss_e107 <- NormalizeData(ss_e107)
+
+save(cr_law, file="./foxd3flh-5k_cr-law.RData")
+save(ss_e107, file="./foxd3flh-5k_ss-e107.RData")
+```
+
+## Visualise and explore clustering results with `dittoSeq`
+
+### UMAP reduction
+
+```{r}
+dittoDimPlot(cr_law, "SCT_snn_res.1", reduction.use="umap",
+             main="CellRanger7.1.0",
+             sub="Lawson2020",
+             legend.title="clusters",
+             do.label=TRUE)
+```
+
+```{r}
+dittoDimPlot(ss_e107, "SCT_snn_res.1", reduction.use="umap",
+             main="STARsolo2.7.10b",
+             sub="ensembl107",
+             legend.title="clusters",
+             do.label=TRUE)
+```
+
+## Identify epiphysis clusters
+
+The epiphysis shares several of its known i.e. well-characterised markers with other neuronal/cranial cell types. For example, *bsx* is also expressed in the hypothalamus, *noto* is also expressed in the telencephalon, *otx5* is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:
+
+```{r}
+# Genes that are well known to be expressed in the epiphysis
+markers <- c("bsx", "noto", "otx5")
+```
+
+```{r}
+dittoPlotVarsAcrossGroups(cr_law, markers, group.by = "SCT_snn_res.1",
+                          vlnplot.lineweight = 0.2, jitter.size = 0.3,
+                          main = "cr_law (bsx/noto/otx5)", summary.fxn = max, adjustment = NULL)
+```
+
+```{r}
+dittoPlotVarsAcrossGroups(ss_e107, markers, group.by = "SCT_snn_res.1",
+                          vlnplot.lineweight = 0.2, jitter.size = 0.3,
+                          main = "ss_e107 (bsx/noto/otx5)", summary.fxn = max, adjustment = NULL)
+```
+
+I reasoned that, by using instead the **mean** expression values of these three genes combined, one could eliminate clusters that are least likely to be epiphysis cells.
+
+For example, an epiphysis cell is likely to co-express bsx (1) + noto (1) + otx5 (1) = 3. Mean expression value = 3 / 3 = 1.
+
+On the other hand, a retina cell would not express bsx ( \< 1) + noto (\< 1), but express + otx5 (1) = \< 3. Mean expression value = \<3 / 3 = \< 1.
+
+```{r}
+dittoPlotVarsAcrossGroups(cr_law, markers, group.by = "SCT_snn_res.1",
+                          vlnplot.lineweight = 0.2, jitter.size = 0.3,
+                          main = "cr_law (mean of bsx + noto + otx5)")
+```
+
+```{r}
+dittoPlotVarsAcrossGroups(ss_e107, markers, group.by = "SCT_snn_res.1",
+                          vlnplot.lineweight = 0.2, jitter.size = 0.3,
+                          main = "ss_e107 (mean of bsx + noto + otx5)")
+```
+
+**This worked quite well, and one can appreciate two clusters-of-interest likely to be epiphysis cells.** Furthermore, this observation is robust and reproducible from cell x gene matrices generated using the two dissimilar pre-processing pipelines.
+
+-   `cr_law` clusters-of-interest = 2 and 18
+
+-   `ss_e107` clusters-of-interest = 2 and 19
+
+Let's now look at `sox1a` that is expressed in the parapineal as it emerges from the anterior pineal region (Lekk *et al*. 2019). The following plots show that `sox1a` expression can be detected in the clusters-of-interest.
+
+```{r}
+multi_dittoDimPlot(cr_law, c(markers,"sox1a"), order="increasing", reduction.use="umap")
+```
+
+```{r}
+multi_dittoDimPlot(ss_e107, c(markers,"sox1a"), order="increasing", reduction.use="umap")
+```
+
+As both matrices consistently produced similar results so far, I am proceeding further with `ss_e107` only.
+
+How many cells (roughly) are present in the clusters-of-interest? \~250 cells in total.
+
+```{r}
+dittoBarPlot(ss_e107, "SCT_snn_res.1", group.by = "SCT_snn_res.1",
+             scale = "count",
+             cells.use = meta("SCT_snn_res.1", ss_e107) == c("2", "19"),
+             main="No. of cells")
+```
+
+## Sanity checks on clustering
+
+Remember that I did not perform [Cell filtering?] To evaluate if the clustering afterwards was largely driven by 'true' biological heterogeneity, in a qualitative sense:
+
+### Check distribution of multiplets
+
+I run `scDblFinder` to identify multiplets:
+
+```{r}
+sce <- SingleCellExperiment(
+  assays = list(counts = as.matrix(LayerData(ss_e107, assay = "RNA", layer="counts"))))
+
+library(scDblFinder)
+sce <- scDblFinder(sce, clusters=c(Idents(ss_e107)),
+                   BPPARAM=MulticoreParam(2, RNGseed=1234))
+
+table(sce$scDblFinder.class)
+```
+
+Now port the results back to the original `ss_e107` object for visualisation. Called doublets are distributed randomly across entire dataset, which is ideal.
+
+```{r}
+ss_e107$scDblFinder.class <- sce$scDblFinder.class
+```
+
+```{r}
+dittoDimPlot(ss_e107, "scDblFinder.class", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="class")
+```
+
+### What about other metrics?
+
+```{r}
+dittoDimPlot(ss_e107, "nCount_RNA", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="nUMI")
+```
+
+```{r}
+dittoDimPlot(ss_e107, "nFeature_RNA", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="nGenes")
+```
+
+```{r}
+dittoDimPlot(ss_e107, "percent.ribo", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="% ribosomal transcripts")
+```
+
+```{r}
+dittoDimPlot(ss_e107, "percent.mt", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="% mitochondrial transcripts")
+```
+
+```{r}
+dittoDimPlot(ss_e107, "Phase", reduction.use="umap",
+             main="STARsolo2.7.10b_ensembl107",
+             sub="SCT_snn_res.1",
+             legend.title="cell cycle")
+```
+
+The plots above suggests that the clusters-of-interest 2 and 19 vary from each other by cell cycle phase, and perhaps by subtle differences in the other metrics. This is something to bear in mind when interpreting results based on this clustering.
+
+------------------------------------------------------------------------
+
+## Summary notes for Aim 1 - Part 1
+
+1.  Putative epiphysis cell clusters can be identified by scRNA-seq regardless of *sox1a* genotype.
+
+2.  *Sox1a*-positive putative parapineal cells can be detected within these clusters.
+
+3.  Next step: *In vivo* validation of these putative clusters using imaging-based spatial transcriptomics (Vizgen MERSCOPE)
+
+------------------------------------------------------------------------
+
+## References
+
+### Packages
+
+```{r}
+pkgs <- cite_packages(output = "table", out.dir = ".")
+knitr::kable(pkgs)
+```
+
+### Previous work
+
+-   Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, & Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <https://doi.org/10.5281/zenodo.5826256>.
+-   I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. *Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry*. eLife (2019), e47376, 8, <https://doi.org/10.7554/eLife.47376>
+
+## Session Info
+
+```{r}
+sessionInfo()
+```

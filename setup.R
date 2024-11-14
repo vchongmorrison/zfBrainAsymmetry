@@ -8,21 +8,8 @@ getOption("Ncpus", 1L)
 
 library(future)
 options(future.globals.maxSize = 2000 * 1024^2) # adjust limit of allowable object size = 2G
-# *could* enable parallelisation i.e. workers > 1, for Seurat etc. 
-# but breaks Python processes currently...
-future::plan("multisession", workers = 1) # or change back to "sequential"
+# *could* enable parallelisation i.e. workers > 1, for Seurat etc. but breaks Python processes currently...
+future::plan("multisession", workers = 1) # or use "sequential" mode
 future::plan()
 
-library(BiocParallel) # for Bioconductor packages
-
-##### Import analysis packages #####
-# Bug: Python environment may need to be activated before loading Seurat
-library(reticulate)
-conda_list() # check available conda environments
-use_condaenv("singlecell-scHPF", required=TRUE) # has leidenalg etc. installed
-library(Seurat)
-library(tidyverse)
-library(dittoSeq)
-library(SingleCellExperiment)
-
-set.seed(584) # for reproducibility of random sampling
+library(BiocParallel) # for parallelising Bioconductor packages

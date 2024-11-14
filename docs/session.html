@@ -128,8 +128,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-aims">    
         <li>
-    <a class="dropdown-item" href="./Aim1.html" rel="" target="">
- <span class="dropdown-text">The parapineal ‘cell type’</span></a>
+    <a class="dropdown-item" href="./Aim1_part1.html" rel="" target="">
+ <span class="dropdown-text">The parapineal ‘cell type’ - Part 1</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="./Aim2.html" rel="" target="">
@@ -154,6 +154,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#initialise-r-environment" id="toc-initialise-r-environment" class="nav-link active" data-scroll-target="#initialise-r-environment">Initialise R environment</a></li>
+  <li><a href="#ensembl-annotations" id="toc-ensembl-annotations" class="nav-link" data-scroll-target="#ensembl-annotations">Ensembl annotations</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
   </ul>
 </nav>
@@ -180,245 +182,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="initialise-r-environment" class="level2">
 <h2 class="anchored" data-anchor-id="initialise-r-environment">Initialise R environment</h2>
-<p>I run this at the start of every session as a base. Additional packages are imported in as needed.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Set libPaths and memory/parallel cores usage #####</span></span>
+<p>I run this at the start of every session as a base.</p>
+<p>n.b.&nbsp;Additional packages are imported in as needed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Set libPaths and memory/parallel cores usage #####</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>(<span class="fu">c</span>(<span class="st">"/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3"</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>            <span class="st">"/home/chongmorrison/R/4.4.1-Bioc3.19"</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>() <span class="co"># check .libPaths</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3"
-[2] "/home/chongmorrison/R/4.4.1-Bioc3.19"                 
-[3] "/usr/local/lib/R/site-library"                        
-[4] "/usr/lib/R/site-library"                              
-[5] "/usr/lib/R/library"                                   </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">Ncpus =</span> <span class="dv">12</span>) <span class="co"># adjust no. of cores for base R</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">"Ncpus"</span>, 1L)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 12</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.maxSize =</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>) <span class="co"># adjust limit of allowable object size = 2G</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># *could* enable parallelisation i.e. workers &gt; 1, for Seurat etc. </span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># but breaks Python processes currently...</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="st">"multisession"</span>, <span class="at">workers =</span> <span class="dv">1</span>) <span class="co"># or change back to "sequential"</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>future<span class="sc">::</span><span class="fu">plan</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>multisession:
-- args: function (..., workers = 1, envir = parent.frame())
-- tweaked: TRUE
-- call: future::plan("multisession", workers = 1)</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BiocParallel) <span class="co"># for Bioconductor packages</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">##### Import analysis packages #####</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Bug: Python environment may need to be activated before loading Seurat</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">conda_list</span>() <span class="co"># check available conda environments</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              name
-1             base
-2     cellpose-env
-3       singlecell
-4 singlecell-scHPF
-5      tangram-env
-6      vpt-cp2-env
-7          vpt-env
-                                                           python
-1                       /home/chongmorrison/miniconda3/bin/python
-2     /home/chongmorrison/miniconda3/envs/cellpose-env/bin/python
-3       /home/chongmorrison/miniconda3/envs/singlecell/bin/python
-4 /home/chongmorrison/miniconda3/envs/singlecell-scHPF/bin/python
-5      /home/chongmorrison/miniconda3/envs/tangram-env/bin/python
-6      /home/chongmorrison/miniconda3/envs/vpt-cp2-env/bin/python
-7          /home/chongmorrison/miniconda3/envs/vpt-env/bin/python</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="st">"singlecell-scHPF"</span>, <span class="at">required=</span><span class="cn">TRUE</span>) <span class="co"># has leidenalg etc. installed</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: SeuratObject</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: sp</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>'SeuratObject' was built with package 'Matrix' 1.6.5 but the current
-version is 1.7.0; it is recomended that you reinstall 'SeuratObject' as
-the ABI for 'Matrix' may have changed</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'SeuratObject'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, t</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     </code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dittoSeq)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SingleCellExperiment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: SummarizedExperiment
-Loading required package: MatrixGenerics
-Loading required package: matrixStats
-
-Attaching package: 'matrixStats'
-
-The following object is masked from 'package:dplyr':
-
-    count
-
-
-Attaching package: 'MatrixGenerics'
-
-The following objects are masked from 'package:matrixStats':
-
-    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
-    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
-    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
-    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
-    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
-    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
-    colWeightedMeans, colWeightedMedians, colWeightedSds,
-    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
-    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
-    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
-    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
-    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
-    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
-    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
-    rowWeightedSds, rowWeightedVars
-
-Loading required package: GenomicRanges
-Loading required package: stats4
-Loading required package: BiocGenerics
-
-Attaching package: 'BiocGenerics'
-
-The following objects are masked from 'package:lubridate':
-
-    intersect, setdiff, union
-
-The following objects are masked from 'package:dplyr':
-
-    combine, intersect, setdiff, union
-
-The following object is masked from 'package:SeuratObject':
-
-    intersect
-
-The following objects are masked from 'package:stats':
-
-    IQR, mad, sd, var, xtabs
-
-The following objects are masked from 'package:base':
-
-    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
-    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
-    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
-    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    Position, rank, rbind, Reduce, rownames, sapply, setdiff, table,
-    tapply, union, unique, unsplit, which.max, which.min
-
-Loading required package: S4Vectors
-
-Attaching package: 'S4Vectors'
-
-The following objects are masked from 'package:lubridate':
-
-    second, second&lt;-
-
-The following objects are masked from 'package:dplyr':
-
-    first, rename
-
-The following object is masked from 'package:tidyr':
-
-    expand
-
-The following object is masked from 'package:utils':
-
-    findMatches
-
-The following objects are masked from 'package:base':
-
-    expand.grid, I, unname
-
-Loading required package: IRanges
-
-Attaching package: 'IRanges'
-
-The following object is masked from 'package:lubridate':
-
-    %within%
-
-The following objects are masked from 'package:dplyr':
-
-    collapse, desc, slice
-
-The following object is masked from 'package:purrr':
-
-    reduce
-
-The following object is masked from 'package:sp':
-
-    %over%
-
-Loading required package: GenomeInfoDb
-Loading required package: Biobase
-Welcome to Bioconductor
-
-    Vignettes contain introductory material; view with
-    'browseVignettes()'. To cite Bioconductor, see
-    'citation("Biobase")', and for packages 'citation("pkgname")'.
-
-
-Attaching package: 'Biobase'
-
-The following object is masked from 'package:MatrixGenerics':
-
-    rowMedians
-
-The following objects are masked from 'package:matrixStats':
-
-    anyMissing, rowMedians
-
-
-Attaching package: 'SummarizedExperiment'
-
-The following object is masked from 'package:Seurat':
-
-    Assays
-
-The following object is masked from 'package:SeuratObject':
-
-    Assays</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">584</span>) <span class="co"># for reproducibility of random sampling</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>() <span class="co"># check .libPaths</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">Ncpus =</span> <span class="dv">12</span>) <span class="co"># adjust no. of cores for base R</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">getOption</span>(<span class="st">"Ncpus"</span>, 1L)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.maxSize =</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">1024</span><span class="sc">^</span><span class="dv">2</span>) <span class="co"># adjust limit of allowable object size = 2G</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># *could* enable parallelisation i.e. workers &gt; 1, for Seurat etc. but breaks Python processes currently...</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>future<span class="sc">::</span><span class="fu">plan</span>(<span class="st">"multisession"</span>, <span class="at">workers =</span> <span class="dv">1</span>) <span class="co"># or use "sequential" mode</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>future<span class="sc">::</span><span class="fu">plan</span>()</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(BiocParallel) <span class="co"># for parallelising Bioconductor packages</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">##### Import analysis packages #####</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Potential bug: Python environment needs to be activated before loading Seurat</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reticulate)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">conda_list</span>() <span class="co"># check available conda environments</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">use_condaenv</span>(<span class="st">"singlecell-scHPF"</span>, <span class="at">required=</span><span class="cn">TRUE</span>) <span class="co"># has leidenalg etc. installed</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># R packages</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Seurat)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dittoSeq)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(SingleCellExperiment)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(grateful)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility of random sampling</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">584</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ensembl-annotations" class="level2">
+<h2 class="anchored" data-anchor-id="ensembl-annotations">Ensembl annotations</h2>
+<p>Useful to have gene annotations in CSV format at hand, which can be called into the analysis anytime.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationHub)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ensembldb)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to AnnotationHub</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ah <span class="ot">&lt;-</span> <span class="fu">AnnotationHub</span>()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the Ensembl database for organism</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>ahDb <span class="ot">&lt;-</span> <span class="fu">query</span>(ah, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">pattern =</span> <span class="fu">c</span>(<span class="st">"Danio rerio"</span>, <span class="st">"EnsDb"</span>), </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Acquire the latest annotation files</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> ahDb <span class="sc">%&gt;%</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mcols</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tail</span>(<span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the appropriate Ensembldb database</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>edb <span class="ot">&lt;-</span> ah[[id]]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract gene-level information from database</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">genes</span>(edb, </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">return.type =</span> <span class="st">"data.frame"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Select annotations of interest</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> annotations <span class="sc">%&gt;%</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name, seq_name, gene_biotype, description)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Save for later use</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(annotations, <span class="at">file=</span><span class="st">"./ensembl_annotations.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, &amp; Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <a href="https://doi.org/10.5281/zenodo.5826256" class="uri">https://doi.org/10.5281/zenodo.5826256</a>.</li>
+</ul>
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>R version 4.4.1 (2024-06-14)
+<pre><code>R version 4.4.2 (2024-10-31)
 Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 22.04.5 LTS
 
@@ -438,65 +273,13 @@ time zone: Europe/London
 tzcode source: system (glibc)
 
 attached base packages:
-[1] stats4    stats     graphics  grDevices utils     datasets  methods  
-[8] base     
-
-other attached packages:
- [1] SingleCellExperiment_1.26.0 SummarizedExperiment_1.34.0
- [3] Biobase_2.64.0              GenomicRanges_1.56.2       
- [5] GenomeInfoDb_1.40.1         IRanges_2.38.1             
- [7] S4Vectors_0.42.1            BiocGenerics_0.50.0        
- [9] MatrixGenerics_1.16.0       matrixStats_1.4.1          
-[11] dittoSeq_1.16.0             lubridate_1.9.3            
-[13] forcats_1.0.0               stringr_1.5.1              
-[15] dplyr_1.1.4                 purrr_1.0.2                
-[17] readr_2.1.5                 tidyr_1.3.1                
-[19] tibble_3.2.1                ggplot2_3.5.1              
-[21] tidyverse_2.0.0             Seurat_5.1.0               
-[23] SeuratObject_5.0.2          sp_2.1-4                   
-[25] reticulate_1.39.0           BiocParallel_1.38.0        
-[27] future_1.34.0              
+[1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_1.8.9         
-  [4] magrittr_2.0.3          spatstat.utils_3.1-1    farver_2.1.2           
-  [7] rmarkdown_2.29          zlibbioc_1.50.0         vctrs_0.6.5            
- [10] ROCR_1.0-11             spatstat.explore_3.3-3  S4Arrays_1.4.1         
- [13] htmltools_0.5.8.1       SparseArray_1.4.8       sctransform_0.4.1      
- [16] parallelly_1.38.0       KernSmooth_2.23-24      htmlwidgets_1.6.4      
- [19] ica_1.0-3               plyr_1.8.9              plotly_4.10.4          
- [22] zoo_1.8-12              igraph_2.1.1            mime_0.12              
- [25] lifecycle_1.0.4         pkgconfig_2.0.3         Matrix_1.7-0           
- [28] R6_2.5.1                fastmap_1.2.0           GenomeInfoDbData_1.2.12
- [31] fitdistrplus_1.2-1      shiny_1.9.1             digest_0.6.37          
- [34] colorspace_2.1-1        patchwork_1.3.0         tensor_1.5             
- [37] RSpectra_0.16-2         irlba_2.3.5.1           progressr_0.15.0       
- [40] fansi_1.0.6             spatstat.sparse_3.1-0   timechange_0.3.0       
- [43] httr_1.4.7              polyclip_1.10-7         abind_1.4-8            
- [46] compiler_4.4.1          withr_3.0.2             fastDummies_1.7.4      
- [49] MASS_7.3-61             DelayedArray_0.30.1     rappdirs_0.3.3         
- [52] tools_4.4.1             lmtest_0.9-40           httpuv_1.6.15          
- [55] future.apply_1.11.3     goftest_1.2-3           glue_1.8.0             
- [58] nlme_3.1-165            promises_1.3.0          grid_4.4.1             
- [61] Rtsne_0.17              cluster_2.1.6           reshape2_1.4.4         
- [64] generics_0.1.3          gtable_0.3.6            spatstat.data_3.1-2    
- [67] tzdb_0.4.0              data.table_1.16.2       hms_1.1.3              
- [70] XVector_0.44.0          utf8_1.2.4              spatstat.geom_3.3-3    
- [73] RcppAnnoy_0.0.22        ggrepel_0.9.6           RANN_2.6.2             
- [76] pillar_1.9.0            spam_2.11-0             RcppHNSW_0.6.0         
- [79] later_1.3.2             splines_4.4.1           lattice_0.22-6         
- [82] survival_3.7-0          deldir_2.0-4            tidyselect_1.2.1       
- [85] miniUI_0.1.1.1          pbapply_1.7-2           knitr_1.48             
- [88] gridExtra_2.3           scattermore_1.2         xfun_0.49              
- [91] pheatmap_1.0.12         UCSC.utils_1.0.0        stringi_1.8.4          
- [94] lazyeval_0.2.2          yaml_2.3.10             evaluate_1.0.1         
- [97] codetools_0.2-20        cli_3.6.3               uwot_0.2.2             
-[100] xtable_1.8-4            munsell_0.5.1           Rcpp_1.0.13-1          
-[103] globals_0.16.3          spatstat.random_3.3-2   png_0.1-8              
-[106] spatstat.univar_3.0-1   parallel_4.4.1          dotCall64_1.2          
-[109] listenv_0.9.1           viridisLite_0.4.2       scales_1.3.0           
-[112] ggridges_0.5.6          crayon_1.5.3            leiden_0.4.3.1         
-[115] rlang_1.1.4             cowplot_1.1.3          </code></pre>
+ [1] compiler_4.4.2    fastmap_1.2.0     cli_3.6.3         tools_4.4.2      
+ [5] htmltools_0.5.8.1 yaml_2.3.10       rmarkdown_2.29    knitr_1.49       
+ [9] jsonlite_1.8.9    xfun_0.49         digest_0.6.37     rlang_1.1.4      
+[13] evaluate_1.0.1   </code></pre>
 </div>
 </div>
 
@@ -738,6 +521,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Copyright 2024, Vanessa Chong-Morrison</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 

@@ -4,7 +4,7 @@ title: "Introduction"
 
 # Forebrain asymmetry and the parapineal organ
 
-**Lead Author and Researcher**<br> V Chong-Morrison (Senior Postdoctoral Scientist) <br>
+**Lead Author and Researcher**<br> Dr V Chong-Morrison (Senior Postdoctoral Scientist) <br>
 
 **Principal Investigators** <br>
 
@@ -22,11 +22,11 @@ Left/right differences in the brain have fascinated thinkers for generations. Ze
 
 A substantial body of research in zebrafish unequivocally identified the parapineal organ (also known as the "parietal eye" in other organisms) as a crucial determinant of habenular left/right asymmetry. Through an unidentified mechanism, the parapineal organ signals to newly-born habenular neurons to adopt "left-sided" characteristics. This elusive signal is potent and precise within a defined developmental time window - approximately 28 to 32 hours post-fertilisation. Removing the parapineal signal during this time leads to a complete loss of left identity, resulting in a "double right" 4-days-old habenula.
 
-![The parapineal organ of a zebrafish embryo signals to neurons in the habenula region (dotted circles) circa 32 hours post fertilisation to acquire left/right asymmetric nuclei by 4 days old.](asymmetry-dev.png){fig-align="center"}
+![The parapineal organ of a zebrafish embryo signals to neurons in the habenula region (dotted circles) circa 32 hours post fertilisation to acquire left/right asymmetric nuclei by 4 days old.](./figures/asymmetry-dev.png){fig-align="center"}
 
 ### The *sox1a* gene
 
-Zebrafish *sox1a* mutants have "double right" habenula ***despite the parapineal developing normally in appearance***. This finding was important as it uncoupled the parapineal's signalling role from its anatomical structure. Unlike ablating or removing the parapineal altogether, which also leads to "double right" habenula, *sox1a* mutants can be utilised as a vehicle to retrieve signalling-deficient parapineal organs. These would uncover the important signal(s) crucial for habenula neurons to acquire left-sided character.
+Previous studies have demonstrated that the parapineal organ expresses *sox1a* during its development. Lekk *et al*. showed that zebrafish *sox1a* mutants have "double right" habenula ***despite the parapineal developing normally in appearance***. This finding was important as it uncoupled the parapineal's signalling role from its anatomical structure. Unlike ablating or removing the parapineal altogether, which also leads to "double right" habenula, *sox1a* mutants can be utilised as a vehicle to retrieve signalling-deficient parapineal organs. These would uncover the important signal(s) crucial for habenula neurons to acquire left-sided character.
 
 ### Current work
 
