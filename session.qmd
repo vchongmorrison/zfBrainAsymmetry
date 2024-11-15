@@ -68,12 +68,53 @@ annotations <- genes(edb,
 annotations <- annotations %>%
   dplyr::select(gene_id, gene_name, seq_name, gene_biotype, description)
 # Save for later use
-write.csv(annotations, file="./ensembl_annotations.csv")
+write.csv(annotations, file="./annotations/ensembl_annotations.csv")
+```
+
+## Other databases
+
+## Zebrafish Information Network (ZFIN)
+
+### Gene expression data
+
+ZFIN has an excellent curation of *in vivo* expression patterns obtained via WISH (**W**hole-mount **i**n **s**itu **h**ybridisation). As an example, the following code retrieves WISH data for Wild Type condition from <https://zfin.org/downloads> ('Gene Expression' \> 'Expression data for wildtype fish').
+
+``` r
+gex <- read.delim(url("https://zfin.org/downloads/wildtype-expression_fish.txt"), header = FALSE, sep ="\t")
+head(gex, 5)
+
+# Add column IDs (based on Column Headers in the Downloads page above)
+colnames(gex) <- c("GeneID", "GeneSymbol","FishName","SuperStructureID","SuperStructureName",
+                   "SubStructureID","SubStructureName","StartStage","EndStage","Assay",
+                   "AssayMMOID","PublicationID","ProbeID","AntibodyID","FishID")
+```
+
+Here, the data is filtered to only include information-of-interest e.g. Structure i.e. anatomical information.
+
+``` r
+gex_ISH <- gex[which(gex$FishName=='WT' | gex$FishName=='AB/TU'), ]
+gex_ISH <- gex_ISH[which(gex_ISH$Assay=='mRNA in situ hybridization'), ]
+gex_ISH <- data.frame(gex_ISH$GeneSymbol, gex_ISH$SuperStructureName)
+colnames(gex_ISH) <- c("GeneSymbol","Structure")
+head(gex_ISH, 10)
+```
+
+### Human orthologue information
+
+``` r
+ZFIN_human <- read.delim(url("https://zfin.org/downloads/human_orthos.txt"), header = FALSE, sep ="\t")
+head(ZFIN_human, 5)
+# retrieve fish and human orthologues
+ZFIN_human <- unique(data.frame(ZFIN_human$V2, ZFIN_human$V4))
+# Add column IDs
+colnames(ZFIN_human) <- c("zf_gene","human_gene")
 ```
 
 ## References
 
 -   Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, & Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <https://doi.org/10.5281/zenodo.5826256>.
+-   Peter W Harrison, M Ridwan Amode, Olanrewaju Austine-Orimoloye, Andrey G Azov, Matthieu Barba, If Barnes, Arne Becker, Ruth Bennett, Andrew Berry, Jyothish Bhai, Simarpreet Kaur Bhurji, Sanjay Boddu, Paulo R Branco Lins, Lucy Brooks, Shashank Budhanuru Ramaraju, Lahcen I Campbell, Manuel Carbajo Martinez, Mehrnaz Charkhchi, Kapeel Chougule, Alexander Cockburn, Claire Davidson, Nishadi H De Silva, Kamalkumar Dodiya, Sarah Donaldson, Bilal El Houdaigui, Tamara El Naboulsi, Reham Fatima, Carlos Garcia Giron, Thiago Genez, Dionysios Grigoriadis, Gurpreet S Ghattaoraya, Jose Gonzalez Martinez, Tatiana A Gurbich, Matthew Hardy, Zoe Hollis, Thibaut Hourlier, Toby Hunt, Mike Kay, Vinay Kaykala, Tuan Le, Diana Lemos, Disha Lodha, Diego Marques-Coelho, Gareth Maslen, Gabriela Alejandra Merino, Louisse Paola Mirabueno, Aleena Mushtaq, Syed Nakib Hossain, Denye N Ogeh, Manoj Pandian Sakthivel, Anne Parker, Malcolm Perry, Ivana Piližota, Daniel Poppleton, Irina Prosovetskaia, Shriya Raj, José G Pérez-Silva, Ahamed Imran Abdul Salam, Shradha Saraf, Nuno Saraiva-Agostinho, Dan Sheppard, Swati Sinha, Botond Sipos, Vasily Sitnik, William Stark, Emily Steed, Marie-Marthe Suner, Likhitha Surapaneni, Kyösti Sutinen, Francesca Floriana Tricomi, David Urbina-Gómez, Andres Veidenberg, Thomas A Walsh, Doreen Ware, Elizabeth Wass, Natalie L Willhoft, Jamie Allen, Jorge Alvarez-Jarreta, Marc Chakiachvili, Bethany Flint, Stefano Giorgetti, Leanne Haggerty, Garth R Ilsley, Jon Keatley, Jane E Loveland, Benjamin Moore, Jonathan M Mudge, Guy Naamati, John Tate, Stephen J Trevanion, Andrea Winterbottom, Adam Frankish, Sarah E Hunt, Fiona Cunningham, Sarah Dyer, Robert D Finn, Fergal J Martin, and Andrew D Yates. (Ensembl 2024). Nucleic Acids Res. 2024, 52(D1):D891--D899. [10.1093/nar/gkad1049](https://doi.org/10.1093/nar/gkad1049)
+-   Bradford, Y.M., Van Slyke, C.E., Ruzicka, L., Singer, A., Eagle, A., Fashena, D., Howe, D.G., Frazer, K., Martin, R., Paddock, H., Pich, C., Ramachandran, S., Westerfield, M. (2022) Zebrafish Information Network, the knowledgebase for Danio rerio research. Genetics. 220(4). [10.1093/genetics/iyac016](https://doi.org/10.1093/genetics/iyac016)
 
 ## Session Info
 

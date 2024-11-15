@@ -10,7 +10,7 @@ title: "Introduction"
 
 Professor S Wilson (University College London) <br> Professor T Sauka-Spengler (University of Oxford/Stowers Institute) <br>
 
-**This website is a live documentation of the data underlying the following study.**
+**This website is an active documentation of the bioinformatics underlying the following study.**
 
 ------------------------------------------------------------------------
 

@@ -151,6 +151,10 @@ div.csl-indent {
  <span class="dropdown-text">The parapineal ‘cell type’ - Part 1</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./Aim1_part2.html" rel="" target="">
+ <span class="dropdown-text">The parapineal ‘cell type’ - Part 2</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./Aim2.html" rel="" target="">
  <span class="dropdown-text">The sox1a ‘phenotype’</span></a>
   </li>  
@@ -258,7 +262,7 @@ div.csl-indent {
 <h3 class="anchored" data-anchor-id="pre-processing-of-reads">Pre-processing of reads</h3>
 <p>To empirically determine the robustness of called clusters downstream, reads were pre-processed using two different mapper/gene annotation combinations:</p>
 <ul>
-<li><p>10X Genomics CellRanger v7.1.0 + Lawson Lab annotation (Lawson et al., 2020)</p>
+<li><p>10X Genomics CellRanger v7.1.0 + Lawson Lab annotation (Lawson <em>et al</em>., 2020)</p>
 <ul>
 <li><p>This pipeline maps unique reads only:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocessing - Cell Ranger 7.1.0 (unique reads only)</span></span>
@@ -315,7 +319,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>path1 <span class="ot">&lt;-</span> <span class="st">"/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/preprocessing/foxd3flhGFP/cellranger7.1.0_Lawson/filtered_feature_bc_matrix"</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>path2 <span class="ot">&lt;-</span> <span class="st">"/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/preprocessing/foxd3flhGFP/starsolo2.7.10b_ens107/filtered_EM"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Create <code>Seurat</code> objects and check nos. of cells and genes</strong></p>
+<p><strong>Create <code>Seurat</code> objects and check number of cells and genes :</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">CreateSeuratObject</span>(<span class="fu">Read10X</span>(path1), <span class="at">project=</span><span class="st">"CellRanger-Lawson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -408,7 +412,7 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cell_cycle_genes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">text =</span> RCurl<span class="sc">::</span><span class="fu">getURL</span>(<span class="st">"https://raw.githubusercontent.com/hbc/tinyatlas/master/cell_cycle/Danio_rerio.csv"</span>))</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># call in Ensembl annotations</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./ensembl_annotations.csv'</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="dv">1</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./annotations/ensembl_annotations.csv'</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="dv">1</span>)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make a dataframe of cell cycle markers</span></span>
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>cell_cycle_markers <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(cell_cycle_genes, annotations, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"geneID"</span> <span class="ot">=</span> <span class="st">"gene_id"</span>))</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
@@ -492,115 +496,21 @@ multiple of shorter object length</code></pre>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(cr_law) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">SCTransform</span>(cr_law,</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">vars.to.regress =</span> <span class="fu">c</span>(<span class="st">"percent.ribo"</span>, <span class="st">"percent.mt"</span>, <span class="st">"CC.Difference"</span>),</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">vst.flavor=</span><span class="st">"v2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Running SCTransform on assay: RNA</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Running SCTransform on layer: counts</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>vst.flavor='v2' set. Using model with fixed slope and excluding poisson genes.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Variance stabilizing transformation of count matrix of size 24969 by 4770</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Model formula is y ~ log_umi</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Get Negative Binomial regression parameters per gene</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using 2000 genes, 4770 cells</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Found 16 outliers - those will be ignored in fitting/regularization step</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Second step: Get residuals using fitted parameters for 24969 genes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Computing corrected count matrix for 24969 genes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Calculating gene attributes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Wall clock passed: Time difference of 15.94846 secs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Determine variable features</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Regressing out percent.ribo, percent.mt, CC.Difference</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Centering data matrix</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Set default assay to SCT</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">SCTransform</span>(ss_e107,</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">vars.to.regress =</span> <span class="fu">c</span>(<span class="st">"percent.ribo"</span>, <span class="st">"percent.mt"</span>, <span class="st">"CC.Difference"</span>),</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">vst.flavor=</span><span class="st">"v2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Running SCTransform on assay: RNA</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Running SCTransform on layer: counts</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>vst.flavor='v2' set. Using model with fixed slope and excluding poisson genes.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Variance stabilizing transformation of count matrix of size 23946 by 4536</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Model formula is y ~ log_umi</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Get Negative Binomial regression parameters per gene</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Using 2000 genes, 4536 cells</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Found 20 outliers - those will be ignored in fitting/regularization step</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Second step: Get residuals using fitted parameters for 23946 genes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Computing corrected count matrix for 23946 genes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Calculating gene attributes</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Wall clock passed: Time difference of 13.02944 secs</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Determine variable features</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Regressing out percent.ribo, percent.mt, CC.Difference</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Centering data matrix</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Set default assay to SCT</code></pre>
-</div>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">vst.flavor=</span><span class="st">"v2"</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">SCTransform</span>(ss_e107,</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">vars.to.regress =</span> <span class="fu">c</span>(<span class="st">"percent.ribo"</span>, <span class="st">"percent.mt"</span>, <span class="st">"CC.Difference"</span>),</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">vst.flavor=</span><span class="st">"v2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="unsupervised-clustering" class="level3">
 <h3 class="anchored" data-anchor-id="unsupervised-clustering">‘Unsupervised’ Clustering</h3>
 <p>As clustering is more an art than exact science, I empirically determined the main parameters - <code>algorithm</code>, <code>npcs</code>, <code>k.param</code>, and <code>resolution</code> - and compared the result between the two pre-processing workflows/<code>Seurat</code> objects.</p>
-<p><strong>‘Picking’ the number of Principal Component dimensions <code>npcs</code></strong></p>
+<p><strong>‘Picking’ the number of Principal Component dimensions <code>npcs</code> :</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(cr_law, <span class="at">npcs =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(cr_law) <span class="ot">&lt;-</span> <span class="st">"SCT"</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(cr_law, <span class="at">npcs =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>PC_ 1 
 Positive:  sncb, stmn1b, tuba1c, ckbb, gap43, nrxn2a, elavl4, nrxn1a, rbfox1, onecut1 
@@ -638,11 +548,15 @@ Negative:  lmx1bb, si:ch211-263k4.2, si:dkey-112m2.1, fabp11a, rspo2, ptprub, si
        cdon, zgc:162939, CR848683.2, wnt4a, cyp26c1, rspo3, lrp2a, ntm, epha7, kirrel3a 
        lzts2a, gli2a, wnt3a, cachd1, unc5b, pax6a, unc5a, tnfrsf19, pawr, cldn5a </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(cr_law, <span class="at">ndims=</span><span class="dv">60</span>, <span class="at">reduction=</span><span class="st">"pca"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Number of dimensions changing from 40 to 60</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(ss_e107, <span class="at">npcs =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(cr_law, <span class="at">ndims=</span><span class="dv">60</span>, <span class="at">reduction=</span><span class="st">"pca"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"SCT"</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(ss_e107, <span class="at">npcs =</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>PC_ 1 
 Positive:  gli2a, jarid2b, si:ch211-263k4.2, lmx1bb, pard3bb, dock1, zbtb16a, ctdp1, foxp4, znrf3 
@@ -680,161 +594,36 @@ Negative:  lmx1bb, TMEM132C.1, fabp11a, si:ch211-263k4.2, rspo2, BX005454.1, ptp
        cdon, aopep, CR848683.2, wnt4, ntm, rspo3, cyp26c1, gli2a, lrp2a, epha7 
        kirrel3a, wnt3a, cachd1, unc5a, unc5b, pax6a, pax6b, pawr, tnfrsf19, barhl2 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(ss_e107, <span class="at">ndims=</span><span class="dv">60</span>, <span class="at">reduction=</span><span class="st">"pca"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Number of dimensions changing from 40 to 60</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ElbowPlot</span>(ss_e107, <span class="at">ndims=</span><span class="dv">60</span>, <span class="at">reduction=</span><span class="st">"pca"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Based on the elbow plots above I went with <code>npcs = 40</code>. <code>k.param</code> is kept at the default <code>20</code>, and the Leiden <code>algorithm = 4</code> is selected.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(cr_law, <span class="at">npcs =</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindNeighbors</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindClusters</span>(<span class="at">algorithm =</span> <span class="dv">4</span>, <span class="at">resolution =</span> <span class="fu">c</span>(<span class="fl">1.0</span>), <span class="at">method=</span><span class="st">"igraph"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RunUMAP</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, <span class="at">n.neighbors =</span> <span class="dv">20</span>) <span class="co"># to match default k.param=20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>PC_ 1 
-Positive:  sncb, stmn1b, tuba1c, ckbb, gap43, nrxn2a, elavl4, nrxn1a, rbfox1, onecut1 
-       stx1b, tmsb, ywhag2, gng3, TENM2, elavl3, BX548062.1, GFP, robo2, snap25a 
-       stmn2a, c1ql4a, celf4, id4, lhx9, raly, vamp2, mllt11, atp6v0cb, stmn4 
-Negative:  si:ch211-263k4.2, gli2a, tns1b, jarid2b, lmx1bb, pard3bb, dock1, foxp4, zbtb16a, ctdp1 
-       znrf3, ror1, cachd1, pax5, pdzrn3b, cdon, tenm4, lama5, rxraa, gli3 
-       BX571942.1, diaph3, zeb2a, BX005454.1, trps1, slc35f1, dacha, nxn, hs6st1a, si:dkey-112m2.1 
-PC_ 2 
-Positive:  pax5, efna2a, tenm4, FP016248.1, ncam1a, her4.2, pax2b, lama5, dacha, nkain2 
-       LOC100537384, lmx1bb, en1b, efnb3b, bcam, en2b, her4.1, pax3a, unc5c, si:ch211-57n23.4 
-       elavl3, BX571942.1, ctnna2, pax2a, nova2, sema5ba, her15.1, LOC100535496, znf423, CR847968.1 
-Negative:  alx4a, lrmda, mcamb, trpm1b, ltk, nrp2a, alx4b, adam19a, rxraa, pnp4a 
-       aqp1a.1, gpnmb, si:ch211-243a20.3, sox5, sox10, impdh1b, cdh11, pcbp4, kank3, ttyh2l 
-       gab2, pdzrn3b, anks1b, atp11a, apoda.1, defbl1, gmps, paics, sox6, pcdh9 
-PC_ 3 
-Positive:  CACNA2D1, sez6b, ptprfb, efna3a, znf804a, lrfn5a, lrp1bb, cacna1ha, BX548062.1, grm8a 
-       mdga1, unc5a, znf536, TENM2, cntn3a.2, GRIK2, raly, grik4, cpne5b, nlgn1 
-       nrxn2a, b4galnt4a, rbfox3b, kirrel3a, nav3, robo2, rbfox1, dscamb, GALNTL6, igsf21a 
-Negative:  sncb, islr2, gap43, tuba1c, gng3, mllt11, stmn1b, atp6v0cb, tmsb2, ywhag2 
-       cplx2l, stmn2a, zgc:65894, cotl1, vamp2, rtn1b, gapdhs, inab, tuba1a, rtn1a 
-       bsg, tmsb, eno1a, tpi1b, map1ab, aldocb, pou3f1, elavl4, rnasekb, tac1 
-PC_ 4 
-Positive:  celf5a, si:dkeyp-14d3.1, epha4b, thsd7ba, islr2, elavl4, pcdh9, cacna1i, edil3a, nlgn3a 
-       msi2b, ntm, syt1a, rnf220a, neto1l, sema6bb, cadm1a, LOC100536716, CR847968.1, NPAS3 
-       fam19a5a, enox2, ptprga, cntn4, brinp1, si:dkey-35m8.1, rab6ba, meis2a, plxna4, sox6 
-Negative:  lhx9, raly, mdga1, znf804a, r3hdm1, rbfox3b, nr2f2, sez6b, ckbb, onecut1 
-       GRIK2, chrm4a, lrfn5a, lhx2b, cpne7, cacna1ha, pdzrn4, grin2aa, evx2, GFP 
-       atp2b1a, igsf21a, CACNA2D1, mab21l1, cntn3a.2, si:ch211-215d8.2, caln2, LOC110439372, grm8a, samd10b 
-PC_ 5 
-Positive:  elavl3, pax5, pax7a, ctnna2, nkain2, efna2a, si:ch211-57n23.4, plxna2, pax2b, dlb 
-       her4.2, en1b, thsd7aa, ebf3a, CR847968.1, nhlh2, en2b, pax2a, ebf2, srrm4 
-       FP016248.1, hes6, LOC100537384, insm1b, sox11b, pdlim5a, XLOC-003692, si:ch73-386h18.1, myt1b, LOC101882472 
-Negative:  lmx1bb, si:ch211-263k4.2, si:dkey-112m2.1, fabp11a, rspo2, ptprub, si:ch211-285f17.1, BX005454.1, brinp2, slit3 
-       cdon, zgc:162939, CR848683.2, wnt4a, cyp26c1, rspo3, lrp2a, ntm, epha7, kirrel3a 
-       lzts2a, gli2a, wnt3a, cachd1, unc5b, pax6a, unc5a, tnfrsf19, pawr, cldn5a </code></pre>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(cr_law, <span class="at">npcs =</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindNeighbors</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindClusters</span>(<span class="at">algorithm =</span> <span class="dv">4</span>, <span class="at">resolution =</span> <span class="fu">c</span>(<span class="fl">1.0</span>), <span class="at">method=</span><span class="st">"igraph"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RunUMAP</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, <span class="at">n.neighbors =</span> <span class="dv">20</span>) <span class="co"># to match default k.param=20</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(ss_e107, <span class="at">npcs =</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindNeighbors</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindClusters</span>(<span class="at">algorithm =</span> <span class="dv">4</span>, <span class="at">resolution =</span> <span class="fu">c</span>(<span class="fl">1.0</span>), <span class="at">method=</span><span class="st">"igraph"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RunUMAP</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, <span class="at">n.neighbors =</span> <span class="dv">20</span>) <span class="co"># to match default k.param=20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Computing nearest neighbor graph</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Computing SNN</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>20:09:52 UMAP embedding parameters a = 0.9922 b = 1.112</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>20:09:52 Read 4770 rows and found 40 numeric columns</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>20:09:52 Using Annoy for neighbor search, n_neighbors = 20</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>20:09:52 Building Annoy index with metric = cosine, n_trees = 50</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>0%   10   20   30   40   50   60   70   80   90   100%</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>[----|----|----|----|----|----|----|----|----|----|</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>**************************************************|
-20:09:52 Writing NN index file to temp file /tmp/RtmpvEtMAu/file39b670137b6b
-20:09:52 Searching Annoy index using 1 thread, search_k = 2000
-20:09:53 Annoy recall = 100%
-20:09:53 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 20
-20:09:54 Initializing from normalized Laplacian + noise (using RSpectra)
-20:09:54 Commencing optimization for 500 epochs, with 130740 positive edges
-20:09:57 Optimization finished</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">RunPCA</span>(ss_e107, <span class="at">npcs =</span> <span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindNeighbors</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">FindClusters</span>(<span class="at">algorithm =</span> <span class="dv">4</span>, <span class="at">resolution =</span> <span class="fu">c</span>(<span class="fl">1.0</span>), <span class="at">method=</span><span class="st">"igraph"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RunUMAP</span>(<span class="at">dims =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">40</span>, <span class="at">n.neighbors =</span> <span class="dv">20</span>) <span class="co"># to match default k.param=20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>PC_ 1 
-Positive:  gli2a, jarid2b, si:ch211-263k4.2, lmx1bb, pard3bb, dock1, zbtb16a, ctdp1, foxp4, znrf3 
-       CT027638.1, cachd1, ror1, cdon, pdzrn3b, tenm4, qkib, BX005454.1, pax5, gli3 
-       BX571942.1, trps1, lama5, dacha, zeb2a, rxraa, efnb3b, nxn, hs6st1a, fbxw7 
-Negative:  sncb, ckbb, tuba1c, gap43, elavl4, nrxn1a, nrxn2a, rbfox1, tmsb, stx1b 
-       paqr7b, ywhag2, gng3, GFP, tuba1a, TENM2, snap25a, onecut1, stmn2a, rtn1a 
-       elavl3, tubb5, id4, mllt11, atp6v0cb, lhx9, stmn1b, raly, cadm4, robo2.1 
-PC_ 2 
-Positive:  alx4a, lrmda, trpm1b, mcamb, nrp2a, ltk, alx4b, pnp4a, aqp1a.1, gpnmb 
-       si:ch211-243a20.3, rxraa, impdh1b, sox10, sox5, cdh11, ttyh2l, kank3, rab32a, gab2 
-       apoda.1, defbl1, gmps, pcbp4, paics, atp11a, pdzrn3b, sox6, ldhba, atic 
-Negative:  pax5, efna2a, ncam1a, tenm4, FP016248.1, dacha, her4.2, nkain2, ctnna2, sema5ba 
-       lama5, pax2b, lmx1bb, ENSDARG00000059707, efnb3b, adgrb3, bcam, BX571942.1, pax3a, en1b 
-       BX465834.1, pou2f2a.1, her4.1, BX005454.1, en2b, brsk2b, nova2, cdon, BX663520.2, pax2a 
-PC_ 3 
-Positive:  CACNA2D1, efna3a, TENM2, ptprfb, sez6b, znf536, rbms3, znf804a, unc5a, nrxn1a 
-       nrxn2a, cacna1ha, lrfn5a, grm8a, dscamb, b4galnt4a, cpne5b, chl1b, kcnma1a, mdga1 
-       gria3b, cadm4, nrg3b, nlgn1, meis1b, GRIK2, raly, rbfox1, SRCIN1, LRFN2 
-Negative:  tuba1c, sncb, gap43, gng3, tuba1a, mllt11, ywhag2, atp6v0cb, tmsb, paqr7b 
-       tmsb2, zgc:65894, stmn2a, islr2, rtn1a, si:dkey-276j7.1, ckbb, vamp2, stmn1b, cplx2l 
-       bsg, cotl1, rtn1b, tubb5, gapdhs, rnasekb, hmgb3a, zgc:153426, pou3f1, tpi1b 
-PC_ 4 
-Positive:  celf5a, TMEM132C, islr2, msi2b, elavl4, thsd7ba, epha4b, cadm1a, CR847968.1, edil3a 
-       ntm, rnf220a, cacna1ia, nlgn3a, sox6, syt1a, neto1l, enox2, ebf3a, tafa5a 
-       map1ab, plxna3, khdrbs2, ptprga, meis2a.1, snap25b, atp1b1b, plxna4, isl1, pcp4a 
-Negative:  raly, sez6b, mdga1, znf804a, GRIK2, lhx9, cacna1ha, lrfn5a, grin2aa, rbfox3b 
-       CACNA2D1, cpne7, r3hdm1, igsf21a, chrm4a, grm8a, nr2f2, pdzrn4, LRFN2, samd10b 
-       caln2, evx2, cntn3a.2, robo2.1, atp2b1a, lhx2b, rbfox1, GALNTL6, si:ch211-215d8.2, cpne5b 
-PC_ 5 
-Positive:  lmx1bb, TMEM132C.1, fabp11a, si:ch211-263k4.2, rspo2, BX005454.1, ptprub, si:ch211-285f17.1, brinp2, slit3 
-       cdon, aopep, CR848683.2, wnt4, ntm, rspo3, cyp26c1, gli2a, lrp2a, epha7 
-       kirrel3a, wnt3a, cachd1, unc5a, unc5b, pax6a, pax6b, pawr, tnfrsf19, barhl2 
-Negative:  elavl3, pax7a, pax5, efna2a, nkain2, ctnna2, her4.2, dlb, pax2b, en1b 
-       ebf3a.1, gadd45gb.1, nhlh2, plxna2, pax2a, en2b, thsd7aa, sox11b, ebf2, srrm4 
-       FP016248.1, hes6, CR847968.1, si:ch73-386h18.1, insm1b, myt1b, her4.2.1, abhd6a, scrt2, pou2f2a.1 
-Computing nearest neighbor graph
-Computing SNN
-20:10:00 UMAP embedding parameters a = 0.9922 b = 1.112
-20:10:00 Read 4536 rows and found 40 numeric columns
-20:10:00 Using Annoy for neighbor search, n_neighbors = 20
-20:10:00 Building Annoy index with metric = cosine, n_trees = 50
-0%   10   20   30   40   50   60   70   80   90   100%
-[----|----|----|----|----|----|----|----|----|----|
-**************************************************|
-20:10:00 Writing NN index file to temp file /tmp/RtmpvEtMAu/file39b67c778279
-20:10:00 Searching Annoy index using 1 thread, search_k = 2000
-20:10:01 Annoy recall = 100%
-20:10:01 Commencing smooth kNN distance calibration using 1 thread with target n_neighbors = 20
-20:10:02 Initializing from normalized Laplacian + noise (using RSpectra)
-20:10:02 Commencing optimization for 500 epochs, with 122026 positive edges
-20:10:05 Optimization finished</code></pre>
-</div>
-</div>
-<p><strong>Save <code>Seurat</code> objects to load later without re-running all the above:</strong></p>
+<p><strong>Save <code>Seurat</code> objects to load later without re-running all the above :</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set DefaultAssay (and slot) and save objects for visualisation</span></span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(cr_law) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(cr_law)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Normalizing layer: counts</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
-<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(ss_e107)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Normalizing layer: counts</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(cr_law, <span class="at">file=</span><span class="st">"./foxd3flh-5k_cr-law.RData"</span>)</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(ss_e107, <span class="at">file=</span><span class="st">"./foxd3flh-5k_ss-e107.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set DefaultAssay (and slot) and save objects for visualisation</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(cr_law) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(cr_law)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(ss_e107)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(cr_law, <span class="at">file=</span><span class="st">"../foxd3flh-5k_cr-law.RData"</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(ss_e107, <span class="at">file=</span><span class="st">"../foxd3flh-5k_ss-e107.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -843,23 +632,36 @@ Computing SNN
 <section id="umap-reduction" class="level3">
 <h3 class="anchored" data-anchor-id="umap-reduction">UMAP reduction</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(cr_law, <span class="st">"SCT_snn_res.1"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"CellRanger7.1.0"</span>,</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"Lawson2020"</span>,</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"clusters"</span>,</span>
-<span id="cb92-5"><a href="#cb92-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">do.label=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reset DefaultAssay and Normalise counts for visualisation</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(cr_law) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>cr_law <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(cr_law)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Normalizing layer: counts</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">DefaultAssay</span>(ss_e107) <span class="ot">&lt;-</span> <span class="st">"RNA"</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>ss_e107 <span class="ot">&lt;-</span> <span class="fu">NormalizeData</span>(ss_e107)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Normalizing layer: counts</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"SCT_snn_res.1"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b"</span>,</span>
-<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"ensembl107"</span>,</span>
-<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"clusters"</span>,</span>
-<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">do.label=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(cr_law, <span class="st">"SCT_snn_res.1"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"CellRanger7.1.0"</span>,</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"Lawson2020"</span>,</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"clusters"</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">do.label=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"SCT_snn_res.1"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b"</span>,</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"ensembl107"</span>,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"clusters"</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">do.label=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -868,42 +670,42 @@ Computing SNN
 <h2 class="anchored" data-anchor-id="identify-epiphysis-clusters">Identify epiphysis clusters</h2>
 <p>The epiphysis shares several of its known i.e.&nbsp;well-characterised markers with other neuronal/cranial cell types. For example, <em>bsx</em> is also expressed in the hypothalamus, <em>noto</em> is also expressed in the telencephalon, <em>otx5</em> is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes that are well known to be expressed in the epiphysis</span></span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bsx"</span>, <span class="st">"noto"</span>, <span class="st">"otx5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes that are well known to be expressed in the epiphysis</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bsx"</span>, <span class="st">"noto"</span>, <span class="st">"otx5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(cr_law, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
-<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"cr_law (bsx/noto/otx5)"</span>, <span class="at">summary.fxn =</span> max, <span class="at">adjustment =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(cr_law, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"cr_law (bsx/noto/otx5)"</span>, <span class="at">summary.fxn =</span> max, <span class="at">adjustment =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(ss_e107, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"ss_e107 (bsx/noto/otx5)"</span>, <span class="at">summary.fxn =</span> max, <span class="at">adjustment =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(ss_e107, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"ss_e107 (bsx/noto/otx5)"</span>, <span class="at">summary.fxn =</span> max, <span class="at">adjustment =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>I reasoned that, by using instead the <strong>mean</strong> expression values of these three genes combined, one could eliminate clusters that are least likely to be epiphysis cells.</p>
 <p>For example, an epiphysis cell is likely to co-express bsx (1) + noto (1) + otx5 (1) = 3. Mean expression value = 3 / 3 = 1.</p>
 <p>On the other hand, a retina cell would not express bsx ( &lt; 1) + noto (&lt; 1), but express + otx5 (1) = &lt; 3. Mean expression value = &lt;3 / 3 = &lt; 1.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(cr_law, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
-<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"cr_law (mean of bsx + noto + otx5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(cr_law, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"cr_law (mean of bsx + noto + otx5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(ss_e107, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
-<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"ss_e107 (mean of bsx + noto + otx5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(ss_e107, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"ss_e107 (mean of bsx + noto + otx5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p><strong>This worked quite well, and one can appreciate two clusters-of-interest likely to be epiphysis cells.</strong> Furthermore, this observation is robust and reproducible from cell x gene matrices generated using the two dissimilar pre-processing pipelines.</p>
@@ -913,26 +715,26 @@ Computing SNN
 </ul>
 <p>Let’s now look at <code>sox1a</code> that is expressed in the parapineal as it emerges from the anterior pineal region (Lekk <em>et al</em>. 2019). The following plots show that <code>sox1a</code> expression can be detected in the clusters-of-interest.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">multi_dittoDimPlot</span>(cr_law, <span class="fu">c</span>(markers,<span class="st">"sox1a"</span>), <span class="at">order=</span><span class="st">"increasing"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">multi_dittoDimPlot</span>(cr_law, <span class="fu">c</span>(markers,<span class="st">"sox1a"</span>), <span class="at">order=</span><span class="st">"increasing"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">multi_dittoDimPlot</span>(ss_e107, <span class="fu">c</span>(markers,<span class="st">"sox1a"</span>), <span class="at">order=</span><span class="st">"increasing"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">multi_dittoDimPlot</span>(ss_e107, <span class="fu">c</span>(markers,<span class="st">"sox1a"</span>), <span class="at">order=</span><span class="st">"increasing"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>As both matrices consistently produced similar results so far, I am proceeding further with <code>ss_e107</code> only.</p>
 <p>How many cells (roughly) are present in the clusters-of-interest? ~250 cells in total.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoBarPlot</span>(ss_e107, <span class="st">"SCT_snn_res.1"</span>, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">scale =</span> <span class="st">"count"</span>,</span>
-<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">cells.use =</span> <span class="fu">meta</span>(<span class="st">"SCT_snn_res.1"</span>, ss_e107) <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"2"</span>, <span class="st">"19"</span>),</span>
-<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"No. of cells"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoBarPlot</span>(ss_e107, <span class="st">"SCT_snn_res.1"</span>, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">scale =</span> <span class="st">"count"</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">cells.use =</span> <span class="fu">meta</span>(<span class="st">"SCT_snn_res.1"</span>, ss_e107) <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"2"</span>, <span class="st">"19"</span>),</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"No. of cells"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -943,12 +745,12 @@ Computing SNN
 <h3 class="anchored" data-anchor-id="check-distribution-of-multiplets">Check distribution of multiplets</h3>
 <p>I run <code>scDblFinder</code> to identify multiplets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">SingleCellExperiment</span>(</span>
-<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">assays =</span> <span class="fu">list</span>(<span class="at">counts =</span> <span class="fu">as.matrix</span>(<span class="fu">LayerData</span>(ss_e107, <span class="at">assay =</span> <span class="st">"RNA"</span>, <span class="at">layer=</span><span class="st">"counts"</span>))))</span>
-<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scDblFinder)</span>
-<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">scDblFinder</span>(sce, <span class="at">clusters=</span><span class="fu">c</span>(<span class="fu">Idents</span>(ss_e107)),</span>
-<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">BPPARAM=</span><span class="fu">MulticoreParam</span>(<span class="dv">2</span>, <span class="at">RNGseed=</span><span class="dv">1234</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">SingleCellExperiment</span>(</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">assays =</span> <span class="fu">list</span>(<span class="at">counts =</span> <span class="fu">as.matrix</span>(<span class="fu">LayerData</span>(ss_e107, <span class="at">assay =</span> <span class="st">"RNA"</span>, <span class="at">layer=</span><span class="st">"counts"</span>))))</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scDblFinder)</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>sce <span class="ot">&lt;-</span> <span class="fu">scDblFinder</span>(sce, <span class="at">clusters=</span><span class="fu">c</span>(<span class="fu">Idents</span>(ss_e107)),</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">BPPARAM=</span><span class="fu">MulticoreParam</span>(<span class="dv">2</span>, <span class="at">RNGseed=</span><span class="dv">1234</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>21 clusters</code></pre>
 </div>
@@ -965,86 +767,86 @@ Computing SNN
 <pre><code>Training model...</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>iter=0, 355 cells excluded from training.</code></pre>
+<pre><code>iter=0, 310 cells excluded from training.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>iter=1, 354 cells excluded from training.</code></pre>
+<pre><code>iter=1, 263 cells excluded from training.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>iter=2, 342 cells excluded from training.</code></pre>
+<pre><code>iter=2, 255 cells excluded from training.</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Threshold found:0.497</code></pre>
+<pre><code>Threshold found:0.449</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>369 (8.1%) doublets called</code></pre>
+<pre><code>308 (6.8%) doublets called</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sce<span class="sc">$</span>scDblFinder.class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(sce<span class="sc">$</span>scDblFinder.class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 singlet doublet 
-   4167     369 </code></pre>
+   4228     308 </code></pre>
 </div>
 </div>
 <p>Now port the results back to the original <code>ss_e107</code> object for visualisation. Called doublets are distributed randomly across entire dataset, which is ideal.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>ss_e107<span class="sc">$</span>scDblFinder.class <span class="ot">&lt;-</span> sce<span class="sc">$</span>scDblFinder.class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>ss_e107<span class="sc">$</span>scDblFinder.class <span class="ot">&lt;-</span> sce<span class="sc">$</span>scDblFinder.class</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"scDblFinder.class"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"class"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"scDblFinder.class"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"class"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
 <section id="what-about-other-metrics" class="level3">
 <h3 class="anchored" data-anchor-id="what-about-other-metrics">What about other metrics?</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"nCount_RNA"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb117-2"><a href="#cb117-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb117-3"><a href="#cb117-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb117-4"><a href="#cb117-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"nUMI"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"nFeature_RNA"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb118-3"><a href="#cb118-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb118-4"><a href="#cb118-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"nGenes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"percent.ribo"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb119-4"><a href="#cb119-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"% ribosomal transcripts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"nCount_RNA"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"nUMI"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aim1_part1_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"percent.mt"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb120-3"><a href="#cb120-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb120-4"><a href="#cb120-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"% mitochondrial transcripts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"nFeature_RNA"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"nGenes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aim1_part1_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"Phase"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
-<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
-<span id="cb121-3"><a href="#cb121-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
-<span id="cb121-4"><a href="#cb121-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"cell cycle"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"percent.ribo"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"% ribosomal transcripts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aim1_part1_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"percent.mt"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"% mitochondrial transcripts"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDimPlot</span>(ss_e107, <span class="st">"Phase"</span>, <span class="at">reduction.use=</span><span class="st">"umap"</span>,</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">"STARsolo2.7.10b_ensembl107"</span>,</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sub=</span><span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.title=</span><span class="st">"cell cycle"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part1_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The plots above suggests that the clusters-of-interest 2 and 19 vary from each other by cell cycle phase, and perhaps by subtle differences in the other metrics. This is something to bear in mind when interpreting results based on this clustering.</p>
@@ -1065,8 +867,8 @@ singlet doublet
 <section id="packages" class="level3">
 <h3 class="anchored" data-anchor-id="packages">Packages</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">"table"</span>, <span class="at">out.dir =</span> <span class="st">"."</span>)</span>
-<span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">"table"</span>, <span class="at">out.dir =</span> <span class="st">"."</span>)</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1114,7 +916,7 @@ singlet doublet
 </tr>
 <tr class="even">
 <td style="text-align: left;">reticulate</td>
-<td style="text-align: left;">1.39.0</td>
+<td style="text-align: left;">1.40.0</td>
 <td style="text-align: left;"><span class="citation" data-cites="reticulate">Ushey, Allaire, and Tang (<a href="#ref-reticulate" role="doc-biblioref">2024</a>)</span></td>
 </tr>
 <tr class="odd">
@@ -1152,13 +954,14 @@ singlet doublet
 <ul>
 <li>Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, &amp; Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <a href="https://doi.org/10.5281/zenodo.5826256" class="uri">https://doi.org/10.5281/zenodo.5826256</a>.</li>
 <li>I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. <em>Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry</em>. eLife (2019), e47376, 8, <a href="https://doi.org/10.7554/eLife.47376" class="uri">https://doi.org/10.7554/eLife.47376</a></li>
+<li><a href="https://www.umassmed.edu/lawson-lab/reagents/zebrafish-transcriptome/">Lawson Lab zebrafish transcriptome annotation</a></li>
 </ul>
 </section>
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.4.2 (2024-10-31)
 Platform: x86_64-pc-linux-gnu
@@ -1197,7 +1000,7 @@ other attached packages:
 [21] tibble_3.2.1                ggplot2_3.5.1              
 [23] tidyverse_2.0.0             Seurat_5.1.0               
 [25] SeuratObject_5.0.2          sp_2.1-4                   
-[27] reticulate_1.39.0           BiocParallel_1.38.0        
+[27] reticulate_1.40.0           BiocParallel_1.38.0        
 [29] future_1.34.0              
 
 loaded via a namespace (and not attached):
@@ -1211,72 +1014,72 @@ loaded via a namespace (and not attached):
  [15] limma_3.60.6              plotly_4.10.4            
  [17] rmarkdown_2.29            yaml_2.3.10              
  [19] metapod_1.12.0            httpuv_1.6.15            
- [21] glmGamPoi_1.16.0          sctransform_0.4.1        
- [23] spam_2.11-0               spatstat.sparse_3.1-0    
- [25] cowplot_1.1.3             pbapply_1.7-2            
- [27] RColorBrewer_1.1-3        abind_1.4-8              
- [29] zlibbioc_1.50.0           Rtsne_0.17               
- [31] RCurl_1.98-1.16           rappdirs_0.3.3           
- [33] GenomeInfoDbData_1.2.12   ggrepel_0.9.6            
- [35] irlba_2.3.5.1             listenv_0.9.1            
- [37] spatstat.utils_3.1-1      pheatmap_1.0.12          
- [39] goftest_1.2-3             RSpectra_0.16-2          
- [41] dqrng_0.4.1               spatstat.random_3.3-2    
- [43] fitdistrplus_1.2-1        parallelly_1.39.0        
- [45] DelayedMatrixStats_1.26.0 leiden_0.4.3.1           
- [47] codetools_0.2-20          DelayedArray_0.30.1      
- [49] scuttle_1.14.0            tidyselect_1.2.1         
- [51] UCSC.utils_1.0.0          farver_2.1.2             
- [53] viridis_0.6.5             ScaledMatrix_1.12.0      
- [55] spatstat.explore_3.3-3    GenomicAlignments_1.40.0 
- [57] jsonlite_1.8.9            BiocNeighbors_1.22.0     
- [59] progressr_0.15.0          scater_1.32.1            
- [61] ggridges_0.5.6            survival_3.7-0           
- [63] tools_4.4.2               ica_1.0-3                
- [65] Rcpp_1.0.13-1             glue_1.8.0               
- [67] gridExtra_2.3             SparseArray_1.4.8        
- [69] xfun_0.49                 withr_3.0.2              
- [71] fastmap_1.2.0             bluster_1.14.0           
- [73] fansi_1.0.6               rsvd_1.0.5               
- [75] digest_0.6.37             timechange_0.3.0         
- [77] R6_2.5.1                  mime_0.12                
- [79] colorspace_2.1-1          scattermore_1.2          
- [81] tensor_1.5                spatstat.data_3.1-2      
- [83] utf8_1.2.4                generics_0.1.3           
- [85] renv_1.0.11               data.table_1.16.2        
- [87] rtracklayer_1.64.0        httr_1.4.7               
- [89] htmlwidgets_1.6.4         S4Arrays_1.4.1           
- [91] uwot_0.2.2                pkgconfig_2.0.3          
- [93] gtable_0.3.6              lmtest_0.9-40            
- [95] XVector_0.44.0            htmltools_0.5.8.1        
- [97] dotCall64_1.2             scales_1.3.0             
- [99] png_0.1-8                 spatstat.univar_3.1-1    
-[101] scran_1.32.0              knitr_1.49               
-[103] rstudioapi_0.17.1         rjson_0.2.23             
-[105] tzdb_0.4.0                reshape2_1.4.4           
-[107] curl_6.0.0                nlme_3.1-165             
-[109] zoo_1.8-12                KernSmooth_2.23-24       
-[111] vipor_0.4.7               parallel_4.4.2           
-[113] miniUI_0.1.1.1            restfulr_0.0.15          
-[115] pillar_1.9.0              grid_4.4.2               
-[117] vctrs_0.6.5               RANN_2.6.2               
-[119] promises_1.3.0            BiocSingular_1.20.0      
-[121] beachmat_2.20.0           xtable_1.8-4             
-[123] cluster_2.1.6             beeswarm_0.4.0           
-[125] evaluate_1.0.1            locfit_1.5-9.10          
-[127] Rsamtools_2.20.0          cli_3.6.3                
-[129] compiler_4.4.2            rlang_1.1.4              
-[131] crayon_1.5.3              future.apply_1.11.3      
-[133] labeling_0.4.3            ggbeeswarm_0.7.2         
-[135] plyr_1.8.9                stringi_1.8.4            
-[137] viridisLite_0.4.2         deldir_2.0-4             
-[139] Biostrings_2.72.1         munsell_0.5.1            
-[141] lazyeval_0.2.2            spatstat.geom_3.3-3      
-[143] Matrix_1.7-0              RcppHNSW_0.6.0           
-[145] hms_1.1.3                 patchwork_1.3.0          
-[147] sparseMatrixStats_1.16.0  statmod_1.5.0            
-[149] shiny_1.9.1               ROCR_1.0-11              
-[151] igraph_2.1.1              xgboost_1.7.8.1          </code></pre>
+ [21] sctransform_0.4.1         spam_2.11-0              
+ [23] spatstat.sparse_3.1-0     cowplot_1.1.3            
+ [25] pbapply_1.7-2             RColorBrewer_1.1-3       
+ [27] abind_1.4-8               zlibbioc_1.50.0          
+ [29] Rtsne_0.17                RCurl_1.98-1.16          
+ [31] rappdirs_0.3.3            GenomeInfoDbData_1.2.12  
+ [33] ggrepel_0.9.6             irlba_2.3.5.1            
+ [35] listenv_0.9.1             spatstat.utils_3.1-1     
+ [37] pheatmap_1.0.12           goftest_1.2-3            
+ [39] RSpectra_0.16-2           dqrng_0.4.1              
+ [41] spatstat.random_3.3-2     fitdistrplus_1.2-1       
+ [43] parallelly_1.39.0         DelayedMatrixStats_1.26.0
+ [45] leiden_0.4.3.1            codetools_0.2-20         
+ [47] DelayedArray_0.30.1       scuttle_1.14.0           
+ [49] tidyselect_1.2.1          UCSC.utils_1.0.0         
+ [51] farver_2.1.2              viridis_0.6.5            
+ [53] ScaledMatrix_1.12.0       spatstat.explore_3.3-3   
+ [55] GenomicAlignments_1.40.0  jsonlite_1.8.9           
+ [57] BiocNeighbors_1.22.0      progressr_0.15.0         
+ [59] scater_1.32.1             ggridges_0.5.6           
+ [61] survival_3.7-0            tools_4.4.2              
+ [63] ica_1.0-3                 Rcpp_1.0.13-1            
+ [65] glue_1.8.0                gridExtra_2.3            
+ [67] SparseArray_1.4.8         xfun_0.49                
+ [69] withr_3.0.2               fastmap_1.2.0            
+ [71] bluster_1.14.0            fansi_1.0.6              
+ [73] digest_0.6.37             rsvd_1.0.5               
+ [75] timechange_0.3.0          R6_2.5.1                 
+ [77] mime_0.12                 colorspace_2.1-1         
+ [79] scattermore_1.2           tensor_1.5               
+ [81] spatstat.data_3.1-2       utf8_1.2.4               
+ [83] generics_0.1.3            renv_1.0.11              
+ [85] data.table_1.16.2         rtracklayer_1.64.0       
+ [87] httr_1.4.7                htmlwidgets_1.6.4        
+ [89] S4Arrays_1.4.1            uwot_0.2.2               
+ [91] pkgconfig_2.0.3           gtable_0.3.6             
+ [93] lmtest_0.9-40             XVector_0.44.0           
+ [95] htmltools_0.5.8.1         dotCall64_1.2            
+ [97] scales_1.3.0              png_0.1-8                
+ [99] spatstat.univar_3.1-1     scran_1.32.0             
+[101] knitr_1.49                rstudioapi_0.17.1        
+[103] rjson_0.2.23              tzdb_0.4.0               
+[105] reshape2_1.4.4            curl_6.0.1               
+[107] nlme_3.1-165              zoo_1.8-12               
+[109] KernSmooth_2.23-24        vipor_0.4.7              
+[111] parallel_4.4.2            miniUI_0.1.1.1           
+[113] restfulr_0.0.15           pillar_1.9.0             
+[115] grid_4.4.2                vctrs_0.6.5              
+[117] RANN_2.6.2                promises_1.3.0           
+[119] BiocSingular_1.20.0       beachmat_2.20.0          
+[121] xtable_1.8-4              cluster_2.1.6            
+[123] beeswarm_0.4.0            evaluate_1.0.1           
+[125] locfit_1.5-9.10           cli_3.6.3                
+[127] compiler_4.4.2            Rsamtools_2.20.0         
+[129] rlang_1.1.4               crayon_1.5.3             
+[131] future.apply_1.11.3       labeling_0.4.3           
+[133] ggbeeswarm_0.7.2          plyr_1.8.9               
+[135] stringi_1.8.4             viridisLite_0.4.2        
+[137] deldir_2.0-4              munsell_0.5.1            
+[139] Biostrings_2.72.1         lazyeval_0.2.2           
+[141] spatstat.geom_3.3-3       Matrix_1.7-0             
+[143] RcppHNSW_0.6.0            hms_1.1.3                
+[145] patchwork_1.3.0           sparseMatrixStats_1.16.0 
+[147] statmod_1.5.0             shiny_1.9.1              
+[149] ROCR_1.0-11               igraph_2.1.1             
+[151] xgboost_1.7.8.1          </code></pre>
 </div>
 </div>
 

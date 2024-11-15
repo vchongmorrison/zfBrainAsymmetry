@@ -59,7 +59,7 @@ set.seed(584)
 
 To empirically determine the robustness of called clusters downstream, reads were pre-processed using two different mapper/gene annotation combinations:
 
--   10X Genomics CellRanger v7.1.0 + Lawson Lab annotation (Lawson et al., 2020)
+-   10X Genomics CellRanger v7.1.0 + Lawson Lab annotation (Lawson *et al*., 2020)
 
     -   This pipeline maps unique reads only:
 
@@ -120,7 +120,7 @@ path1 <- "/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/p
 path2 <- "/home/chongmorrison/Dropbox/VCM-StarBook/ResearchProjects/parapineal/preprocessing/foxd3flhGFP/starsolo2.7.10b_ens107/filtered_EM"
 ```
 
-**Create `Seurat` objects and check nos. of cells and genes**
+**Create `Seurat` objects and check number of cells and genes :**
 
 ```{r}
 cr_law <- CreateSeuratObject(Read10X(path1), project="CellRanger-Lawson")
@@ -184,7 +184,7 @@ ss_e107$percent.ribo <- PercentageFeatureSet(ss_e107, pattern ="^rps") +
 ```{r}
 cell_cycle_genes <- read.csv(text = RCurl::getURL("https://raw.githubusercontent.com/hbc/tinyatlas/master/cell_cycle/Danio_rerio.csv"))
 # call in Ensembl annotations
-annotations <- read.csv('./ensembl_annotations.csv', header=TRUE, row.names=1)
+annotations <- read.csv('./annotations/ensembl_annotations.csv', header=TRUE, row.names=1)
 # make a dataframe of cell cycle markers
 cell_cycle_markers <- dplyr::left_join(cell_cycle_genes, annotations, by = c("geneID" = "gene_id"))
 
@@ -254,7 +254,7 @@ There was clear variation being driven by cell cycle phase. This was expected gi
 
 Altogether these inform the `SCTransform` parameters, where `CC.Difference` is used instead of `Phase` to maintain the separation between progenitors and non-cycling cells :
 
-```{r}
+```{r eval=FALSE}
 DefaultAssay(cr_law) <- "RNA"
 cr_law <- SCTransform(cr_law,
                      vars.to.regress = c("percent.ribo", "percent.mt", "CC.Difference"),
@@ -270,19 +270,26 @@ ss_e107 <- SCTransform(ss_e107,
 
 As clustering is more an art than exact science, I empirically determined the main parameters - `algorithm`, `npcs`, `k.param`, and `resolution` - and compared the result between the two pre-processing workflows/`Seurat` objects.
 
-**'Picking' the number of Principal Component dimensions `npcs`**
+```{r include=FALSE}
+load("../foxd3flh-5k_cr-law.RData")
+load("../foxd3flh-5k_ss-e107.RData")
+```
+
+**'Picking' the number of Principal Component dimensions `npcs` :**
 
 ```{r}
+DefaultAssay(cr_law) <- "SCT"
 cr_law <- RunPCA(cr_law, npcs = 60)
 ElbowPlot(cr_law, ndims=60, reduction="pca")
 
+DefaultAssay(ss_e107) <- "SCT"
 ss_e107 <- RunPCA(ss_e107, npcs = 60)
 ElbowPlot(ss_e107, ndims=60, reduction="pca")
 ```
 
 Based on the elbow plots above I went with `npcs = 40`. `k.param` is kept at the default `20`, and the Leiden `algorithm = 4` is selected.
 
-```{r warning=FALSE}
+```{r eval=FALSE}
 cr_law <- RunPCA(cr_law, npcs = 40) %>%
   FindNeighbors(dims = 1:40) %>%
   FindClusters(algorithm = 4, resolution = c(1.0), method="igraph") %>%
@@ -294,22 +301,30 @@ ss_e107 <- RunPCA(ss_e107, npcs = 40) %>%
   RunUMAP(dims = 1:40, n.neighbors = 20) # to match default k.param=20
 ```
 
-**Save `Seurat` objects to load later without re-running all the above:**
+**Save `Seurat` objects to load later without re-running all the above :**
 
-```{r}
+```{r eval=FALSE}
 # Set DefaultAssay (and slot) and save objects for visualisation
 DefaultAssay(cr_law) <- "RNA"
 cr_law <- NormalizeData(cr_law)
 DefaultAssay(ss_e107) <- "RNA"
 ss_e107 <- NormalizeData(ss_e107)
 
-save(cr_law, file="./foxd3flh-5k_cr-law.RData")
-save(ss_e107, file="./foxd3flh-5k_ss-e107.RData")
+save(cr_law, file="../foxd3flh-5k_cr-law.RData")
+save(ss_e107, file="../foxd3flh-5k_ss-e107.RData")
 ```
 
 ## Visualise and explore clustering results with `dittoSeq`
 
 ### UMAP reduction
+
+```{r}
+# Reset DefaultAssay and Normalise counts for visualisation
+DefaultAssay(cr_law) <- "RNA"
+cr_law <- NormalizeData(cr_law)
+DefaultAssay(ss_e107) <- "RNA"
+ss_e107 <- NormalizeData(ss_e107)
+```
 
 ```{r}
 dittoDimPlot(cr_law, "SCT_snn_res.1", reduction.use="umap",
@@ -489,6 +504,7 @@ knitr::kable(pkgs)
 
 -   Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, & Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <https://doi.org/10.5281/zenodo.5826256>.
 -   I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. *Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry*. eLife (2019), e47376, 8, <https://doi.org/10.7554/eLife.47376>
+-   [Lawson Lab zebrafish transcriptome annotation](https://www.umassmed.edu/lawson-lab/reagents/zebrafish-transcriptome/)
 
 ## Session Info
 

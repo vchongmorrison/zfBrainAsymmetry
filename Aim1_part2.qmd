@@ -1,0 +1,199 @@
+---
+title: "The parapineal 'cell type' - Part 2"
+---
+
+## Identification of epiphysis cells
+
+### **Premise**
+
+In the previous [section](Aim1_part1.qmd), two putative epiphysis cell clusters were identified in a \~30-32 hpf scRNA-seq dataset. Can this result be replicated in the embryo? In other words, how likely are the inferred clusters to be from the epiphysis?
+
+### Experimental design
+
+MERFISH (**M**ultiplexed **E**rror-**R**obust **F**luorescence **i**n **s**itu **H**ybridisation) is an imaging-based approach capable of measuring RNA transcripts at single cell resolution. Unlike the destructive nature of scRNA-seq, *in vivo* spatial information (where each measured transcript is located in the sample) is preserved. [Vizgen MERSCOPE](https://vizgen.com/technology/) offers a commercial platform to perform MERFISH and was employed for this study.
+
+![Schematic of experiment design. A detailed sample preparation protocol can be found on <https://vchongmorrison.github.io/protocols/>](./figures/merscope-experiment.png){fig-align="center"}
+
+As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore \>1 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (*sox1a* / *bsx* ++), or 1 or 2 planes later towards the pineal region only (*bsx* +).
+
+The final dataset consists of x2 sections each of x2 biological replicates/embryos. For sake of brevity, each section is hereafter named 'anterior' or 'posterior' depending on their relative location within the embryo they originated from.
+
+### Initialise R environment
+
+[Session](session.qmd)
+
+```{r include=FALSE}
+##### Set libPaths and memory/parallel cores usage #####
+.libPaths(c("/home/chongmorrison/R/x86_64-pc-linux-gnu-library/4.3",
+            "/home/chongmorrison/R/4.4.1-Bioc3.19"))
+.libPaths() # check .libPaths
+
+options(Ncpus = 12) # adjust no. of cores for base R
+getOption("Ncpus", 1L)
+
+library(future)
+options(future.globals.maxSize = 2000 * 1024^2) # adjust limit of allowable object size = 2G
+# *could* enable parallelisation i.e. workers > 1, for Seurat etc. but breaks Python processes currently...
+future::plan("multisession", workers = 1) # or use "sequential" mode
+future::plan()
+
+library(BiocParallel) # for parallelising Bioconductor packages
+
+##### Import analysis packages #####
+# Potential bug: Python environment needs to be activated before loading Seurat
+library(reticulate)
+conda_list() # check available conda environments
+use_condaenv("singlecell-scHPF", required=TRUE) # has leidenalg etc. installed
+# R packages
+library(Seurat)
+library(tidyverse)
+library(dittoSeq)
+library(SingleCellExperiment)
+library(grateful)
+
+# set seed for reproducibility of random sampling
+set.seed(584)
+```
+
+## MERSCOPE panel design
+
+Vizgen offers the option to build custom gene panels of up to 140, 300, 500 or 1000 genes at increasingly extortionate prices. Since the aim of the MERFISH experiment was to query the two putative scRNA-seq epiphysis clusters `2` and `19` from the previously analysed `ss_e107` `SeuratObject`, a 140 gene panel was designed based on this result.
+
+```{r}
+load("../foxd3flh-5k_ss-e107.RData")
+```
+
+```{r}
+# Genes that are well known to be expressed in the epiphysis
+markers <- c("bsx", "noto", "otx5")
+dittoPlotVarsAcrossGroups(ss_e107, markers, group.by = "SCT_snn_res.1",
+                          vlnplot.lineweight = 0.2, jitter.size = 0.3,
+                          main = "ss_e107 (mean of bsx + noto + otx5)")
+```
+
+### Call markers
+
+There is an overwhelming number of methods in the scientific literature for scRNA-seq marker identification. Depending on your goal(s) for performing marker identification, some approaches might be better suited than others.
+
+In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run `FindMarkers` (implemented in `Seurat`) on clusters 2 and 19.
+
+```{r}
+cl2.de.markers <- FindMarkers(ss_e107, ident.1 = "2", ident.2 = NULL, only.pos = TRUE, assay = "RNA")
+nrow(cl2.de.markers)
+# Add new column of gene IDs called 'markers'
+cl2.de.markers$markers <- rownames(cl2.de.markers)
+head(cl2.de.markers, 10)
+```
+
+```{r}
+cl19.de.markers <- FindMarkers(ss_e107, ident.1 = "19", ident.2 = NULL, only.pos = TRUE, assay = "RNA")
+nrow(cl19.de.markers)
+# Add new column of gene IDs called 'markers'
+cl19.de.markers$markers <- rownames(cl19.de.markers)
+head(cl19.de.markers, 10)
+```
+
+**Using the default cut-offs resulted in \~7 and 11k of markers.** Clearly these need to be significantly narrowed down to build a 140 gene panel.
+
+### Cross-reference with ZFIN
+
+This was achieved by mining [ZFIN gene expression data](session.qmd#Zebrafish%20Information%20Network%20(ZFIN)) for called markers whose expression were detected in the `epiphysis`. Of course, this is not fool-proof and heavily depends on the accuracy and completion of ZFIN's annotation. There may be many genes whose expression in the epiphysis were not annotated as such and therefore will be missed (more likely), and *vice versa* (exception rather than rule).
+
+Follow the link above for the code to pull ZFIN data-of-interest into a dataframe `gex_ISH` used below :
+
+```{r include=FALSE}
+gex <- read.delim(url("https://zfin.org/downloads/wildtype-expression_fish.txt"), header = FALSE, sep ="\t")
+head(gex, 5)
+
+# Add column IDs (based on Column Headers in the Downloads page above)
+colnames(gex) <- c("GeneID", "GeneSymbol","FishName","SuperStructureID","SuperStructureName",
+                   "SubStructureID","SubStructureName","StartStage","EndStage","Assay",
+                   "AssayMMOID","PublicationID","ProbeID","AntibodyID","FishID")
+gex_ISH <- gex[which(gex$FishName=='WT' | gex$FishName=='AB/TU'), ]
+gex_ISH <- gex_ISH[which(gex_ISH$Assay=='mRNA in situ hybridization'), ]
+gex_ISH <- data.frame(gex_ISH$GeneSymbol, gex_ISH$SuperStructureName)
+colnames(gex_ISH) <- c("GeneSymbol","Structure")
+head(gex_ISH, 10)
+```
+
+```{r}
+# Match every marker with every known WISH-detected Structure
+cl2.de.markers.epiphysis <- left_join(cl2.de.markers, gex_ISH, by = c("markers" = "GeneSymbol"))
+head(cl2.de.markers.epiphysis, 5)
+# Filter for "epiphysis" only
+cl2.de.markers.epiphysis <- distinct(filter(cl2.de.markers.epiphysis, Structure=="epiphysis"))
+head(cl2.de.markers.epiphysis, 5)
+nrow(cl2.de.markers.epiphysis)
+```
+
+```{r}
+# Match every marker with every known WISH-detected Structure
+cl19.de.markers.epiphysis <- left_join(cl19.de.markers, gex_ISH, by = c("markers" = "GeneSymbol"))
+head(cl19.de.markers.epiphysis, 5)
+# Filter for "epiphysis" only
+cl19.de.markers.epiphysis <- distinct(filter(cl19.de.markers.epiphysis, Structure=="epiphysis"))
+head(cl19.de.markers.epiphysis, 5)
+nrow(cl19.de.markers.epiphysis)
+```
+
+This step identifies a significantly more manageable \~100 and 300 candidate genes per cluster for a MERFISH experiment. At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.
+
+-   Known genes in literature/previous work
+
+-   GABA
+
+-   'Novel' pickings from cluster 2 and 19 gene lists
+
+```{r}
+# Save gene lists to file
+write.table(data.frame(cl2.de.markers.epiphysis$markers), file="./annotations/cl2_de_markers_epiphysis.txt", row.names=FALSE, quote=FALSE)
+write.table(data.frame(cl19.de.markers.epiphysis$markers), file="./annotations/cl19_de_markers_epiphysis.txt", row.names=FALSE, quote=FALSE)
+```
+
+**140 Gene Panel for MERSCOPE - FINAL :**
+
+```{r}
+merscope <- read.csv('./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv', header=TRUE, row.names=1)
+head(merscope, 10) # print first 10 rows only
+```
+
+## Pre-processing of MERSCOPE data
+
+MERSCOPE Visualizer is a free software provided by Vizgen as an out-of-box solution to explore results.
+
+### Cell segmentation
+
+in progress
+
+## Clustering of MERSCOPE data
+
+in progress
+
+------------------------------------------------------------------------
+
+## Summary notes for Aim 1 - Part 2
+
+1.  in progress
+
+2.  in progress
+
+------------------------------------------------------------------------
+
+## References
+
+### Packages
+
+```{r}
+pkgs <- cite_packages(output = "table", out.dir = ".")
+knitr::kable(pkgs)
+```
+
+### Previous work
+
+-   I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. *Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry*. eLife (2019), e47376, 8, <https://doi.org/10.7554/eLife.47376>
+
+## Session Info
+
+```{r}
+sessionInfo()
+```

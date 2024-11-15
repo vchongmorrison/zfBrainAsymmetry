@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>zfBrainAsymmetry - The parapineal ‘cell type’ - Part 2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">zfBrainAsymmetry</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./session.html" rel="" target="">
+ <span class="menu-text">Session</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-aims" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+ <span class="menu-text">Aims</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-aims">    
+        <li>
+    <a class="dropdown-item" href="./Aim1_part1.html" rel="" target="">
+ <span class="dropdown-text">The parapineal ‘cell type’ - Part 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aim1_part2.html" rel="" target="">
+ <span class="dropdown-text">The parapineal ‘cell type’ - Part 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./Aim2.html" rel="" target="">
+ <span class="dropdown-text">The sox1a ‘phenotype’</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#identification-of-epiphysis-cells" id="toc-identification-of-epiphysis-cells" class="nav-link active" data-scroll-target="#identification-of-epiphysis-cells">Identification of epiphysis cells</a>
+  <ul class="collapse">
+  <li><a href="#premise" id="toc-premise" class="nav-link" data-scroll-target="#premise"><strong>Premise</strong></a></li>
+  <li><a href="#experimental-design" id="toc-experimental-design" class="nav-link" data-scroll-target="#experimental-design">Experimental design</a></li>
+  <li><a href="#initialise-r-environment" id="toc-initialise-r-environment" class="nav-link" data-scroll-target="#initialise-r-environment">Initialise R environment</a></li>
+  </ul></li>
+  <li><a href="#merscope-panel-design" id="toc-merscope-panel-design" class="nav-link" data-scroll-target="#merscope-panel-design">MERSCOPE panel design</a>
+  <ul class="collapse">
+  <li><a href="#call-markers" id="toc-call-markers" class="nav-link" data-scroll-target="#call-markers">Call markers</a></li>
+  <li><a href="#cross-reference-with-zfin" id="toc-cross-reference-with-zfin" class="nav-link" data-scroll-target="#cross-reference-with-zfin">Cross-reference with ZFIN</a></li>
+  </ul></li>
+  <li><a href="#pre-processing-of-merscope-data" id="toc-pre-processing-of-merscope-data" class="nav-link" data-scroll-target="#pre-processing-of-merscope-data">Pre-processing of MERSCOPE data</a>
+  <ul class="collapse">
+  <li><a href="#cell-segmentation" id="toc-cell-segmentation" class="nav-link" data-scroll-target="#cell-segmentation">Cell segmentation</a></li>
+  </ul></li>
+  <li><a href="#clustering-of-merscope-data" id="toc-clustering-of-merscope-data" class="nav-link" data-scroll-target="#clustering-of-merscope-data">Clustering of MERSCOPE data</a></li>
+  <li><a href="#summary-notes-for-aim-1---part-2" id="toc-summary-notes-for-aim-1---part-2" class="nav-link" data-scroll-target="#summary-notes-for-aim-1---part-2">Summary notes for Aim 1 - Part 2</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
+  <ul class="collapse">
+  <li><a href="#packages" id="toc-packages" class="nav-link" data-scroll-target="#packages">Packages</a></li>
+  <li><a href="#previous-work" id="toc-previous-work" class="nav-link" data-scroll-target="#previous-work">Previous work</a></li>
+  </ul></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The parapineal ‘cell type’ - Part 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="identification-of-epiphysis-cells" class="level2">
+<h2 class="anchored" data-anchor-id="identification-of-epiphysis-cells">Identification of epiphysis cells</h2>
+<section id="premise" class="level3">
+<h3 class="anchored" data-anchor-id="premise"><strong>Premise</strong></h3>
+<p>In the previous <a href="./Aim1_part1.html">section</a>, two putative epiphysis cell clusters were identified in a ~30-32 hpf scRNA-seq dataset. Can this result be replicated in the embryo? In other words, how likely are the inferred clusters to be from the epiphysis?</p>
+</section>
+<section id="experimental-design" class="level3">
+<h3 class="anchored" data-anchor-id="experimental-design">Experimental design</h3>
+<p>MERFISH (<strong>M</strong>ultiplexed <strong>E</strong>rror-<strong>R</strong>obust <strong>F</strong>luorescence <strong>i</strong>n <strong>s</strong>itu <strong>H</strong>ybridisation) is an imaging-based approach capable of measuring RNA transcripts at single cell resolution. Unlike the destructive nature of scRNA-seq, <em>in vivo</em> spatial information (where each measured transcript is located in the sample) is preserved. <a href="https://vizgen.com/technology/">Vizgen MERSCOPE</a> offers a commercial platform to perform MERFISH and was employed for this study.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/merscope-experiment.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Schematic of experiment design. A detailed sample preparation protocol can be found on <a href="https://vchongmorrison.github.io/protocols/" class="uri">https://vchongmorrison.github.io/protocols/</a></figcaption>
+</figure>
+</div>
+<p>As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore &gt;1 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (<em>sox1a</em> / <em>bsx</em> ++), or 1 or 2 planes later towards the pineal region only (<em>bsx</em> +).</p>
+<p>The final dataset consists of x2 sections each of x2 biological replicates/embryos. For sake of brevity, each section is hereafter named ‘anterior’ or ‘posterior’ depending on their relative location within the embryo they originated from.</p>
+</section>
+<section id="initialise-r-environment" class="level3">
+<h3 class="anchored" data-anchor-id="initialise-r-environment">Initialise R environment</h3>
+<p><a href="./session.html">Session</a></p>
+</section>
+</section>
+<section id="merscope-panel-design" class="level2">
+<h2 class="anchored" data-anchor-id="merscope-panel-design">MERSCOPE panel design</h2>
+<p>Vizgen offers the option to build custom gene panels of up to 140, 300, 500 or 1000 genes at increasingly extortionate prices. Since the aim of the MERFISH experiment was to query the two putative scRNA-seq epiphysis clusters <code>2</code> and <code>19</code> from the previously analysed <code>ss_e107</code> <code>SeuratObject</code>, a 140 gene panel was designed based on this result.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"../foxd3flh-5k_ss-e107.RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes that are well known to be expressed in the epiphysis</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bsx"</span>, <span class="st">"noto"</span>, <span class="st">"otx5"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoPlotVarsAcrossGroups</span>(ss_e107, markers, <span class="at">group.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">vlnplot.lineweight =</span> <span class="fl">0.2</span>, <span class="at">jitter.size =</span> <span class="fl">0.3</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                          <span class="at">main =</span> <span class="st">"ss_e107 (mean of bsx + noto + otx5)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part2_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="call-markers" class="level3">
+<h3 class="anchored" data-anchor-id="call-markers">Call markers</h3>
+<p>There is an overwhelming number of methods in the scientific literature for scRNA-seq marker identification. Depending on your goal(s) for performing marker identification, some approaches might be better suited than others.</p>
+<p>In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run <code>FindMarkers</code> (implemented in <code>Seurat</code>) on clusters 2 and 19.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cl2.de.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(ss_e107, <span class="at">ident.1 =</span> <span class="st">"2"</span>, <span class="at">ident.2 =</span> <span class="cn">NULL</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>, <span class="at">assay =</span> <span class="st">"RNA"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl2.de.markers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6936</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add new column of gene IDs called 'markers'</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers<span class="sc">$</span>markers <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cl2.de.markers)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 p_val avg_log2FC pct.1 pct.2 p_val_adj          markers
+otx1                 0   2.755492 0.938 0.100         0             otx1
+otx2b                0   3.250256 0.810 0.044         0            otx2b
+barhl2               0   3.424283 0.812 0.074         0           barhl2
+si:ch211-69b22.5     0   2.500534 0.808 0.070         0 si:ch211-69b22.5
+otx2a                0   2.263520 0.821 0.097         0            otx2a
+wnt4                 0   2.333122 0.783 0.076         0             wnt4
+fabp11a              0   4.230501 0.968 0.270         0          fabp11a
+zic4                 0   2.272131 0.778 0.096         0             zic4
+sall3b               0   2.044002 0.670 0.055         0           sall3b
+tpbga                0   3.059875 0.655 0.045         0            tpbga</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cl19.de.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(ss_e107, <span class="at">ident.1 =</span> <span class="st">"19"</span>, <span class="at">ident.2 =</span> <span class="cn">NULL</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>, <span class="at">assay =</span> <span class="st">"RNA"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl19.de.markers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11487</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add new column of gene IDs called 'markers'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers<span class="sc">$</span>markers <span class="ot">&lt;-</span> <span class="fu">rownames</span>(cl19.de.markers)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                          p_val avg_log2FC pct.1 pct.2     p_val_adj
+bsx                0.000000e+00   5.801700 0.910 0.030  0.000000e+00
+isl1               0.000000e+00   5.476998 0.888 0.031  0.000000e+00
+six3a              0.000000e+00   6.449455 0.708 0.014  0.000000e+00
+layna              0.000000e+00   6.930195 0.663 0.011  0.000000e+00
+si:ch211-67e16.11  0.000000e+00   5.451577 0.663 0.014  0.000000e+00
+zgc:165481        8.312723e-294   6.072816 0.629 0.013 1.990565e-289
+LHX3              2.098162e-279   8.568871 0.326 0.001 5.024258e-275
+btbd3b            6.471199e-274   4.982485 0.573 0.011 1.549593e-269
+nxph1             3.397695e-248   6.210768 0.742 0.027 8.136121e-244
+skor1b            1.170595e-245   6.371964 0.618 0.017 2.803108e-241
+                            markers
+bsx                             bsx
+isl1                           isl1
+six3a                         six3a
+layna                         layna
+si:ch211-67e16.11 si:ch211-67e16.11
+zgc:165481               zgc:165481
+LHX3                           LHX3
+btbd3b                       btbd3b
+nxph1                         nxph1
+skor1b                       skor1b</code></pre>
+</div>
+</div>
+<p><strong>Using the default cut-offs resulted in ~7 and 11k of markers.</strong> Clearly these need to be significantly narrowed down to build a 140 gene panel.</p>
+</section>
+<section id="cross-reference-with-zfin" class="level3">
+<h3 class="anchored" data-anchor-id="cross-reference-with-zfin">Cross-reference with ZFIN</h3>
+<p>This was achieved by mining <a href="./session.html#Zebrafish Information Network (ZFIN)">ZFIN gene expression data</a> for called markers whose expression were detected in the <code>epiphysis</code>. Of course, this is not fool-proof and heavily depends on the accuracy and completion of ZFIN’s annotation. There may be many genes whose expression in the epiphysis were not annotated as such and therefore will be missed (more likely), and <em>vice versa</em> (exception rather than rule).</p>
+<p>Follow the link above for the code to pull ZFIN data-of-interest into a dataframe <code>gex_ISH</code> used below :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl2.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  p_val avg_log2FC pct.1 pct.2 p_val_adj markers                   Structure
+1     0   2.755492 0.938   0.1         0    otx1  alar plate midbrain region
+2     0   2.755492 0.938   0.1         0    otx1    anterior axial hypoblast
+3     0   2.755492 0.938   0.1         0    otx1                        axis
+4     0   2.755492 0.938   0.1         0    otx1 basal plate midbrain region
+5     0   2.755492 0.938   0.1         0    otx1                diencephalon</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl2.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          p_val avg_log2FC pct.1 pct.2     p_val_adj markers Structure
+1  0.000000e+00   2.755492 0.938 0.100  0.000000e+00    otx1 epiphysis
+2  0.000000e+00   3.250256 0.810 0.044  0.000000e+00   otx2b epiphysis
+3  0.000000e+00   2.263520 0.821 0.097  0.000000e+00   otx2a epiphysis
+4  0.000000e+00   2.333122 0.783 0.076  0.000000e+00    wnt4 epiphysis
+5 4.197046e-284   2.721522 0.959 0.210 1.005025e-279  cldn5a epiphysis</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl2.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 135</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl19.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  p_val avg_log2FC pct.1 pct.2 p_val_adj markers         Structure
+1     0     5.8017  0.91  0.03         0     bsx             brain
+2     0     5.8017  0.91  0.03         0     bsx             brain
+3     0     5.8017  0.91  0.03         0     bsx             brain
+4     0     5.8017  0.91  0.03         0     bsx caudal tuberculum
+5     0     5.8017  0.91  0.03         0     bsx caudal tuberculum</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl19.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          p_val avg_log2FC pct.1 pct.2     p_val_adj markers Structure
+1  0.000000e+00   5.801700 0.910 0.030  0.000000e+00     bsx epiphysis
+2 3.397695e-248   6.210768 0.742 0.027 8.136121e-244   nxph1 epiphysis
+3 2.688572e-217   6.833524 0.337 0.003 6.438054e-213  rcvrn2 epiphysis
+4 9.997499e-179   3.981461 0.865 0.062 2.394001e-174  esrrga epiphysis
+5 4.366307e-176   5.705932 0.404 0.007 1.045556e-171  sall3a epiphysis</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl19.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 302</code></pre>
+</div>
+</div>
+<p>This step identifies a significantly more manageable ~100 and 300 candidate genes per cluster for a MERFISH experiment. At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.</p>
+<ul>
+<li><p>Known genes in literature/previous work</p></li>
+<li><p>GABA</p></li>
+<li><p>‘Novel’ pickings from cluster 2 and 19 gene lists</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save gene lists to file</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl2.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl2_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl19.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl19_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>140 Gene Panel for MERSCOPE - FINAL :</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv'</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="dv">1</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(merscope, <span class="dv">10</span>) <span class="co"># print first 10 rows only</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                        id barcodeType V0001T8B1 V0002T8B1 V0003T8B1 V0004T8B1
+aanat2  ENSDART00000018205     merfish         0         0         1         0
+alcama  ENSDART00000129400     merfish         0         0         0         0
+aldocb  ENSDART00000026766     merfish         0         1         0         1
+arr3a   ENSDART00000078996     merfish         0         0         0         1
+arr3b   ENSDART00000158077     merfish         0         0         0         0
+ascl1a  ENSDART00000056005     merfish         0         0         0         0
+asip2b  ENSDART00000185699     merfish         0         0         0         0
+atp1a3a ENSDART00000104950     merfish         0         0         0         1
+atp1b1b ENSDART00000139387     merfish         0         0         0         0
+atp1b2a ENSDART00000160044     merfish         0         1         0         0
+        V0005T8B1 V0006T8B1 V0007T8B1 V0008T8B1 V0009T8B1 V0010T8B1 V0011T8B1
+aanat2          0         0         0         0         0         0         1
+alcama          0         0         0         0         0         0         0
+aldocb          0         0         0         0         1         0         0
+arr3a           0         0         0         1         0         0         0
+arr3b           1         1         1         0         1         0         0
+ascl1a          0         0         1         0         1         0         0
+asip2b          1         0         1         0         0         0         0
+atp1a3a         0         0         0         0         0         1         1
+atp1b1b         0         0         0         1         0         1         0
+atp1b2a         0         0         0         0         0         0         0
+        V0012T8B1 V0013T8B1 V0014T8B1 V0015T8B1 V0016T8B1 V0017T8B1 V0018T8B1
+aanat2          0         0         0         1         1         0         0
+alcama          0         1         1         1         0         1         0
+aldocb          0         0         0         1         0         0         0
+arr3a           0         0         1         0         0         1         0
+arr3b           0         0         0         0         0         0         0
+ascl1a          0         0         0         1         0         1         0
+asip2b          0         1         0         1         0         0         0
+atp1a3a         0         0         0         0         1         0         0
+atp1b1b         0         1         0         0         0         1         0
+atp1b2a         0         1         0         1         0         0         1</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="pre-processing-of-merscope-data" class="level2">
+<h2 class="anchored" data-anchor-id="pre-processing-of-merscope-data">Pre-processing of MERSCOPE data</h2>
+<p>MERSCOPE Visualizer is a free software provided by Vizgen as an out-of-box solution to explore results.</p>
+<section id="cell-segmentation" class="level3">
+<h3 class="anchored" data-anchor-id="cell-segmentation">Cell segmentation</h3>
+<p>in progress</p>
+</section>
+</section>
+<section id="clustering-of-merscope-data" class="level2">
+<h2 class="anchored" data-anchor-id="clustering-of-merscope-data">Clustering of MERSCOPE data</h2>
+<p>in progress</p>
+<hr>
+</section>
+<section id="summary-notes-for-aim-1---part-2" class="level2">
+<h2 class="anchored" data-anchor-id="summary-notes-for-aim-1---part-2">Summary notes for Aim 1 - Part 2</h2>
+<ol type="1">
+<li><p>in progress</p></li>
+<li><p>in progress</p></li>
+</ol>
+<hr>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="packages" class="level3">
+<h3 class="anchored" data-anchor-id="packages">Packages</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">"table"</span>, <span class="at">out.dir =</span> <span class="st">"."</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: left;">Version</th>
+<th style="text-align: left;">Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">base</td>
+<td style="text-align: left;">4.4.2</td>
+<td style="text-align: left;"><span class="citation" data-cites="base">R Core Team (<a href="#ref-base" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">BiocParallel</td>
+<td style="text-align: left;">1.38.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="BiocPar">(<a href="#ref-BiocPar" role="doc-biblioref"><strong>BiocPar?</strong></a>)</span>….</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dittoSeq</td>
+<td style="text-align: left;">1.16.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="dittoSeq">Bunis et al. (<a href="#ref-dittoSeq" role="doc-biblioref">2020</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">future</td>
+<td style="text-align: left;">1.34.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="RJ-2021-048">Bengtsson (<a href="#ref-RJ-2021-048" role="doc-biblioref">2021</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">knitr</td>
+<td style="text-align: left;">1.49</td>
+<td style="text-align: left;"><span class="citation" data-cites="knitr20">(<a href="#ref-knitr20" role="doc-biblioref"><strong>knitr20?</strong></a>)</span>….</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Matrix</td>
+<td style="text-align: left;">1.7.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="Matrix">Bates, Maechler, and Jagan (<a href="#ref-Matrix" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">RCurl</td>
+<td style="text-align: left;">1.98.1.16</td>
+<td style="text-align: left;"><span class="citation" data-cites="RCurl">Temple Lang (<a href="#ref-RCurl" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">reticulate</td>
+<td style="text-align: left;">1.40.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="reticulate">Ushey, Allaire, and Tang (<a href="#ref-reticulate" role="doc-biblioref">2024</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">rmarkdown</td>
+<td style="text-align: left;">2.29</td>
+<td style="text-align: left;"><span class="citation" data-cites="rmarkdo">(<a href="#ref-rmarkdo" role="doc-biblioref"><strong>rmarkdo?</strong></a>)</span>….</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">scDblFinder</td>
+<td style="text-align: left;">1.18.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="scDblFinder">Germain et al. (<a href="#ref-scDblFinder" role="doc-biblioref">2022</a>)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Seurat</td>
+<td style="text-align: left;">5.1.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="Seurat2">(<a href="#ref-Seurat2" role="doc-biblioref"><strong>Seurat2?</strong></a>)</span>….</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SingleCellExperiment</td>
+<td style="text-align: left;">1.26.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="SingleC">(<a href="#ref-SingleC" role="doc-biblioref"><strong>SingleC?</strong></a>)</span>….</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tidyverse</td>
+<td style="text-align: left;">2.0.0</td>
+<td style="text-align: left;"><span class="citation" data-cites="tidyverse">Wickham et al. (<a href="#ref-tidyverse" role="doc-biblioref">2019</a>)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="previous-work" class="level3">
+<h3 class="anchored" data-anchor-id="previous-work">Previous work</h3>
+<ul>
+<li>I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. <em>Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry</em>. eLife (2019), e47376, 8, <a href="https://doi.org/10.7554/eLife.47376" class="uri">https://doi.org/10.7554/eLife.47376</a></li>
+</ul>
+</section>
+</section>
+<section id="session-info" class="level2">
+<h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>R version 4.4.2 (2024-10-31)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+ [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+ [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Europe/London
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] grateful_0.2.10             SingleCellExperiment_1.26.0
+ [3] SummarizedExperiment_1.34.0 Biobase_2.64.0             
+ [5] GenomicRanges_1.56.2        GenomeInfoDb_1.40.1        
+ [7] IRanges_2.38.1              S4Vectors_0.42.1           
+ [9] BiocGenerics_0.50.0         MatrixGenerics_1.16.0      
+[11] matrixStats_1.4.1           dittoSeq_1.16.0            
+[13] lubridate_1.9.3             forcats_1.0.0              
+[15] stringr_1.5.1               dplyr_1.1.4                
+[17] purrr_1.0.2                 readr_2.1.5                
+[19] tidyr_1.3.1                 tibble_3.2.1               
+[21] ggplot2_3.5.1               tidyverse_2.0.0            
+[23] Seurat_5.1.0                SeuratObject_5.0.2         
+[25] sp_2.1-4                    reticulate_1.40.0          
+[27] BiocParallel_1.38.0         future_1.34.0              
+
+loaded via a namespace (and not attached):
+  [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_1.8.9         
+  [4] magrittr_2.0.3          spatstat.utils_3.1-1    farver_2.1.2           
+  [7] rmarkdown_2.29          zlibbioc_1.50.0         vctrs_0.6.5            
+ [10] ROCR_1.0-11             spatstat.explore_3.3-3  S4Arrays_1.4.1         
+ [13] htmltools_0.5.8.1       SparseArray_1.4.8       sctransform_0.4.1      
+ [16] parallelly_1.39.0       KernSmooth_2.23-24      htmlwidgets_1.6.4      
+ [19] ica_1.0-3               plyr_1.8.9              plotly_4.10.4          
+ [22] zoo_1.8-12              igraph_2.1.1            mime_0.12              
+ [25] lifecycle_1.0.4         pkgconfig_2.0.3         Matrix_1.7-0           
+ [28] R6_2.5.1                fastmap_1.2.0           GenomeInfoDbData_1.2.12
+ [31] fitdistrplus_1.2-1      shiny_1.9.1             digest_0.6.37          
+ [34] colorspace_2.1-1        patchwork_1.3.0         tensor_1.5             
+ [37] RSpectra_0.16-2         irlba_2.3.5.1           labeling_0.4.3         
+ [40] progressr_0.15.0        fansi_1.0.6             spatstat.sparse_3.1-0  
+ [43] timechange_0.3.0        httr_1.4.7              polyclip_1.10-7        
+ [46] abind_1.4-8             compiler_4.4.2          withr_3.0.2            
+ [49] fastDummies_1.7.4       MASS_7.3-61             DelayedArray_0.30.1    
+ [52] rappdirs_0.3.3          tools_4.4.2             lmtest_0.9-40          
+ [55] httpuv_1.6.15           future.apply_1.11.3     goftest_1.2-3          
+ [58] glue_1.8.0              nlme_3.1-165            promises_1.3.0         
+ [61] grid_4.4.2              Rtsne_0.17              cluster_2.1.6          
+ [64] reshape2_1.4.4          generics_0.1.3          gtable_0.3.6           
+ [67] spatstat.data_3.1-2     tzdb_0.4.0              data.table_1.16.2      
+ [70] hms_1.1.3               XVector_0.44.0          utf8_1.2.4             
+ [73] spatstat.geom_3.3-3     RcppAnnoy_0.0.22        ggrepel_0.9.6          
+ [76] RANN_2.6.2              pillar_1.9.0            limma_3.60.6           
+ [79] spam_2.11-0             RcppHNSW_0.6.0          later_1.3.2            
+ [82] splines_4.4.2           lattice_0.22-6          renv_1.0.11            
+ [85] survival_3.7-0          deldir_2.0-4            tidyselect_1.2.1       
+ [88] miniUI_0.1.1.1          pbapply_1.7-2           knitr_1.49             
+ [91] gridExtra_2.3           scattermore_1.2         xfun_0.49              
+ [94] statmod_1.5.0           pheatmap_1.0.12         UCSC.utils_1.0.0       
+ [97] stringi_1.8.4           lazyeval_0.2.2          yaml_2.3.10            
+[100] evaluate_1.0.1          codetools_0.2-20        cli_3.6.3              
+[103] uwot_0.2.2              xtable_1.8-4            munsell_0.5.1          
+[106] Rcpp_1.0.13-1           globals_0.16.3          spatstat.random_3.3-2  
+[109] png_0.1-8               spatstat.univar_3.1-1   parallel_4.4.2         
+[112] presto_1.0.0            dotCall64_1.2           listenv_0.9.1          
+[115] viridisLite_0.4.2       scales_1.3.0            ggridges_0.5.6         
+[118] crayon_1.5.3            leiden_0.4.3.1          rlang_1.1.4            
+[121] cowplot_1.1.3          </code></pre>
+</div>
+</div>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-Matrix" class="csl-entry" role="listitem">
+Bates, Douglas, Martin Maechler, and Mikael Jagan. 2024. <em><span>Matrix</span>: Sparse and Dense Matrix Classes and Methods</em>. <a href="https://CRAN.R-project.org/package=Matrix">https://CRAN.R-project.org/package=Matrix</a>.
+</div>
+<div id="ref-RJ-2021-048" class="csl-entry" role="listitem">
+Bengtsson, Henrik. 2021. <span>“A Unifying Framework for Parallel and Distributed Processing in r Using Futures.”</span> <em>The R Journal</em> 13 (2): 208–27. <a href="https://doi.org/10.32614/RJ-2021-048">https://doi.org/10.32614/RJ-2021-048</a>.
+</div>
+<div id="ref-dittoSeq" class="csl-entry" role="listitem">
+Bunis, Daniel G., Jared Andrews, Gabriela K. Fragiadakis, Trevor D. Burt, and Marina Sirota. 2020. <span>“<span class="nocase">dittoSeq</span>: Universal User-Friendly Single-Cell and Bulk RNA Sequencing Visualization Toolkit.”</span> <em>Bioinformatics</em>, no. 22-23 (December): 5535–36. <a href="https://doi.org/10.1093/bioinformatics/btaa1011">https://doi.org/10.1093/bioinformatics/btaa1011</a>.
+</div>
+<div id="ref-scDblFinder" class="csl-entry" role="listitem">
+Germain, Pierre-Luc, Aaron Lun, Carlos Garcia Meixide, Will Macnair, and Mark D. Robinson. 2022. <span>“Doublet Identification in Single-Cell Sequencing Data Using scDblFinder.”</span> <em>F1000research</em>. <a href="https://doi.org/10.12688/f1000research.73600.2">https://doi.org/10.12688/f1000research.73600.2</a>.
+</div>
+<div id="ref-base" class="csl-entry" role="listitem">
+R Core Team. 2024. <em><span>R</span>: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-RCurl" class="csl-entry" role="listitem">
+Temple Lang, Duncan. 2024. <em><span>RCurl</span>: General Network (HTTP/FTP/...) Client Interface for r</em>. <a href="https://CRAN.R-project.org/package=RCurl">https://CRAN.R-project.org/package=RCurl</a>.
+</div>
+<div id="ref-reticulate" class="csl-entry" role="listitem">
+Ushey, Kevin, JJ Allaire, and Yuan Tang. 2024. <em><span class="nocase">reticulate</span>: Interface to <span>“<span>Python</span>”</span></em>. <a href="https://CRAN.R-project.org/package=reticulate">https://CRAN.R-project.org/package=reticulate</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. <span>“Welcome to the <span class="nocase">tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Copyright 2024, Vanessa Chong-Morrison</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

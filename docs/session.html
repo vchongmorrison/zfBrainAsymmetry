@@ -132,6 +132,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="dropdown-text">The parapineal ‘cell type’ - Part 1</span></a>
   </li>  
         <li>
+    <a class="dropdown-item" href="./Aim1_part2.html" rel="" target="">
+ <span class="dropdown-text">The parapineal ‘cell type’ - Part 2</span></a>
+  </li>  
+        <li>
     <a class="dropdown-item" href="./Aim2.html" rel="" target="">
  <span class="dropdown-text">The sox1a ‘phenotype’</span></a>
   </li>  
@@ -155,6 +159,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#initialise-r-environment" id="toc-initialise-r-environment" class="nav-link active" data-scroll-target="#initialise-r-environment">Initialise R environment</a></li>
   <li><a href="#ensembl-annotations" id="toc-ensembl-annotations" class="nav-link" data-scroll-target="#ensembl-annotations">Ensembl annotations</a></li>
+  <li><a href="#other-databases" id="toc-other-databases" class="nav-link" data-scroll-target="#other-databases">Other databases</a></li>
+  <li><a href="#zebrafish-information-network-zfin" id="toc-zebrafish-information-network-zfin" class="nav-link" data-scroll-target="#zebrafish-information-network-zfin">Zebrafish Information Network (ZFIN)</a>
+  <ul class="collapse">
+  <li><a href="#gene-expression-data" id="toc-gene-expression-data" class="nav-link" data-scroll-target="#gene-expression-data">Gene expression data</a></li>
+  <li><a href="#human-orthologue-information" id="toc-human-orthologue-information" class="nav-link" data-scroll-target="#human-orthologue-information">Human orthologue information</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
   </ul>
@@ -240,18 +250,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> annotations <span class="sc">%&gt;%</span></span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gene_id, gene_name, seq_name, gene_biotype, description)</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Save for later use</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(annotations, <span class="at">file=</span><span class="st">"./ensembl_annotations.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(annotations, <span class="at">file=</span><span class="st">"./annotations/ensembl_annotations.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="other-databases" class="level2">
+<h2 class="anchored" data-anchor-id="other-databases">Other databases</h2>
+</section>
+<section id="zebrafish-information-network-zfin" class="level2">
+<h2 class="anchored" data-anchor-id="zebrafish-information-network-zfin">Zebrafish Information Network (ZFIN)</h2>
+<section id="gene-expression-data" class="level3">
+<h3 class="anchored" data-anchor-id="gene-expression-data">Gene expression data</h3>
+<p>ZFIN has an excellent curation of <em>in vivo</em> expression patterns obtained via WISH (<strong>W</strong>hole-mount <strong>i</strong>n <strong>s</strong>itu <strong>h</strong>ybridisation). As an example, the following code retrieves WISH data for Wild Type condition from <a href="https://zfin.org/downloads" class="uri">https://zfin.org/downloads</a> (‘Gene Expression’ &gt; ‘Expression data for wildtype fish’).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gex <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">url</span>(<span class="st">"https://zfin.org/downloads/wildtype-expression_fish.txt"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex, <span class="dv">5</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Add column IDs (based on Column Headers in the Downloads page above)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gex) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GeneID"</span>, <span class="st">"GeneSymbol"</span>,<span class="st">"FishName"</span>,<span class="st">"SuperStructureID"</span>,<span class="st">"SuperStructureName"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"SubStructureID"</span>,<span class="st">"SubStructureName"</span>,<span class="st">"StartStage"</span>,<span class="st">"EndStage"</span>,<span class="st">"Assay"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"AssayMMOID"</span>,<span class="st">"PublicationID"</span>,<span class="st">"ProbeID"</span>,<span class="st">"AntibodyID"</span>,<span class="st">"FishID"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here, the data is filtered to only include information-of-interest e.g.&nbsp;Structure i.e.&nbsp;anatomical information.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> gex[<span class="fu">which</span>(gex<span class="sc">$</span>FishName<span class="sc">==</span><span class="st">'WT'</span> <span class="sc">|</span> gex<span class="sc">$</span>FishName<span class="sc">==</span><span class="st">'AB/TU'</span>), ]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> gex_ISH[<span class="fu">which</span>(gex_ISH<span class="sc">$</span>Assay<span class="sc">==</span><span class="st">'mRNA in situ hybridization'</span>), ]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(gex_ISH<span class="sc">$</span>GeneSymbol, gex_ISH<span class="sc">$</span>SuperStructureName)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gex_ISH) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GeneSymbol"</span>,<span class="st">"Structure"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex_ISH, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="human-orthologue-information" class="level3">
+<h3 class="anchored" data-anchor-id="human-orthologue-information">Human orthologue information</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ZFIN_human <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">url</span>(<span class="st">"https://zfin.org/downloads/human_orthos.txt"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ZFIN_human, <span class="dv">5</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># retrieve fish and human orthologues</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ZFIN_human <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">data.frame</span>(ZFIN_human<span class="sc">$</span>V2, ZFIN_human<span class="sc">$</span>V4))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add column IDs</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ZFIN_human) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"zf_gene"</span>,<span class="st">"human_gene"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li>Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, &amp; Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <a href="https://doi.org/10.5281/zenodo.5826256" class="uri">https://doi.org/10.5281/zenodo.5826256</a>.</li>
+<li>Peter W Harrison, M Ridwan Amode, Olanrewaju Austine-Orimoloye, Andrey G Azov, Matthieu Barba, If Barnes, Arne Becker, Ruth Bennett, Andrew Berry, Jyothish Bhai, Simarpreet Kaur Bhurji, Sanjay Boddu, Paulo R Branco Lins, Lucy Brooks, Shashank Budhanuru Ramaraju, Lahcen I Campbell, Manuel Carbajo Martinez, Mehrnaz Charkhchi, Kapeel Chougule, Alexander Cockburn, Claire Davidson, Nishadi H De Silva, Kamalkumar Dodiya, Sarah Donaldson, Bilal El Houdaigui, Tamara El Naboulsi, Reham Fatima, Carlos Garcia Giron, Thiago Genez, Dionysios Grigoriadis, Gurpreet S Ghattaoraya, Jose Gonzalez Martinez, Tatiana A Gurbich, Matthew Hardy, Zoe Hollis, Thibaut Hourlier, Toby Hunt, Mike Kay, Vinay Kaykala, Tuan Le, Diana Lemos, Disha Lodha, Diego Marques-Coelho, Gareth Maslen, Gabriela Alejandra Merino, Louisse Paola Mirabueno, Aleena Mushtaq, Syed Nakib Hossain, Denye N Ogeh, Manoj Pandian Sakthivel, Anne Parker, Malcolm Perry, Ivana Piližota, Daniel Poppleton, Irina Prosovetskaia, Shriya Raj, José G Pérez-Silva, Ahamed Imran Abdul Salam, Shradha Saraf, Nuno Saraiva-Agostinho, Dan Sheppard, Swati Sinha, Botond Sipos, Vasily Sitnik, William Stark, Emily Steed, Marie-Marthe Suner, Likhitha Surapaneni, Kyösti Sutinen, Francesca Floriana Tricomi, David Urbina-Gómez, Andres Veidenberg, Thomas A Walsh, Doreen Ware, Elizabeth Wass, Natalie L Willhoft, Jamie Allen, Jorge Alvarez-Jarreta, Marc Chakiachvili, Bethany Flint, Stefano Giorgetti, Leanne Haggerty, Garth R Ilsley, Jon Keatley, Jane E Loveland, Benjamin Moore, Jonathan M Mudge, Guy Naamati, John Tate, Stephen J Trevanion, Andrea Winterbottom, Adam Frankish, Sarah E Hunt, Fiona Cunningham, Sarah Dyer, Robert D Finn, Fergal J Martin, and Andrew D Yates. (Ensembl 2024). Nucleic Acids Res. 2024, 52(D1):D891–D899. <a href="https://doi.org/10.1093/nar/gkad1049">10.1093/nar/gkad1049</a></li>
+<li>Bradford, Y.M., Van Slyke, C.E., Ruzicka, L., Singer, A., Eagle, A., Fashena, D., Howe, D.G., Frazer, K., Martin, R., Paddock, H., Pich, C., Ramachandran, S., Westerfield, M. (2022) Zebrafish Information Network, the knowledgebase for Danio rerio research. Genetics. 220(4). <a href="https://doi.org/10.1093/genetics/iyac016">10.1093/genetics/iyac016</a></li>
 </ul>
 </section>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.4.2 (2024-10-31)
 Platform: x86_64-pc-linux-gnu

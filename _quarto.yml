@@ -1,9 +1,6 @@
 project:
   type: website
   # pre-render: setup.R
-  render:
-    - "*.qmd"
-    - "!Aim1_part1.qmd"
   output-dir: docs
 
 website:
@@ -16,6 +13,7 @@ website:
       - text: "Aims"
         menu:
           - Aim1_part1.qmd
+          - Aim1_part2.qmd
           - Aim2.qmd
   page-navigation: true
   page-footer: "Copyright 2024, Vanessa Chong-Morrison" 
