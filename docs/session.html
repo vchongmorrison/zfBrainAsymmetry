@@ -157,16 +157,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#initialise-r-environment" id="toc-initialise-r-environment" class="nav-link active" data-scroll-target="#initialise-r-environment">Initialise R environment</a></li>
-  <li><a href="#ensembl-annotations" id="toc-ensembl-annotations" class="nav-link" data-scroll-target="#ensembl-annotations">Ensembl annotations</a></li>
-  <li><a href="#other-databases" id="toc-other-databases" class="nav-link" data-scroll-target="#other-databases">Other databases</a></li>
-  <li><a href="#zebrafish-information-network-zfin" id="toc-zebrafish-information-network-zfin" class="nav-link" data-scroll-target="#zebrafish-information-network-zfin">Zebrafish Information Network (ZFIN)</a>
+  <li><a href="#initialise-r-environment" id="toc-initialise-r-environment" class="nav-link active" data-scroll-target="#initialise-r-environment"><span class="header-section-number">1</span> Initialise R environment</a></li>
+  <li><a href="#ensembl-annotations" id="toc-ensembl-annotations" class="nav-link" data-scroll-target="#ensembl-annotations"><span class="header-section-number">2</span> Ensembl annotations</a></li>
+  <li><a href="#other-databases" id="toc-other-databases" class="nav-link" data-scroll-target="#other-databases"><span class="header-section-number">3</span> Other databases</a></li>
+  <li><a href="#zebrafish-information-network-zfin" id="toc-zebrafish-information-network-zfin" class="nav-link" data-scroll-target="#zebrafish-information-network-zfin"><span class="header-section-number">4</span> Zebrafish Information Network (ZFIN)</a>
   <ul class="collapse">
-  <li><a href="#gene-expression-data" id="toc-gene-expression-data" class="nav-link" data-scroll-target="#gene-expression-data">Gene expression data</a></li>
-  <li><a href="#human-orthologue-information" id="toc-human-orthologue-information" class="nav-link" data-scroll-target="#human-orthologue-information">Human orthologue information</a></li>
+  <li><a href="#gene-expression-data" id="toc-gene-expression-data" class="nav-link" data-scroll-target="#gene-expression-data"><span class="header-section-number">4.1</span> Gene expression data</a></li>
+  <li><a href="#human-orthologue-information" id="toc-human-orthologue-information" class="nav-link" data-scroll-target="#human-orthologue-information"><span class="header-section-number">4.2</span> Human orthologue information</a></li>
   </ul></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session Info</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">5</span> References</a></li>
+  <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info"><span class="header-section-number">6</span> Session Info</a></li>
   </ul>
 </nav>
     </div>
@@ -190,8 +190,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="initialise-r-environment" class="level2">
-<h2 class="anchored" data-anchor-id="initialise-r-environment">Initialise R environment</h2>
+<section id="initialise-r-environment" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="initialise-r-environment"><span class="header-section-number">1</span> Initialise R environment</h2>
 <p>I run this at the start of every session as a base.</p>
 <p>n.b.&nbsp;Additional packages are imported in as needed.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Set libPaths and memory/parallel cores usage #####</span></span>
@@ -225,8 +225,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility of random sampling</span></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">584</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="ensembl-annotations" class="level2">
-<h2 class="anchored" data-anchor-id="ensembl-annotations">Ensembl annotations</h2>
+<section id="ensembl-annotations" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="ensembl-annotations"><span class="header-section-number">2</span> Ensembl annotations</h2>
 <p>Useful to have gene annotations in CSV format at hand, which can be called into the analysis anytime.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(AnnotationHub)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ensembldb)</span>
@@ -252,13 +252,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Save for later use</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(annotations, <span class="at">file=</span><span class="st">"./annotations/ensembl_annotations.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="other-databases" class="level2">
-<h2 class="anchored" data-anchor-id="other-databases">Other databases</h2>
+<section id="other-databases" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="other-databases"><span class="header-section-number">3</span> Other databases</h2>
 </section>
-<section id="zebrafish-information-network-zfin" class="level2">
-<h2 class="anchored" data-anchor-id="zebrafish-information-network-zfin">Zebrafish Information Network (ZFIN)</h2>
-<section id="gene-expression-data" class="level3">
-<h3 class="anchored" data-anchor-id="gene-expression-data">Gene expression data</h3>
+<section id="zebrafish-information-network-zfin" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="zebrafish-information-network-zfin"><span class="header-section-number">4</span> Zebrafish Information Network (ZFIN)</h2>
+<section id="gene-expression-data" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="gene-expression-data"><span class="header-section-number">4.1</span> Gene expression data</h3>
 <p>ZFIN has an excellent curation of <em>in vivo</em> expression patterns obtained via WISH (<strong>W</strong>hole-mount <strong>i</strong>n <strong>s</strong>itu <strong>h</strong>ybridisation). As an example, the following code retrieves WISH data for Wild Type condition from <a href="https://zfin.org/downloads" class="uri">https://zfin.org/downloads</a> (‘Gene Expression’ &gt; ‘Expression data for wildtype fish’).</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>gex <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">url</span>(<span class="st">"https://zfin.org/downloads/wildtype-expression_fish.txt"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex, <span class="dv">5</span>)</span>
@@ -274,8 +274,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gex_ISH) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GeneSymbol"</span>,<span class="st">"Structure"</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex_ISH, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="human-orthologue-information" class="level3">
-<h3 class="anchored" data-anchor-id="human-orthologue-information">Human orthologue information</h3>
+<section id="human-orthologue-information" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="human-orthologue-information"><span class="header-section-number">4.2</span> Human orthologue information</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ZFIN_human <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">url</span>(<span class="st">"https://zfin.org/downloads/human_orthos.txt"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ZFIN_human, <span class="dv">5</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># retrieve fish and human orthologues</span></span>
@@ -284,16 +284,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ZFIN_human) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"zf_gene"</span>,<span class="st">"human_gene"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+<section id="references" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="references"><span class="header-section-number">5</span> References</h2>
 <ul>
 <li>Mary Piper, Meeta Mistry, Jihe Liu, William Gammerdinger, &amp; Radhika Khetani. (2022, January 6). hbctraining/scRNA-seq_online: scRNA-seq Lessons from HCBC (first release). Zenodo. <a href="https://doi.org/10.5281/zenodo.5826256" class="uri">https://doi.org/10.5281/zenodo.5826256</a>.</li>
 <li>Peter W Harrison, M Ridwan Amode, Olanrewaju Austine-Orimoloye, Andrey G Azov, Matthieu Barba, If Barnes, Arne Becker, Ruth Bennett, Andrew Berry, Jyothish Bhai, Simarpreet Kaur Bhurji, Sanjay Boddu, Paulo R Branco Lins, Lucy Brooks, Shashank Budhanuru Ramaraju, Lahcen I Campbell, Manuel Carbajo Martinez, Mehrnaz Charkhchi, Kapeel Chougule, Alexander Cockburn, Claire Davidson, Nishadi H De Silva, Kamalkumar Dodiya, Sarah Donaldson, Bilal El Houdaigui, Tamara El Naboulsi, Reham Fatima, Carlos Garcia Giron, Thiago Genez, Dionysios Grigoriadis, Gurpreet S Ghattaoraya, Jose Gonzalez Martinez, Tatiana A Gurbich, Matthew Hardy, Zoe Hollis, Thibaut Hourlier, Toby Hunt, Mike Kay, Vinay Kaykala, Tuan Le, Diana Lemos, Disha Lodha, Diego Marques-Coelho, Gareth Maslen, Gabriela Alejandra Merino, Louisse Paola Mirabueno, Aleena Mushtaq, Syed Nakib Hossain, Denye N Ogeh, Manoj Pandian Sakthivel, Anne Parker, Malcolm Perry, Ivana Piližota, Daniel Poppleton, Irina Prosovetskaia, Shriya Raj, José G Pérez-Silva, Ahamed Imran Abdul Salam, Shradha Saraf, Nuno Saraiva-Agostinho, Dan Sheppard, Swati Sinha, Botond Sipos, Vasily Sitnik, William Stark, Emily Steed, Marie-Marthe Suner, Likhitha Surapaneni, Kyösti Sutinen, Francesca Floriana Tricomi, David Urbina-Gómez, Andres Veidenberg, Thomas A Walsh, Doreen Ware, Elizabeth Wass, Natalie L Willhoft, Jamie Allen, Jorge Alvarez-Jarreta, Marc Chakiachvili, Bethany Flint, Stefano Giorgetti, Leanne Haggerty, Garth R Ilsley, Jon Keatley, Jane E Loveland, Benjamin Moore, Jonathan M Mudge, Guy Naamati, John Tate, Stephen J Trevanion, Andrea Winterbottom, Adam Frankish, Sarah E Hunt, Fiona Cunningham, Sarah Dyer, Robert D Finn, Fergal J Martin, and Andrew D Yates. (Ensembl 2024). Nucleic Acids Res. 2024, 52(D1):D891–D899. <a href="https://doi.org/10.1093/nar/gkad1049">10.1093/nar/gkad1049</a></li>
 <li>Bradford, Y.M., Van Slyke, C.E., Ruzicka, L., Singer, A., Eagle, A., Fashena, D., Howe, D.G., Frazer, K., Martin, R., Paddock, H., Pich, C., Ramachandran, S., Westerfield, M. (2022) Zebrafish Information Network, the knowledgebase for Danio rerio research. Genetics. 220(4). <a href="https://doi.org/10.1093/genetics/iyac016">10.1093/genetics/iyac016</a></li>
 </ul>
 </section>
-<section id="session-info" class="level2">
-<h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
+<section id="session-info" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="session-info"><span class="header-section-number">6</span> Session Info</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

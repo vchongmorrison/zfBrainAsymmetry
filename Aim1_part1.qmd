@@ -254,7 +254,7 @@ There was clear variation being driven by cell cycle phase. This was expected gi
 
 Altogether these inform the `SCTransform` parameters, where `CC.Difference` is used instead of `Phase` to maintain the separation between progenitors and non-cycling cells :
 
-```{r eval=FALSE}
+```{r}
 DefaultAssay(cr_law) <- "RNA"
 cr_law <- SCTransform(cr_law,
                      vars.to.regress = c("percent.ribo", "percent.mt", "CC.Difference"),
@@ -270,10 +270,6 @@ ss_e107 <- SCTransform(ss_e107,
 
 As clustering is more an art than exact science, I empirically determined the main parameters - `algorithm`, `npcs`, `k.param`, and `resolution` - and compared the result between the two pre-processing workflows/`Seurat` objects.
 
-```{r include=FALSE}
-load("../foxd3flh-5k_cr-law.RData")
-load("../foxd3flh-5k_ss-e107.RData")
-```
 
 **'Picking' the number of Principal Component dimensions `npcs` :**
 
@@ -289,7 +285,7 @@ ElbowPlot(ss_e107, ndims=60, reduction="pca")
 
 Based on the elbow plots above I went with `npcs = 40`. `k.param` is kept at the default `20`, and the Leiden `algorithm = 4` is selected.
 
-```{r eval=FALSE}
+```{r}
 cr_law <- RunPCA(cr_law, npcs = 40) %>%
   FindNeighbors(dims = 1:40) %>%
   FindClusters(algorithm = 4, resolution = c(1.0), method="igraph") %>%
@@ -301,10 +297,11 @@ ss_e107 <- RunPCA(ss_e107, npcs = 40) %>%
   RunUMAP(dims = 1:40, n.neighbors = 20) # to match default k.param=20
 ```
 
+
 **Save `Seurat` objects to load later without re-running all the above :**
 
-```{r eval=FALSE}
-# Set DefaultAssay (and slot) and save objects for visualisation
+```{r}
+# Set DefaultAssay and save objects for visualisation
 DefaultAssay(cr_law) <- "RNA"
 cr_law <- NormalizeData(cr_law)
 DefaultAssay(ss_e107) <- "RNA"

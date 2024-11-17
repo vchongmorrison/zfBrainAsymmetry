@@ -16,7 +16,7 @@ MERFISH (**M**ultiplexed **E**rror-**R**obust **F**luorescence **i**n **s**itu *
 
 As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore \>1 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (*sox1a* / *bsx* ++), or 1 or 2 planes later towards the pineal region only (*bsx* +).
 
-The final dataset consists of x2 sections each of x2 biological replicates/embryos. For sake of brevity, each section is hereafter named 'anterior' or 'posterior' depending on their relative location within the embryo they originated from.
+The final dataset consists of x2 sections each of x2 biological replicates/embryos (wild type). For sake of brevity, each section is hereafter named 'anterior' or 'posterior' depending on their relative location within the embryo they originated from.
 
 ### Initialise R environment
 
@@ -136,7 +136,13 @@ head(cl19.de.markers.epiphysis, 5)
 nrow(cl19.de.markers.epiphysis)
 ```
 
-This step identifies a significantly more manageable \~100 and 300 candidate genes per cluster for a MERFISH experiment. At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.
+This step identifies a significantly more manageable \~100 and 300 candidate genes per cluster for a MERFISH experiment.
+
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl2_de_markers_epiphysis.txt) to Cluster 2 candidate genes
+
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl19_de_markers_epiphysis.txt) to Cluster 19 candidate genes
+
+At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.
 
 -   Known genes in literature/previous work
 
@@ -150,11 +156,43 @@ write.table(data.frame(cl2.de.markers.epiphysis$markers), file="./annotations/cl
 write.table(data.frame(cl19.de.markers.epiphysis$markers), file="./annotations/cl19_de_markers_epiphysis.txt", row.names=FALSE, quote=FALSE)
 ```
 
-**140 Gene Panel for MERSCOPE - FINAL :**
+### 140 Gene Panel for MERSCOPE (final)
 
 ```{r}
 merscope <- read.csv('./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv', header=TRUE, row.names=1)
 head(merscope, 10) # print first 10 rows only
+```
+
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv) to panel codebook
+
+#### **Composition of the final panel :**
+
+```{r}
+##### Explore intersection of markers between clusters #####
+library(UpSetR)
+
+cl2 <- read.table("./annotations/cl2_de_markers_epiphysis.txt", header=TRUE)
+cl2$cluster <- "Cluster2"
+colnames(cl2) <- c("markers","cluster")
+
+cl19 <- read.table("./annotations/cl19_de_markers_epiphysis.txt", header=TRUE)
+cl19$cluster <- "Cluster19"
+colnames(cl19) <- c("markers","cluster")
+
+merscope$markers <- rownames(merscope)
+merscope$cluster <- "merscope"
+merscope <- data.frame(merscope$markers, merscope$cluster)
+colnames(merscope) <- c("markers","cluster")
+
+all.markers <- rbind(cl2, cl19, merscope)
+
+# Format data to serve as input for UpSetR.
+input <- all.markers %>% mutate(truval=TRUE) %>% spread(cluster, truval, fill=FALSE)
+input <- input %>%
+  mutate(across(2:4, ~ as.integer(as.character(factor(., levels = c("TRUE", "FALSE"), labels = c(1, 0))))))
+
+# UpSetR plot - Conway et al. 2017
+upset(input, empty.intersections = "on", order.by = "freq", mainbar.y.label = "Epiphysis marker intersections", sets.x.label = "Epiphysis markers per set")
 ```
 
 ## Pre-processing of MERSCOPE data

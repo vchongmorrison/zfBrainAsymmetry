@@ -23,6 +23,14 @@ format:
     theme: flatly
     css: styles.css
     toc: true
+    number-sections: true
+
+execute:
+  eval: true
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
 
 editor: visual
 
