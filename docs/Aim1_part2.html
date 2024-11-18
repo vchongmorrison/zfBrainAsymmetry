@@ -186,7 +186,8 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#call-markers" id="toc-call-markers" class="nav-link" data-scroll-target="#call-markers"><span class="header-section-number">2.1</span> Call markers</a></li>
   <li><a href="#cross-reference-with-zfin" id="toc-cross-reference-with-zfin" class="nav-link" data-scroll-target="#cross-reference-with-zfin"><span class="header-section-number">2.2</span> Cross-reference with ZFIN</a></li>
-  <li><a href="#gene-panel-for-merscope-final" id="toc-gene-panel-for-merscope-final" class="nav-link" data-scroll-target="#gene-panel-for-merscope-final"><span class="header-section-number">2.3</span> 140 Gene Panel for MERSCOPE (final)</a></li>
+  <li><a href="#gene-panel-for-merscope---final" id="toc-gene-panel-for-merscope---final" class="nav-link" data-scroll-target="#gene-panel-for-merscope---final"><span class="header-section-number">2.3</span> 140 Gene Panel for MERSCOPE - final</a></li>
+  <li><a href="#additional-insights" id="toc-additional-insights" class="nav-link" data-scroll-target="#additional-insights"><span class="header-section-number">2.4</span> Additional insights</a></li>
   </ul></li>
   <li><a href="#pre-processing-of-merscope-data" id="toc-pre-processing-of-merscope-data" class="nav-link" data-scroll-target="#pre-processing-of-merscope-data"><span class="header-section-number">3</span> Pre-processing of MERSCOPE data</a>
   <ul class="collapse">
@@ -238,8 +239,8 @@ div.csl-indent {
 <figcaption class="figure-caption">Schematic of experiment design. A detailed sample preparation protocol can be found on <a href="https://vchongmorrison.github.io/protocols/" class="uri">https://vchongmorrison.github.io/protocols/</a></figcaption>
 </figure>
 </div>
-<p>As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore &gt;1 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (<em>sox1a</em> / <em>bsx</em> ++), or 1 or 2 planes later towards the pineal region only (<em>bsx</em> +).</p>
-<p>The final dataset consists of x2 sections each of x2 biological replicates/embryos (wild type). For sake of brevity, each section is hereafter named ‘anterior’ or ‘posterior’ depending on their relative location within the embryo they originated from.</p>
+<p>As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore up to 5 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (<em>sox1a</em> / <em>bsx</em> ++), or 1 or 2 planes later towards the pineal region only (<em>bsx</em> +).</p>
+<p>The final dataset consists of x2 sections each of x2 biological replicates/embryos (wild type, ~32-36 hpf). For sake of brevity, each section is named ‘anterior’ or ‘posterior’ depending on their relative location within the embryo they originated from.</p>
 </section>
 <section id="initialise-r-environment" class="level3" data-number="1.3">
 <h3 data-number="1.3" class="anchored" data-anchor-id="initialise-r-environment"><span class="header-section-number">1.3</span> Initialise R environment</h3>
@@ -265,7 +266,7 @@ div.csl-indent {
 <section id="call-markers" class="level3" data-number="2.1">
 <h3 data-number="2.1" class="anchored" data-anchor-id="call-markers"><span class="header-section-number">2.1</span> Call markers</h3>
 <p>There is an overwhelming number of methods in the scientific literature for scRNA-seq marker identification. Depending on your goal(s) for performing marker identification, some approaches might be better suited than others.</p>
-<p>In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run <code>FindMarkers</code> (implemented in <code>Seurat</code>) on clusters 2 and 19.</p>
+<p>In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run <code>FindMarkers</code> (implemented in <code>Seurat</code>) on clusters <code>2</code> and <code>19</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>cl2.de.markers <span class="ot">&lt;-</span> <span class="fu">FindMarkers</span>(ss_e107, <span class="at">ident.1 =</span> <span class="st">"2"</span>, <span class="at">ident.2 =</span> <span class="cn">NULL</span>, <span class="at">only.pos =</span> <span class="cn">TRUE</span>, <span class="at">assay =</span> <span class="st">"RNA"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl2.de.markers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -330,9 +331,55 @@ skor1b                       skor1b</code></pre>
 <p>This was achieved by mining <a href="./session.html#Zebrafish Information Network (ZFIN)">ZFIN gene expression data</a> for called markers whose expression were detected in the <code>epiphysis</code>. Of course, this is not fool-proof and heavily depends on the accuracy and completion of ZFIN’s annotation. There may be many genes whose expression in the epiphysis were not annotated as such and therefore will be missed (more likely), and <em>vice versa</em> (exception rather than rule).</p>
 <p>Follow the link above for the code to pull ZFIN data-of-interest into a dataframe <code>gex_ISH</code> used below :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl2.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>gex <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="fu">url</span>(<span class="st">"https://zfin.org/downloads/wildtype-expression_fish.txt"</span>), <span class="at">header =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 V1   V2 V3          V4             V5 V6 V7
+1 ZDB-GENE-060824-3 a1cf WT ZFA:0000123          liver      
+2 ZDB-GENE-060824-3 a1cf WT ZFA:0000123          liver      
+3 ZDB-GENE-060824-3 a1cf WT ZFA:0001094 whole organism      
+4 ZDB-GENE-090212-1 a2ml WT ZFA:0000112            gut      
+5 ZDB-GENE-090212-1 a2ml WT ZFA:0000123          liver      
+                       V8               V9                        V10
+1                   Adult            Adult  Reverse transcription PCR
+2 Larval:Protruding-mouth     Larval:Day 5 mRNA in situ hybridization
+3                   Adult            Adult  Reverse transcription PCR
+4        Larval:Days 7-13 Larval:Days 7-13 mRNA in situ hybridization
+5            Larval:Day 4     Larval:Day 4 mRNA in situ hybridization
+          V11               V12 V13 V14                   V15
+1 MMO:0000655  ZDB-PUB-060501-4         ZDB-FISH-150901-29105
+2 MMO:0000658  ZDB-PUB-060501-4         ZDB-FISH-150901-29105
+3 MMO:0000655  ZDB-PUB-060501-4         ZDB-FISH-150901-29105
+4 MMO:0000658 ZDB-PUB-081121-13         ZDB-FISH-150901-29105
+5 MMO:0000658 ZDB-PUB-081121-13         ZDB-FISH-150901-29105</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add column IDs (based on Column Headers in the Downloads page above)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gex) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GeneID"</span>, <span class="st">"GeneSymbol"</span>,<span class="st">"FishName"</span>,<span class="st">"SuperStructureID"</span>,<span class="st">"SuperStructureName"</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"SubStructureID"</span>,<span class="st">"SubStructureName"</span>,<span class="st">"StartStage"</span>,<span class="st">"EndStage"</span>,<span class="st">"Assay"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"AssayMMOID"</span>,<span class="st">"PublicationID"</span>,<span class="st">"ProbeID"</span>,<span class="st">"AntibodyID"</span>,<span class="st">"FishID"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> gex[<span class="fu">which</span>(gex<span class="sc">$</span>FishName<span class="sc">==</span><span class="st">'WT'</span> <span class="sc">|</span> gex<span class="sc">$</span>FishName<span class="sc">==</span><span class="st">'AB/TU'</span>), ]</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> gex_ISH[<span class="fu">which</span>(gex_ISH<span class="sc">$</span>Assay<span class="sc">==</span><span class="st">'mRNA in situ hybridization'</span>), ]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>gex_ISH <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(gex_ISH<span class="sc">$</span>GeneSymbol, gex_ISH<span class="sc">$</span>SuperStructureName)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gex_ISH) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"GeneSymbol"</span>,<span class="st">"Structure"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(gex_ISH, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   GeneSymbol            Structure
+1        a1cf                liver
+2        a2ml                  gut
+3        a2ml                liver
+4        a2ml                liver
+5        a2ml                liver
+6        a2ml                 yolk
+7        a2ml                 yolk
+8        a2ml yolk syncytial layer
+9        a2ml yolk syncytial layer
+10       a2ml yolk syncytial layer</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl2.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  p_val avg_log2FC pct.1 pct.2 p_val_adj markers                   Structure
 1     0   2.755492 0.938   0.1         0    otx1  alar plate midbrain region
@@ -341,9 +388,9 @@ skor1b                       skor1b</code></pre>
 4     0   2.755492 0.938   0.1         0    otx1 basal plate midbrain region
 5     0   2.755492 0.938   0.1         0    otx1                diencephalon</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl2.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cl2.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl2.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl2.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          p_val avg_log2FC pct.1 pct.2     p_val_adj markers Structure
 1  0.000000e+00   2.755492 0.938 0.100  0.000000e+00    otx1 epiphysis
@@ -352,15 +399,15 @@ skor1b                       skor1b</code></pre>
 4  0.000000e+00   2.333122 0.783 0.076  0.000000e+00    wnt4 epiphysis
 5 4.197046e-284   2.721522 0.959 0.210 1.005025e-279  cldn5a epiphysis</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl2.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl2.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 135</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl19.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Match every marker with every known WISH-detected Structure</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">left_join</span>(cl19.de.markers, gex_ISH, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"markers"</span> <span class="ot">=</span> <span class="st">"GeneSymbol"</span>))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  p_val avg_log2FC pct.1 pct.2 p_val_adj markers         Structure
 1     0     5.8017  0.91  0.03         0     bsx             brain
@@ -369,9 +416,9 @@ skor1b                       skor1b</code></pre>
 4     0     5.8017  0.91  0.03         0     bsx caudal tuberculum
 5     0     5.8017  0.91  0.03         0     bsx caudal tuberculum</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl19.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter for "epiphysis" only</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>cl19.de.markers.epiphysis <span class="ot">&lt;-</span> <span class="fu">distinct</span>(<span class="fu">filter</span>(cl19.de.markers.epiphysis, Structure<span class="sc">==</span><span class="st">"epiphysis"</span>))</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cl19.de.markers.epiphysis, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          p_val avg_log2FC pct.1 pct.2     p_val_adj markers Structure
 1  0.000000e+00   5.801700 0.910 0.030  0.000000e+00     bsx epiphysis
@@ -380,33 +427,44 @@ skor1b                       skor1b</code></pre>
 4 9.997499e-179   3.981461 0.865 0.062 2.394001e-174  esrrga epiphysis
 5 4.366307e-176   5.705932 0.404 0.007 1.045556e-171  sall3a epiphysis</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl19.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cl19.de.markers.epiphysis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 302</code></pre>
 </div>
 </div>
 <p>This step identifies a significantly more manageable ~100 and 300 candidate genes per cluster for a MERFISH experiment.</p>
 <ul>
-<li><p><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl2_de_markers_epiphysis.txt">Link</a> to Cluster 2 candidate genes</p></li>
-<li><p><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl19_de_markers_epiphysis.txt">Link</a> to Cluster 19 candidate genes</p></li>
+<li><p><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl2_de_markers_epiphysis.txt">Link</a> to Cluster <code>2</code> candidate gene list</p></li>
+<li><p><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl19_de_markers_epiphysis.txt">Link</a> to Cluster <code>19</code> candidate gene list</p></li>
 </ul>
-<p>At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.</p>
+<p>At this point, the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel, with decreasing priority below.</p>
+<ol type="1">
+<li><p>Genes from the literature/previous work</p>
 <ul>
-<li><p>Known genes in literature/previous work</p></li>
-<li><p>GABA</p></li>
-<li><p>‘Novel’ pickings from cluster 2 and 19 gene lists</p></li>
-</ul>
+<li><p>Clanton <em>et al</em>. 2013</p></li>
+<li><p>Khuansuwan <em>et al</em>. 2016</p></li>
+<li><p>Schredelseker &amp; Driever, 2018</p></li>
+</ul></li>
+<li><p>Genes related to GABA synthesis and signalling</p>
+<ul>
+<li>(one-liner explanation from S Wilson? TBC)</li>
+</ul></li>
+<li><p>Selected from Cluster <code>2</code> and <code>19</code> candidate gene lists, that generally have some previous links to neurogenesis</p></li>
+</ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save gene lists to file</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl2.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl2_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl19.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl19_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save gene lists to file</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl2.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl2_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="fu">data.frame</span>(cl19.de.markers.epiphysis<span class="sc">$</span>markers), <span class="at">file=</span><span class="st">"./annotations/cl19_de_markers_epiphysis.txt"</span>, <span class="at">row.names=</span><span class="cn">FALSE</span>, <span class="at">quote=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="gene-panel-for-merscope-final" class="level3" data-number="2.3">
-<h3 data-number="2.3" class="anchored" data-anchor-id="gene-panel-for-merscope-final"><span class="header-section-number">2.3</span> 140 Gene Panel for MERSCOPE (final)</h3>
+<section id="gene-panel-for-merscope---final" class="level3" data-number="2.3">
+<h3 data-number="2.3" class="anchored" data-anchor-id="gene-panel-for-merscope---final"><span class="header-section-number">2.3</span> 140 Gene Panel for MERSCOPE - final</h3>
+<ul>
+<li><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv">Link</a> to panel codebook</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv'</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="dv">1</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(merscope, <span class="dv">10</span>) <span class="co"># print first 10 rows only</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv'</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">row.names=</span><span class="dv">1</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(merscope, <span class="dv">10</span>) <span class="co"># print first 10 rows only</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        id barcodeType V0001T8B1 V0002T8B1 V0003T8B1 V0004T8B1
 aanat2  ENSDART00000018205     merfish         0         0         1         0
@@ -443,50 +501,191 @@ atp1b1b         0         1         0         0         0         1         0
 atp1b2a         0         1         0         1         0         0         1</code></pre>
 </div>
 </div>
-<ul>
-<li><a href="https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv">Link</a> to panel codebook</li>
-</ul>
 <section id="composition-of-the-final-panel" class="level4" data-number="2.3.1">
-<h4 data-number="2.3.1" class="anchored" data-anchor-id="composition-of-the-final-panel"><span class="header-section-number">2.3.1</span> <strong>Composition of the final panel :</strong></h4>
+<h4 data-number="2.3.1" class="anchored" data-anchor-id="composition-of-the-final-panel"><span class="header-section-number">2.3.1</span> <strong>Composition of the final panel</strong></h4>
+<p><a href="https://github.com/hms-dbmi/UpSetR">UpSet</a> plots are an excellent alternative to Venn diagrams for visualising intersection between the three gene lists above.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Explore intersection of markers between clusters #####</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>cl2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./annotations/cl2_de_markers_epiphysis.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>cl2<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"Cluster2"</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cl2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>cl19 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./annotations/cl19_de_markers_epiphysis.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>cl19<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"Cluster19"</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cl19) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>merscope<span class="sc">$</span>markers <span class="ot">&lt;-</span> <span class="fu">rownames</span>(merscope)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>merscope<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"merscope"</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(merscope<span class="sc">$</span>markers, merscope<span class="sc">$</span>cluster)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(merscope) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>all.markers <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cl2, cl19, merscope)</span>
-<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Format data to serve as input for UpSetR.</span></span>
-<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> all.markers <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">truval=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">spread</span>(cluster, truval, <span class="at">fill=</span><span class="cn">FALSE</span>)</span>
-<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> input <span class="sc">%&gt;%</span></span>
-<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="sc">~</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(<span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))))))</span>
-<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="co"># UpSetR plot - Conway et al. 2017</span></span>
-<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a><span class="fu">upset</span>(input, <span class="at">empty.intersections =</span> <span class="st">"on"</span>, <span class="at">order.by =</span> <span class="st">"freq"</span>, <span class="at">mainbar.y.label =</span> <span class="st">"Epiphysis marker intersections"</span>, <span class="at">sets.x.label =</span> <span class="st">"Epiphysis markers per set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">##### Explore intersection of markers between clusters #####</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(UpSetR)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>cl2 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./annotations/cl2_de_markers_epiphysis.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>cl2<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"Cluster2"</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cl2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>cl19 <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./annotations/cl19_de_markers_epiphysis.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>cl19<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"Cluster19"</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(cl19) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> merscope[<span class="dv">1</span><span class="sc">:</span><span class="dv">140</span>,] <span class="co"># 140 gene targets, remove 40 Blanks</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>merscope<span class="sc">$</span>markers <span class="ot">&lt;-</span> <span class="fu">rownames</span>(merscope)</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>merscope<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="st">"merscope"</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(merscope<span class="sc">$</span>markers, merscope<span class="sc">$</span>cluster)</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(merscope) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"markers"</span>,<span class="st">"cluster"</span>)</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>all.markers <span class="ot">&lt;-</span> <span class="fu">rbind</span>(cl2, cl19, merscope)</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Format data to serve as input for UpSetR.</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> all.markers <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">truval=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">spread</span>(cluster, truval, <span class="at">fill=</span><span class="cn">FALSE</span>)</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>input <span class="ot">&lt;-</span> input <span class="sc">%&gt;%</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>, <span class="sc">~</span> <span class="fu">as.integer</span>(<span class="fu">as.character</span>(<span class="fu">factor</span>(., <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))))))</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co"># UpSetR plot - Conway et al. 2017</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="fu">upset</span>(input, <span class="at">empty.intersections =</span> <span class="st">"on"</span>, <span class="at">order.by =</span> <span class="st">"freq"</span>, <span class="at">mainbar.y.label =</span> <span class="st">"Epiphysis marker intersections"</span>, <span class="at">sets.x.label =</span> <span class="st">"Epiphysis markers per set"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Aim1_part2_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>Of the 140 genes in the MERSCOPE panel;</p>
+<ul>
+<li><p>The large majority, 103, are specific to Cluster <code>19</code> candidate genes</p></li>
+<li><p>9 are shared between Cluster <code>2</code> and <code>19</code></p></li>
+<li><p>4 are specific to Cluster <code>2</code> candidate genes</p></li>
+<li><p>24 are from neither i.e.&nbsp;from the literature and GABA genes</p></li>
+</ul>
 </section>
+<section id="expression-pattern-in-ss_e107" class="level4" data-number="2.3.2">
+<h4 data-number="2.3.2" class="anchored" data-anchor-id="expression-pattern-in-ss_e107"><span class="header-section-number">2.3.2</span> <strong>Expression pattern in <code>ss_e107</code></strong></h4>
+<p>To explore the expression of these genes in the <code>ss_e107</code> scRNA-seq dataset, let’s first check that all the panel genes are present in the <code>SeuratObject</code>. Otherwise, plotting will throw errors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MERSCOPE panel genes</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>merscope <span class="ot">&lt;-</span> merscope[<span class="dv">1</span><span class="sc">:</span><span class="dv">140</span>,]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 3 genes filtered out in ss_e107 dataset, remove these otherwise plotting ss_e107 will throw error</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">rownames</span>(ss_e107))</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(genes) <span class="ot">&lt;-</span> <span class="st">"gene"</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>merscope_check <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">left_join</span>(genes, merscope, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"gene"</span> <span class="ot">=</span> <span class="st">"name"</span>)) <span class="sc">%&gt;%</span> <span class="fu">filter</span>(barcodeType<span class="sc">==</span><span class="st">"merfish"</span>) <span class="co"># 137 genes</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="fu">anti_join</span>(merscope, merscope_check, <span class="at">by=</span><span class="fu">join_by</span>(name <span class="sc">==</span> gene)) <span class="co"># to get names of these genes (gfi1ab, opn1sw1, rho)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     name                 id barcodeType V0001T8B1 V0002T8B1 V0003T8B1
+1  gfi1ab ENSDART00000065139     merfish         0         0         0
+2 opn1sw1 ENSDART00000067160     merfish         1         0         0
+3     rho ENSDART00000027000     merfish         1         0         0
+  V0004T8B1 V0005T8B1 V0006T8B1 V0007T8B1 V0008T8B1 V0009T8B1 V0010T8B1
+1         1         1         0         0         0         0         0
+2         0         0         0         1         0         0         1
+3         0         0         0         0         0         0         0
+  V0011T8B1 V0012T8B1 V0013T8B1 V0014T8B1 V0015T8B1 V0016T8B1 V0017T8B1
+1         0         0         1         1         0         0         0
+2         0         0         0         0         0         0         1
+3         0         1         0         1         0         0         1
+  V0018T8B1
+1         0
+2         0
+3         0</code></pre>
+</div>
+</div>
+<p>Plot a heatmap of the 140 (137) panel genes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoHeatmap</span>(ss_e107, merscope_check<span class="sc">$</span>gene,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">annot.by =</span> <span class="st">"SCT_snn_res.1"</span>,</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">scaled.to.max =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">show_colnames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">show_rownames =</span> <span class="cn">TRUE</span>, <span class="at">complex=</span><span class="cn">TRUE</span>, <span class="at">fontsize_row =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This heatmap illustrates the on-going challenge - that the epiphysis shares many of its expressed genes with other neuronal and/or cranial cell types. Despite ‘marker identification’ followed by filtering for those with pre-validated <em>in vivo</em> expression in the epiphysis, these genes as a whole <strong><em>do not specifically</em></strong> mark out the (putative) epiphysis clusters <code>2</code> and <code>19</code>. Therefore, from a bioinformatics perspective, using a <strong><em>combination of genes</em></strong> is vital to ‘extract’ these cells - as demonstrated in <a href="./Aim1_part1.html#Identify epiphysis clusters">Aim 1 Part 1: Identify epiphysis clusters</a>.</p>
+</section>
+</section>
+<section id="additional-insights" class="level3" data-number="2.4">
+<h3 data-number="2.4" class="anchored" data-anchor-id="additional-insights"><span class="header-section-number">2.4</span> Additional insights</h3>
+<p>However, in the painstaking iterative process of going through the gene lists above and cross-checking with ZFIN, two groups of genes were noted to display specific expression in the epiphysis and retina. The ones highlighted in <strong>bold</strong> were called in Clusters <code>2</code> and <code>19</code> candidate gene lists.</p>
+<ul>
+<li><p>Recoverins - <code>rcvrna</code>, <code>rcvrnb</code>, <strong><code>rcvrn2</code></strong>, <code>rcvrn3</code></p></li>
+<li><p>Phosphodiesterases - <strong><code>pde6gb</code></strong>,<strong><code>pde6c</code></strong>,<strong><code>pde6d</code></strong> … (too many to list).</p></li>
+</ul>
+<p>The <a href="https://zfin.org/ZDB-IMAGE-151008-27#image">recoverins</a> and <a href="https://zfin.org/ZDB-FIG-050630-4919#summary"><em>pde6gb</em></a> in particular had striking epiphysis- plus/minus retina-specific expression patterns in the embryo. They reflect the photoreceptive characteristics of these organs. Let’s look at these genes together with the three markers previously used to identify epiphysis clusters - <em>bsx</em>, <em>noto</em>, <em>otx5</em>. <em>Sox1a</em> is included as the parapineal marker.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>epiphysis_genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bsx"</span>, <span class="st">"noto"</span>, <span class="st">"otx5"</span>, <span class="st">"sox1a"</span>,</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"rcvrna"</span>, <span class="st">"rcvrnb"</span>, <span class="st">"rcvrn2"</span>, <span class="st">"rcvrn3"</span>,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"pde6gb"</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dittoDotPlot</span>(ss_e107, epiphysis_genes, <span class="at">group.by=</span><span class="st">"SCT_snn_res.1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Aim1_part2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Cluster <code>19</code> demonstrated robust expression of several of these ‘ZFIN-validated’ genes. Remarkably, the remaining clusters, including Cluster <code>2</code>, showed co-expression of these genes as well to a certain extent…are these ‘contaminating’ retinal photoreceptor precursors? However, the parapineal marker <em>sox1a</em> is still only detected in Clusters <code>2</code> and <code>19</code>.</p>
+<p>With these lessons in mind, we proceed with the MERSCOPE experiment to gather additional evidence and wrap-up Aim 1.</p>
 </section>
 </section>
 <section id="pre-processing-of-merscope-data" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="pre-processing-of-merscope-data"><span class="header-section-number">3</span> Pre-processing of MERSCOPE data</h2>
-<p>MERSCOPE Visualizer is a free software provided by Vizgen as an out-of-box solution to explore results.</p>
+<p><a href="https://vizgen.com/vizualizer-software/">MERSCOPE Vizualizer</a> is a free software provided by Vizgen as an out-of-box solution to explore results from MERSCOPE runs. The following images are exported using the following settings: <code>Transcripts Z-plane = All</code>; <code>Z-plane = 2</code> ; <code>Images = DAPI</code> channel only. The MERFISH signal coverage clearly encompasses the epiphysis region, which is promising. However, these images also have the <code>cell</code> setting ON…and it is clear that the default cell segmentation algorithm in the run is incompatible with the samples.</p>
+<div id="fig-e1" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo1_ant_all-genes_DAPI.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 1 - anterior slice</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo1_pos_all-genes_DAPI.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 1 - posterior slice</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Embryo 1 with all detected transcripts and failed cell segmentation</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-e2" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo2_ant_all-genes_DAPI.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 2 - anterior slice</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo2_pos_all-genes_DAPI.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 2 - posterior slice</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Embryo 2 with all detected transcripts and failed cell segmentation</figcaption><p></p>
+</figure>
+</div>
 <section id="cell-segmentation" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="cell-segmentation"><span class="header-section-number">3.1</span> Cell segmentation</h3>
-<p>in progress</p>
+<p>Through a lot of trial and error, I worked out that <a href="https://github.com/MouseLand/cellpose">Cellpose</a>‘s <code>cyto3</code> model released with v3 (Feb 2024) had the best performance in segmenting these images. In addition, Vizgen’s <a href="https://vizgen.com/vpt/">VPT</a> tool with the <a href="https://github.com/Vizgen/vpt-plugin-cellpose2">Cellpose2 plugin</a> enables performing custom 2-task segmentation runs, where the results of two (up to six) segmentation settings can be harmonised for a ’consensus’-like result (and perhaps improve sensitivity). The final pipeline is implemented as an <code>apptainer</code> container that runs VPT-Cellpose2 to perform 2-task segmentation using the <code>cyto3</code> model.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># apptainer.def file</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-reseg" class="quarto-layout-panel">
+<figure class="figure">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo1_pos_all-genes_DAPI_reseg.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 1 - posterior slice</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/embryo2_pos_all-genes_DAPI_reseg.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Embryo 2 - posterior slice</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Embryo 1 and 2 with all detected transcripts and successful re-segmentation</figcaption><p></p>
+</figure>
+</div>
 </section>
 </section>
 <section id="clustering-of-merscope-data" class="level2" data-number="4">
@@ -507,8 +706,8 @@ atp1b2a         0         1         0         1         0         0         1</c
 <section id="packages" class="level3" data-number="6.1">
 <h3 data-number="6.1" class="anchored" data-anchor-id="packages"><span class="header-section-number">6.1</span> Packages</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">"table"</span>, <span class="at">out.dir =</span> <span class="st">"."</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pkgs <span class="ot">&lt;-</span> <span class="fu">cite_packages</span>(<span class="at">output =</span> <span class="st">"table"</span>, <span class="at">out.dir =</span> <span class="st">"."</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(pkgs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -598,13 +797,16 @@ atp1b2a         0         1         0         1         0         0         1</c
 <h3 data-number="6.2" class="anchored" data-anchor-id="previous-work"><span class="header-section-number">6.2</span> Previous work</h3>
 <ul>
 <li>I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. <em>Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry</em>. eLife (2019), e47376, 8, <a href="https://doi.org/10.7554/eLife.47376" class="uri">https://doi.org/10.7554/eLife.47376</a></li>
+<li>S. Khuansuwan, J. A. Clanton, B. J. Dean, J. G. Patton, J. T. Gamse; A transcription factor network controls cell migration and fate decisions in the developing zebrafish pineal complex. <em>Development</em> 15 July 2016; 143 (14): 2641–2650, <a href="https://doi.org/10.1242/dev.131680" class="uri">https://doi.org/10.1242/dev.131680</a></li>
+<li>J. A. Clanton, K. D. Hope, J. T. Gamse; Fgf signaling governs cell fate in the zebrafish pineal complex. <em>Development</em> 15 January 2013; 140 (2): 323–332, <a href="https://doi.org/10.1242/dev.083709" class="uri">https://doi.org/10.1242/dev.083709</a></li>
+<li>Theresa Schredelseker, Wolfgang Driever; Bsx controls pineal complex development. <em>Development</em> 1 July 2018; 145 (13): dev163477, <a href="https://doi.org/10.1242/dev.163477" class="uri">https://doi.org/10.1242/dev.163477</a></li>
 </ul>
 </section>
 </section>
 <section id="session-info" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="session-info"><span class="header-section-number">7</span> Session Info</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.4.2 (2024-10-31)
 Platform: x86_64-pc-linux-gnu
@@ -647,47 +849,50 @@ other attached packages:
 [29] future_1.34.0              
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3      rstudioapi_0.17.1       jsonlite_1.8.9         
-  [4] magrittr_2.0.3          spatstat.utils_3.1-1    farver_2.1.2           
-  [7] rmarkdown_2.29          zlibbioc_1.50.0         vctrs_0.6.5            
- [10] ROCR_1.0-11             spatstat.explore_3.3-3  S4Arrays_1.4.1         
- [13] htmltools_0.5.8.1       SparseArray_1.4.8       sctransform_0.4.1      
- [16] parallelly_1.39.0       KernSmooth_2.23-24      htmlwidgets_1.6.4      
- [19] ica_1.0-3               plyr_1.8.9              plotly_4.10.4          
- [22] zoo_1.8-12              igraph_2.1.1            mime_0.12              
- [25] lifecycle_1.0.4         pkgconfig_2.0.3         Matrix_1.7-0           
- [28] R6_2.5.1                fastmap_1.2.0           GenomeInfoDbData_1.2.12
- [31] fitdistrplus_1.2-1      shiny_1.9.1             digest_0.6.37          
- [34] colorspace_2.1-1        patchwork_1.3.0         tensor_1.5             
- [37] RSpectra_0.16-2         irlba_2.3.5.1           labeling_0.4.3         
- [40] progressr_0.15.0        fansi_1.0.6             spatstat.sparse_3.1-0  
- [43] timechange_0.3.0        httr_1.4.7              polyclip_1.10-7        
- [46] abind_1.4-8             compiler_4.4.2          withr_3.0.2            
- [49] fastDummies_1.7.4       MASS_7.3-61             DelayedArray_0.30.1    
- [52] rappdirs_0.3.3          tools_4.4.2             lmtest_0.9-40          
- [55] httpuv_1.6.15           future.apply_1.11.3     goftest_1.2-3          
- [58] glue_1.8.0              nlme_3.1-165            promises_1.3.0         
- [61] grid_4.4.2              Rtsne_0.17              cluster_2.1.6          
- [64] reshape2_1.4.4          generics_0.1.3          gtable_0.3.6           
- [67] spatstat.data_3.1-2     tzdb_0.4.0              data.table_1.16.2      
- [70] hms_1.1.3               XVector_0.44.0          utf8_1.2.4             
- [73] spatstat.geom_3.3-3     RcppAnnoy_0.0.22        ggrepel_0.9.6          
- [76] RANN_2.6.2              pillar_1.9.0            limma_3.60.6           
- [79] spam_2.11-0             RcppHNSW_0.6.0          later_1.3.2            
- [82] splines_4.4.2           lattice_0.22-6          renv_1.0.11            
- [85] survival_3.7-0          deldir_2.0-4            tidyselect_1.2.1       
- [88] miniUI_0.1.1.1          pbapply_1.7-2           knitr_1.49             
- [91] gridExtra_2.3           scattermore_1.2         xfun_0.49              
- [94] statmod_1.5.0           pheatmap_1.0.12         UCSC.utils_1.0.0       
- [97] stringi_1.8.4           lazyeval_0.2.2          yaml_2.3.10            
-[100] evaluate_1.0.1          codetools_0.2-20        cli_3.6.3              
-[103] uwot_0.2.2              xtable_1.8-4            munsell_0.5.1          
-[106] Rcpp_1.0.13-1           globals_0.16.3          spatstat.random_3.3-2  
-[109] png_0.1-8               spatstat.univar_3.1-1   parallel_4.4.2         
-[112] presto_1.0.0            dotCall64_1.2           listenv_0.9.1          
-[115] viridisLite_0.4.2       scales_1.3.0            ggridges_0.5.6         
-[118] crayon_1.5.3            leiden_0.4.3.1          rlang_1.1.4            
-[121] cowplot_1.1.3          </code></pre>
+  [1] RcppAnnoy_0.0.22        splines_4.4.2           later_1.3.2            
+  [4] polyclip_1.10-7         fastDummies_1.7.4       lifecycle_1.0.4        
+  [7] doParallel_1.0.17       globals_0.16.3          lattice_0.22-6         
+ [10] MASS_7.3-61             magrittr_2.0.3          limma_3.60.6           
+ [13] plotly_4.10.4           rmarkdown_2.29          yaml_2.3.10            
+ [16] httpuv_1.6.15           sctransform_0.4.1       spam_2.11-0            
+ [19] spatstat.sparse_3.1-0   cowplot_1.1.3           pbapply_1.7-2          
+ [22] RColorBrewer_1.1-3      abind_1.4-8             zlibbioc_1.50.0        
+ [25] Rtsne_0.17              presto_1.0.0            rappdirs_0.3.3         
+ [28] circlize_0.4.16         GenomeInfoDbData_1.2.12 ggrepel_0.9.6          
+ [31] irlba_2.3.5.1           listenv_0.9.1           spatstat.utils_3.1-1   
+ [34] pheatmap_1.0.12         goftest_1.2-3           RSpectra_0.16-2        
+ [37] spatstat.random_3.3-2   fitdistrplus_1.2-1      parallelly_1.39.0      
+ [40] leiden_0.4.3.1          codetools_0.2-20        DelayedArray_0.30.1    
+ [43] shape_1.4.6.1           tidyselect_1.2.1        UCSC.utils_1.0.0       
+ [46] farver_2.1.2            spatstat.explore_3.3-3  jsonlite_1.8.9         
+ [49] GetoptLong_1.0.5        progressr_0.15.0        ggridges_0.5.6         
+ [52] survival_3.7-0          iterators_1.0.14        foreach_1.5.2          
+ [55] tools_4.4.2             ica_1.0-3               Rcpp_1.0.13-1          
+ [58] glue_1.8.0              gridExtra_2.3           SparseArray_1.4.8      
+ [61] xfun_0.49               withr_3.0.2             fastmap_1.2.0          
+ [64] fansi_1.0.6             digest_0.6.37           timechange_0.3.0       
+ [67] R6_2.5.1                mime_0.12               colorspace_2.1-1       
+ [70] Cairo_1.6-2             scattermore_1.2         tensor_1.5             
+ [73] spatstat.data_3.1-2     utf8_1.2.4              generics_0.1.3         
+ [76] renv_1.0.11             data.table_1.16.2       httr_1.4.7             
+ [79] htmlwidgets_1.6.4       S4Arrays_1.4.1          uwot_0.2.2             
+ [82] pkgconfig_2.0.3         gtable_0.3.6            ComplexHeatmap_2.20.0  
+ [85] lmtest_0.9-40           XVector_0.44.0          htmltools_0.5.8.1      
+ [88] dotCall64_1.2           clue_0.3-66             scales_1.3.0           
+ [91] png_0.1-8               spatstat.univar_3.1-1   knitr_1.49             
+ [94] rstudioapi_0.17.1       rjson_0.2.23            tzdb_0.4.0             
+ [97] reshape2_1.4.4          nlme_3.1-165            zoo_1.8-12             
+[100] GlobalOptions_0.1.2     KernSmooth_2.23-24      parallel_4.4.2         
+[103] miniUI_0.1.1.1          pillar_1.9.0            grid_4.4.2             
+[106] vctrs_0.6.5             RANN_2.6.2              promises_1.3.0         
+[109] xtable_1.8-4            cluster_2.1.6           evaluate_1.0.1         
+[112] cli_3.6.3               compiler_4.4.2          rlang_1.1.4            
+[115] crayon_1.5.3            future.apply_1.11.3     labeling_0.4.3         
+[118] plyr_1.8.9              stringi_1.8.4           viridisLite_0.4.2      
+[121] deldir_2.0-4            munsell_0.5.1           lazyeval_0.2.2         
+[124] spatstat.geom_3.3-3     Matrix_1.7-0            RcppHNSW_0.6.0         
+[127] hms_1.1.3               patchwork_1.3.0         statmod_1.5.0          
+[130] shiny_1.9.1             ROCR_1.0-11             igraph_2.1.1           </code></pre>
 </div>
 </div>
 
@@ -956,6 +1161,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
+</script>
+<script src="https://utteranc.es/client.js" repo="zfBrainAsymmetry/comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 <footer class="footer">

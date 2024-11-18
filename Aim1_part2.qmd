@@ -14,9 +14,9 @@ MERFISH (**M**ultiplexed **E**rror-**R**obust **F**luorescence **i**n **s**itu *
 
 ![Schematic of experiment design. A detailed sample preparation protocol can be found on <https://vchongmorrison.github.io/protocols/>](./figures/merscope-experiment.png){fig-align="center"}
 
-As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore \>1 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (*sox1a* / *bsx* ++), or 1 or 2 planes later towards the pineal region only (*bsx* +).
+As illustrated above, only x2 10 micron tissue sections were collected for MERFISH. This was restricted by the maximum imaging area on the MERSCOPE slide. Therefore up to 5 embryos were simultaneously mounted in a tissue block, with the caveat that there will be unavoidable inter-embryo variation of the resulting tissue slices. Depending on how the embryo was mounted, the first (and second) section could be from the parapineal/pineal region (*sox1a* / *bsx* ++), or 1 or 2 planes later towards the pineal region only (*bsx* +).
 
-The final dataset consists of x2 sections each of x2 biological replicates/embryos (wild type). For sake of brevity, each section is hereafter named 'anterior' or 'posterior' depending on their relative location within the embryo they originated from.
+The final dataset consists of x2 sections each of x2 biological replicates/embryos (wild type, \~32-36 hpf). For sake of brevity, each section is named 'anterior' or 'posterior' depending on their relative location within the embryo they originated from.
 
 ### Initialise R environment
 
@@ -75,7 +75,7 @@ dittoPlotVarsAcrossGroups(ss_e107, markers, group.by = "SCT_snn_res.1",
 
 There is an overwhelming number of methods in the scientific literature for scRNA-seq marker identification. Depending on your goal(s) for performing marker identification, some approaches might be better suited than others.
 
-In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run `FindMarkers` (implemented in `Seurat`) on clusters 2 and 19.
+In this case, the main goal is to shortlist genes that could be MERFISH-measured in the embryo, including (hopefully) the epiphysis region. As a first pass, we run `FindMarkers` (implemented in `Seurat`) on clusters `2` and `19`.
 
 ```{r}
 cl2.de.markers <- FindMarkers(ss_e107, ident.1 = "2", ident.2 = NULL, only.pos = TRUE, assay = "RNA")
@@ -101,7 +101,7 @@ This was achieved by mining [ZFIN gene expression data](session.qmd#Zebrafish%20
 
 Follow the link above for the code to pull ZFIN data-of-interest into a dataframe `gex_ISH` used below :
 
-```{r include=FALSE}
+```{r}
 gex <- read.delim(url("https://zfin.org/downloads/wildtype-expression_fish.txt"), header = FALSE, sep ="\t")
 head(gex, 5)
 
@@ -138,17 +138,25 @@ nrow(cl19.de.markers.epiphysis)
 
 This step identifies a significantly more manageable \~100 and 300 candidate genes per cluster for a MERFISH experiment.
 
--   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl2_de_markers_epiphysis.txt) to Cluster 2 candidate genes
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl2_de_markers_epiphysis.txt) to Cluster `2` candidate gene list
 
--   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl19_de_markers_epiphysis.txt) to Cluster 19 candidate genes
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/cl19_de_markers_epiphysis.txt) to Cluster `19` candidate gene list
 
-At this point the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel.
+At this point, the gene lists were manually shortlisted for inclusion into the final MERSCOPE 140 Gene Panel, with decreasing priority below.
 
--   Known genes in literature/previous work
+1.  Genes from the literature/previous work
 
--   GABA
+    -   Clanton *et al*. 2013
 
--   'Novel' pickings from cluster 2 and 19 gene lists
+    -   Khuansuwan *et al*. 2016
+
+    -   Schredelseker & Driever, 2018
+
+2.  Genes related to GABA synthesis and signalling
+
+    -   (one-liner explanation from S Wilson? TBC)
+
+3.  Selected from Cluster `2` and `19` candidate gene lists, that generally have some previous links to neurogenesis
 
 ```{r}
 # Save gene lists to file
@@ -156,16 +164,18 @@ write.table(data.frame(cl2.de.markers.epiphysis$markers), file="./annotations/cl
 write.table(data.frame(cl19.de.markers.epiphysis$markers), file="./annotations/cl19_de_markers_epiphysis.txt", row.names=FALSE, quote=FALSE)
 ```
 
-### 140 Gene Panel for MERSCOPE (final)
+### 140 Gene Panel for MERSCOPE - final
+
+-   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv) to panel codebook
 
 ```{r}
 merscope <- read.csv('./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv', header=TRUE, row.names=1)
 head(merscope, 10) # print first 10 rows only
 ```
 
--   [Link](https://github.com/vchongmorrison/zfBrainAsymmetry/blob/master/annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv) to panel codebook
+#### **Composition of the final panel**
 
-#### **Composition of the final panel :**
+[UpSet](https://github.com/hms-dbmi/UpSetR) plots are an excellent alternative to Venn diagrams for visualising intersection between the three gene lists above.
 
 ```{r}
 ##### Explore intersection of markers between clusters #####
@@ -179,6 +189,7 @@ cl19 <- read.table("./annotations/cl19_de_markers_epiphysis.txt", header=TRUE)
 cl19$cluster <- "Cluster19"
 colnames(cl19) <- c("markers","cluster")
 
+merscope <- merscope[1:140,] # 140 gene targets, remove 40 Blanks
 merscope$markers <- rownames(merscope)
 merscope$cluster <- "merscope"
 merscope <- data.frame(merscope$markers, merscope$cluster)
@@ -195,13 +206,100 @@ input <- input %>%
 upset(input, empty.intersections = "on", order.by = "freq", mainbar.y.label = "Epiphysis marker intersections", sets.x.label = "Epiphysis markers per set")
 ```
 
+Of the 140 genes in the MERSCOPE panel;
+
+-   The large majority, 103, are specific to Cluster `19` candidate genes
+
+-   9 are shared between Cluster `2` and `19`
+
+-   4 are specific to Cluster `2` candidate genes
+
+-   24 are from neither i.e. from the literature and GABA genes
+
+#### **Expression pattern in `ss_e107`**
+
+To explore the expression of these genes in the `ss_e107` scRNA-seq dataset, let's first check that all the panel genes are present in the `SeuratObject`. Otherwise, plotting will throw errors.
+
+```{r}
+# MERSCOPE panel genes
+merscope <- read.csv("./annotations/codebook_0_AM0765_zebrafishChongMorrisonAsymmetry.csv", header=TRUE)
+merscope <- merscope[1:140,]
+# 3 genes filtered out in ss_e107 dataset, remove these otherwise plotting ss_e107 will throw error
+genes <- data.frame(rownames(ss_e107))
+colnames(genes) <- "gene"
+merscope_check <- dplyr::left_join(genes, merscope, by = c("gene" = "name")) %>% filter(barcodeType=="merfish") # 137 genes
+anti_join(merscope, merscope_check, by=join_by(name == gene)) # to get names of these genes (gfi1ab, opn1sw1, rho)
+```
+
+Plot a heatmap of the 140 (137) panel genes.
+
+```{r}
+dittoHeatmap(ss_e107, merscope_check$gene,
+             annot.by = "SCT_snn_res.1",
+             scaled.to.max = TRUE,
+             show_colnames = FALSE,
+             show_rownames = TRUE, complex=TRUE, fontsize_row = 3)
+```
+
+This heatmap illustrates the on-going challenge - that the epiphysis shares many of its expressed genes with other neuronal and/or cranial cell types. Despite 'marker identification' followed by filtering for those with pre-validated *in vivo* expression in the epiphysis, these genes as a whole ***do not specifically*** mark out the (putative) epiphysis clusters `2` and `19`. Therefore, from a bioinformatics perspective, using a ***combination of genes*** is vital to 'extract' these cells - as demonstrated in [Aim 1 Part 1: Identify epiphysis clusters](Aim1_part1.qmd#Identify%20epiphysis%20clusters).
+
+### Additional insights
+
+However, in the painstaking iterative process of going through the gene lists above and cross-checking with ZFIN, two groups of genes were noted to display specific expression in the epiphysis and retina. The ones highlighted in **bold** were called in Clusters `2` and `19` candidate gene lists.
+
+-   Recoverins - `rcvrna`, `rcvrnb`, **`rcvrn2`**, `rcvrn3`
+
+-   Phosphodiesterases - **`pde6gb`**,**`pde6c`**,**`pde6d`** ... (too many to list).
+
+The [recoverins](https://zfin.org/ZDB-IMAGE-151008-27#image) and [*pde6gb*](https://zfin.org/ZDB-FIG-050630-4919#summary) in particular had striking epiphysis- plus/minus retina-specific expression patterns in the embryo. They reflect the photoreceptive characteristics of these organs. Let's look at these genes together with the three markers previously used to identify epiphysis clusters - *bsx*, *noto*, *otx5*. *Sox1a* is included as the parapineal marker.
+
+```{r}
+epiphysis_genes <- c("bsx", "noto", "otx5", "sox1a",
+                     "rcvrna", "rcvrnb", "rcvrn2", "rcvrn3",
+                     "pde6gb")
+
+dittoDotPlot(ss_e107, epiphysis_genes, group.by="SCT_snn_res.1")
+```
+
+Cluster `19` demonstrated robust expression of several of these 'ZFIN-validated' genes. Remarkably, the remaining clusters, including Cluster `2`, showed co-expression of these genes as well to a certain extent...are these 'contaminating' retinal photoreceptor precursors? However, the parapineal marker *sox1a* is still only detected in Clusters `2` and `19`.
+
+With these lessons in mind, we proceed with the MERSCOPE experiment to gather additional evidence and wrap-up Aim 1.
+
 ## Pre-processing of MERSCOPE data
 
-MERSCOPE Visualizer is a free software provided by Vizgen as an out-of-box solution to explore results.
+[MERSCOPE Vizualizer](https://vizgen.com/vizualizer-software/) is a free software provided by Vizgen as an out-of-box solution to explore results from MERSCOPE runs. The following images are exported using the following settings: `Transcripts Z-plane = All`; `Z-plane = 2` ; `Images = DAPI` channel only. The MERFISH signal coverage clearly encompasses the epiphysis region, which is promising. However, these images also have the `cell` setting ON...and it is clear that the default cell segmentation algorithm in the run is incompatible with the samples.
+
+::: {#fig-e1 layout-ncol="2"}
+![Embryo 1 - anterior slice](./figures/embryo1_ant_all-genes_DAPI.png)
+
+![Embryo 1 - posterior slice](./figures/embryo1_pos_all-genes_DAPI.png)
+
+Embryo 1 with all detected transcripts and failed cell segmentation
+:::
+
+::: {#fig-e2 layout-ncol="2"}
+![Embryo 2 - anterior slice](./figures/embryo2_ant_all-genes_DAPI.png)
+
+![Embryo 2 - posterior slice](./figures/embryo2_pos_all-genes_DAPI.png)
+
+Embryo 2 with all detected transcripts and failed cell segmentation
+:::
 
 ### Cell segmentation
 
-in progress
+Through a lot of trial and error, I worked out that [Cellpose](https://github.com/MouseLand/cellpose)'s `cyto3` model released with v3 (Feb 2024) had the best performance in segmenting these images. In addition, Vizgen's [VPT](https://vizgen.com/vpt/) tool with the [Cellpose2 plugin](https://github.com/Vizgen/vpt-plugin-cellpose2) enables performing custom 2-task segmentation runs, where the results of two (up to six) segmentation settings can be harmonised for a consensus-like result (and perhaps improve sensitivity). The final pipeline is implemented as an `apptainer` container that runs VPT-Cellpose2 to perform 2-task segmentation using the `cyto3` model.
+
+``` bash
+# apptainer.def file
+```
+
+::: {#fig-reseg layout-ncol="2"}
+![Embryo 1 - posterior slice](./figures/embryo1_pos_all-genes_DAPI_reseg.png)
+
+![Embryo 2 - posterior slice](./figures/embryo2_pos_all-genes_DAPI_reseg.png)
+
+Embryo 1 and 2 with all detected transcripts and successful re-segmentation
+:::
 
 ## Clustering of MERSCOPE data
 
@@ -229,6 +327,9 @@ knitr::kable(pkgs)
 ### Previous work
 
 -   I. Lekk, V. Duboc, A. Faro, S. Nicolaou, P. Blader and S.W. Wilson. *Sox1a mediates the ability of the parapineal to impart habenular left-right asymmetry*. eLife (2019), e47376, 8, <https://doi.org/10.7554/eLife.47376>
+-   S. Khuansuwan, J. A. Clanton, B. J. Dean, J. G. Patton, J. T. Gamse; A transcription factor network controls cell migration and fate decisions in the developing zebrafish pineal complex. *Development* 15 July 2016; 143 (14): 2641--2650, <https://doi.org/10.1242/dev.131680>
+-   J. A. Clanton, K. D. Hope, J. T. Gamse; Fgf signaling governs cell fate in the zebrafish pineal complex. *Development* 15 January 2013; 140 (2): 323--332, <https://doi.org/10.1242/dev.083709>
+-   Theresa Schredelseker, Wolfgang Driever; Bsx controls pineal complex development. *Development* 1 July 2018; 145 (13): dev163477, <https://doi.org/10.1242/dev.163477>
 
 ## Session Info
 

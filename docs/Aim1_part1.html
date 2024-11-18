@@ -472,7 +472,7 @@ div.csl-indent {
 <h2 data-number="3" class="anchored" data-anchor-id="dimensional-reductionclustering"><span class="header-section-number">3</span> Dimensional reduction/clustering</h2>
 <section id="sctransform-normalise-find-variable-genes-regress-unwanted-variation" class="level3" data-number="3.1">
 <h3 data-number="3.1" class="anchored" data-anchor-id="sctransform-normalise-find-variable-genes-regress-unwanted-variation"><span class="header-section-number">3.1</span> SCTransform (‘normalise, find variable genes, regress unwanted variation’)</h3>
-<p>I previously explored the data to check if there was significant variation between the cell types driven by ribosomal/mitochondrial content. <strong>Supplementary Section 1 (in progress).</strong></p>
+<p>I previously explored the data to check if there was significant variation between the cell types driven by ribosomal/mitochondrial content and cell cycle phase. Please see <strong>Supplementary Section 1 (in progress).</strong></p>
 <p>There was clear variation being driven by cell cycle phase. This was expected given a neuronal-enriched population at this developmental stage.</p>
 <p>Altogether these inform the <code>SCTransform</code> parameters, where <code>CC.Difference</code> is used instead of <code>Phase</code> to maintain the separation between progenitors and non-cycling cells :</p>
 <div class="cell">
@@ -565,7 +565,7 @@ div.csl-indent {
 </section>
 <section id="identify-epiphysis-clusters" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="identify-epiphysis-clusters"><span class="header-section-number">5</span> Identify epiphysis clusters</h2>
-<p>The epiphysis shares several of its known i.e.&nbsp;well-characterised markers with other neuronal/cranial cell types. For example, <em>bsx</em> is also expressed in the hypothalamus, <em>noto</em> is also expressed in the telencephalon, <em>otx5</em> is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:</p>
+<p>The epiphysis shares several of its known markers with other neuronal and/or cranial cell types. For example, <em>bsx</em> is also expressed in the hypothalamus, <em>noto</em> is also expressed in the telencephalon, and <em>otx5</em> is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Genes that are well known to be expressed in the epiphysis</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>markers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bsx"</span>, <span class="st">"noto"</span>, <span class="st">"otx5"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1221,6 +1221,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
+</script>
+<script src="https://utteranc.es/client.js" repo="zfBrainAsymmetry/comments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
 </script>
 </div> <!-- /content -->
 <footer class="footer">

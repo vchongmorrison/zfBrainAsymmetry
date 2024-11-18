@@ -248,7 +248,7 @@ Therefore, for this novel dataset, I take a quasi-unbiased approach :
 
 ### SCTransform ('normalise, find variable genes, regress unwanted variation')
 
-I previously explored the data to check if there was significant variation between the cell types driven by ribosomal/mitochondrial content. **Supplementary Section 1 (in progress).**
+I previously explored the data to check if there was significant variation between the cell types driven by ribosomal/mitochondrial content and cell cycle phase. Please see **Supplementary Section 1 (in progress).**
 
 There was clear variation being driven by cell cycle phase. This was expected given a neuronal-enriched population at this developmental stage.
 
@@ -269,7 +269,6 @@ ss_e107 <- SCTransform(ss_e107,
 ### 'Unsupervised' Clustering
 
 As clustering is more an art than exact science, I empirically determined the main parameters - `algorithm`, `npcs`, `k.param`, and `resolution` - and compared the result between the two pre-processing workflows/`Seurat` objects.
-
 
 **'Picking' the number of Principal Component dimensions `npcs` :**
 
@@ -296,7 +295,6 @@ ss_e107 <- RunPCA(ss_e107, npcs = 40) %>%
   FindClusters(algorithm = 4, resolution = c(1.0), method="igraph") %>%
   RunUMAP(dims = 1:40, n.neighbors = 20) # to match default k.param=20
 ```
-
 
 **Save `Seurat` objects to load later without re-running all the above :**
 
@@ -341,7 +339,7 @@ dittoDimPlot(ss_e107, "SCT_snn_res.1", reduction.use="umap",
 
 ## Identify epiphysis clusters
 
-The epiphysis shares several of its known i.e. well-characterised markers with other neuronal/cranial cell types. For example, *bsx* is also expressed in the hypothalamus, *noto* is also expressed in the telencephalon, *otx5* is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:
+The epiphysis shares several of its known markers with other neuronal and/or cranial cell types. For example, *bsx* is also expressed in the hypothalamus, *noto* is also expressed in the telencephalon, and *otx5* is also expressed in the retina. Inferring the epiphysis clusters from any of these genes alone is futile:
 
 ```{r}
 # Genes that are well known to be expressed in the epiphysis

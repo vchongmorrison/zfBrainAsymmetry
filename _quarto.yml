@@ -24,6 +24,9 @@ format:
     css: styles.css
     toc: true
     number-sections: true
+    comments:
+      utterances:
+        repo: zfBrainAsymmetry/comments
 
 execute:
   eval: true
